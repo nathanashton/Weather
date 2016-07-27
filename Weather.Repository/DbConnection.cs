@@ -9,7 +9,7 @@ namespace Weather.Repository
 
         public DbConnection()
         {
-            _connection = new SQLiteConnection { ConnectionString = "Data Source=weather.sqlite;Version=3;" };
+            _connection = new SQLiteConnection { ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;" };
         }
 
         public SQLiteConnection Connect()

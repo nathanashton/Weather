@@ -17,6 +17,16 @@ namespace Weather
             var container = Resolver.Bootstrap();
             container.RegisterType<MainWindow>();
             container.RegisterType<MainWindowViewModel>();
+
+            container.RegisterType<StationWindow>();
+            container.RegisterType<StationWindowViewModel>();
+
+            container.RegisterType<SensorWindow>();
+            container.RegisterType<SensorWindowViewModel>();
+
+            container.RegisterType<StationMapWindow>();
+
+
             var log = container.Resolve<ILog>();
             var settings = container.Resolve<ISettings>();
             log.Info("Application Started");

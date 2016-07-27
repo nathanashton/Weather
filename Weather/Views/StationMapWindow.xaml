@@ -1,0 +1,15 @@
+﻿<Window x:Class="Weather.Views.StationMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow"
+        Title="Station Map" Height="445.906" Width="548.635">
+    <DockPanel>
+        <Label DockPanel.Dock="Bottom" Content="Right click to set position" Background="White" HorizontalContentAlignment="Center"/>
+        <wpf:Map x:Name="myMap" CredentialsProvider="Au5zesLgPujoeeh3yHbAUF6cTGlDqCbJmOrvfiYzyP1WIhWl-D_tsQblTmt1FsUN" 
+               ZoomLevel="12" MouseRightButtonUp="Map_MouseRightButtonUp">
+        </wpf:Map>
+    </DockPanel>
+</Window>

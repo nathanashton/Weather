@@ -8,13 +8,14 @@ namespace Weather.Common.Entities
     [ImplementPropertyChanged]
     public class WeatherStation : IWeatherStation
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public virtual ICollection<IWeatherRecord> WeatherRecords { get; set; } = new ObservableCollection<IWeatherRecord>();
-        public virtual ICollection<ISensor> Sensors { get; set; } = new ObservableCollection<ISensor>();
+        public string Name => Manufacturer + " " + Model;
+        public ObservableCollection<IWeatherRecord> WeatherRecords { get; set; } = new ObservableCollection<IWeatherRecord>();
+        public ObservableCollection<ISensor> Sensors { get; set; } = new ObservableCollection<ISensor>();
 
         public void AddRecord(IWeatherRecord record)
         {
@@ -26,6 +27,11 @@ namespace Weather.Common.Entities
                     Sensors.Add(value.Sensor);
                 }
             }
+        }
+
+        public void AddSensor(ISensor sensor)
+        {
+            Sensors.Add(sensor);
         }
 
         public ICollection<IWeatherRecordSingleSensor> GetValuesForSensorType(Enums.UnitType sensorType)
@@ -42,6 +48,11 @@ namespace Weather.Common.Entities
                 }
             }
             return new ObservableCollection<IWeatherRecordSingleSensor>(results);
+        }
+
+        public override string ToString()
+        {
+            return Manufacturer + " " + Model;
         }
     }
 }

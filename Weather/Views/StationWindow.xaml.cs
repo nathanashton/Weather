@@ -1,0 +1,47 @@
+﻿using System.Windows;
+using System.Windows.Controls;
+using Weather.Common.Entities;
+using Weather.ViewModels;
+
+namespace Weather.Views
+{
+    /// <summary>
+    /// Interaction logic for StationWindow.xaml
+    /// </summary>
+    public partial class StationWindow
+    {
+        private StationWindowViewModel _viewModel;
+
+        public StationWindow(StationWindowViewModel viewModel)
+        {
+            InitializeComponent();
+            _viewModel = viewModel;
+            DataContext = viewModel;
+            viewModel.StationWindow = this;
+            Loaded += StationWindow_Loaded;
+        }
+
+        private void StationWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.RegisterFirtyHandlers();
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_viewModel.SelectedStation == null) return;
+            var idOfSelected = _viewModel.SelectedStation.Id;
+            var weatherStation = ((ListBox)e.Source).SelectedItem as WeatherStation;
+            if (weatherStation == null) return;
+            if (_viewModel.IsDirty)
+            {
+                var result = MessageBox.Show("Save changes to " + _viewModel.SelectedStation.Manufacturer + " " + _viewModel.SelectedStation.Model + "?", "Save Changes", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _viewModel.SaveSpecificStation(_viewModel.SelectedStation);
+                }
+            }
+
+            _viewModel.SelectedStation = weatherStation;
+        }
+    }
+}

@@ -1,13 +1,23 @@
-﻿namespace Weather.Common.Entities
+﻿using System.ComponentModel;
+
+namespace Weather.Common.Entities
 {
     public class Enums
     {
         public enum UnitType
         {
+            [Description("C")]
             Temperature,
+            [Description("hPa")]
             Pressure,
+            [Description("kmh")]
             WindSpeed,
-            Humidity
+            [Description("%")]
+            Humidity,
+            [Description("mm")]
+            Rainfall,
+            [Description("mmh")]
+            RainfallRate
         }
     }
 

@@ -10,7 +10,7 @@ namespace Weather.Common.Entities
     public class WeatherRecord : IWeatherRecord
     {
 
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime TimeStamp { get; set; }
         public virtual ICollection<ISensorValue> SensorValues { get; set; } = new ObservableCollection<ISensorValue>();
         public virtual IWeatherStation Station { get; set; }

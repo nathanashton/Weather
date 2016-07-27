@@ -5,7 +5,7 @@ namespace Weather.Common.Interfaces
 {
     public interface IWeatherRecord
     {
-        int Id { get; set; }
+        long Id { get; set; }
         DateTime TimeStamp { get; set; }
         ICollection<ISensorValue> SensorValues { get; set; }
     }

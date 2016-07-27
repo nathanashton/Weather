@@ -23,16 +23,13 @@ namespace Weather.ViewModels
                 Manufacturer = "Oregon"
             };
 
-            var core = new Test();
-            core.go();
-
         }
 
         public void Go()
         {
   
-            LoadCsv();
-            var t = Station.GetValuesForSensorType(Enums.UnitType.Pressure);
+          //  LoadCsv();
+          //  var t = Station.GetValuesForSensorType(Enums.UnitType.Pressure);
         }
 
         public void LoadCsv()

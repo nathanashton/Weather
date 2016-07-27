@@ -6,9 +6,25 @@ namespace Weather.Common.Entities
     [ImplementPropertyChanged]
     public class Sensor : ISensor
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
+        public double Correction { get; set; }
         public Enums.UnitType Type { get; set; }
-        public virtual IWeatherStation Station { get; set; }
+        public IWeatherStation Station { get; set; }
+        public override string ToString()
+        {
+            if (Correction == 0)
+            {
+                return Name + " (" + Type + ")";
+            }
+            if (Correction > 0)
+            {
+                return Name + " (" + Type + ")" + " +" + Correction;
+            } if (Correction <= 0)
+            {
+                return Name + " (" + Type + ")" + " " + Correction;
+            }
+            return Name + " (" + Type + ")" + " " + Correction;
+        }
     }
 }
