@@ -18,7 +18,7 @@ namespace Weather.Common
         public string ApplicationPath
             => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ApplicationName);
 
-        public string DatabasePath => Path.Combine(ApplicationPath, "database.sdf");
+        public string DatabasePath => Path.Combine(ApplicationPath, "weather.sqlite");
         public int RoundingFactor => 1;
     }
 }

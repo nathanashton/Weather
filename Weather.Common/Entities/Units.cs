@@ -6,17 +6,17 @@ namespace Weather.Common.Entities
     {
         public enum UnitType
         {
-            [Description("C")]
+            [Description("°C")]
             Temperature,
             [Description("hPa")]
             Pressure,
-            [Description("kmh")]
+            [Description("km/h")]
             WindSpeed,
             [Description("%")]
             Humidity,
             [Description("mm")]
             Rainfall,
-            [Description("mmh")]
+            [Description("mm/h")]
             RainfallRate
         }
     }

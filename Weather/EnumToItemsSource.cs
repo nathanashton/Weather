@@ -17,7 +17,7 @@ namespace Weather
         {
             var t = Enum.GetValues(_type)
                 .Cast<object>()
-                .Select(e => new { Value = (int)e, DisplayName = e.ToString() });
+                .Select(e => new {Value = (int) e, DisplayName = e.ToString()});
             return t;
         }
     }

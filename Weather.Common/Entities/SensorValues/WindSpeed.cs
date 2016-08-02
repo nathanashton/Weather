@@ -11,13 +11,25 @@ namespace Weather.Common.Entities.SensorValues
 
         public WindSpeed(double? windspeed)
         {
-            Value = windspeed;
+            RawValue = windspeed;
             DisplayUnit = Units.Kmh;
-            DisplayValue = Value;
+            DisplayValue = CorrectedValue;
         }
 
+        public long Id { get; set; }
         public ISensor Sensor { get; set; }
-        public double? Value { get; set; }
+        public double? RawValue { get; set; }
+        public double? CorrectedValue
+        {
+            get
+            {
+                if (Sensor != null)
+                {
+                    return RawValue + Sensor.Correction;
+                }
+                return RawValue;
+            }
+        }
         public Unit DisplayUnit { get; set; }
 
         public double? DisplayValue
@@ -35,7 +47,7 @@ namespace Weather.Common.Entities.SensorValues
 
         public void SetNull()
         {
-            Value = null;
+            RawValue = null;
             DisplayValue = null;
         }
 

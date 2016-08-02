@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using Weather.Common.Entities;
 using Weather.ViewModels;
-using System.Linq;
 
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for SensorWindow.xaml
+    ///     Interaction logic for SensorWindow.xaml
     /// </summary>
     public partial class SensorWindow
     {
-        public SensorWindowViewModel ViewModel { get; set; }
         private bool _save;
 
         public SensorWindow(SensorWindowViewModel viewModel)
@@ -25,23 +24,25 @@ namespace Weather.Views
             Loaded += SensorWindow_Loaded;
         }
 
+        public SensorWindowViewModel ViewModel { get; set; }
+
         private void SensorWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (ViewModel.EditSensor != null)
             {
                 ViewModel.Sensor =
-                new Sensor
-                {
-                    Name = ViewModel.EditSensor.Name,
-                    Type = ViewModel.EditSensor.Type,
-                    Id = ViewModel.EditSensor.Id,
-                    Station = ViewModel.EditSensor.Station,
-                    Correction = ViewModel.EditSensor.Correction
-                };
+                    new Sensor
+                    {
+                        Name = ViewModel.EditSensor.Name,
+                        Type = ViewModel.EditSensor.Type,
+                        Id = ViewModel.EditSensor.Id,
+                        Station = ViewModel.EditSensor.Station,
+                        Correction = ViewModel.EditSensor.Correction
+                    };
             }
         }
 
-        private void AddSensorWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void AddSensorWindow_Closing(object sender, CancelEventArgs e)
         {
             if (!_save)
             {
@@ -62,10 +63,10 @@ namespace Weather.Views
             Close();
         }
 
-        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Types.SelectedItem == null) return;
-            var f =(KeyValuePair<string, string>)Types.SelectedItem;
+            var f = (KeyValuePair<string, string>) Types.SelectedItem;
 
             var allEnums = Enum.GetValues(typeof(Enums.UnitType));
             foreach (var value in allEnums)
@@ -74,13 +75,11 @@ namespace Weather.Views
                 {
                     var type = value.GetType();
                     var memInfo = type.GetMember(value.ToString());
-                    var attributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute),false);
-                    var description = ((DescriptionAttribute)attributes[0]).Description;
+                    var attributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+                    var description = ((DescriptionAttribute) attributes[0]).Description;
                     ViewModel.CorrectionValue = description;
                 }
             }
-
-
         }
     }
 }

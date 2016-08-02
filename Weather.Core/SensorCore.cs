@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Weather.Common.Entities;
+using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
 
@@ -10,8 +8,7 @@ namespace Weather.Core
 {
     public class SensorCore : ISensorCore
     {
-
-        private ISensorRepository _sensorRepository;
+        private readonly ISensorRepository _sensorRepository;
 
         public SensorCore(ISensorRepository sensorRepository)
         {
@@ -34,5 +31,19 @@ namespace Weather.Core
             return sensor;
         }
 
+        public void AddSensorValue(ISensorValue value)
+        {
+            value.Id = _sensorRepository.InsertSensorValue(value);
+        }
+
+        public void AddSensorValues(IEnumerable<ISensorValue> values)
+        {
+            _sensorRepository.InsertSensorValues(values);
+        }
+
+        public void AddWeatherRecords(IEnumerable<IWeatherRecord> records)
+        {
+            _sensorRepository.InsertWeatherRecords(records);
+        }
     }
 }

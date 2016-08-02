@@ -12,5 +12,8 @@ namespace Weather.Repository.Interfaces
         WeatherStation GetStationById(long id);
         void DeleteStation(WeatherStation station);
         long Update(WeatherStation station);
+        void CreateTables();
+        List<WeatherRecord> GetWeatherRecordsForStation(WeatherStation station);
+        List<ISensorValue>GetSensorValuesForRecordId(long id);
     }
 }

@@ -7,9 +7,9 @@
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow"
         Title="Station Map" Height="445.906" Width="548.635">
     <DockPanel>
-        <Label DockPanel.Dock="Bottom" Content="Right click to set position" Background="White" HorizontalContentAlignment="Center"/>
-        <wpf:Map x:Name="myMap" CredentialsProvider="Au5zesLgPujoeeh3yHbAUF6cTGlDqCbJmOrvfiYzyP1WIhWl-D_tsQblTmt1FsUN" 
-               ZoomLevel="12" MouseRightButtonUp="Map_MouseRightButtonUp">
-        </wpf:Map>
+        <Label DockPanel.Dock="Bottom" Content="Right click to set position" Background="White"
+               HorizontalContentAlignment="Center" />
+        <wpf:Map x:Name="myMap" CredentialsProvider="Au5zesLgPujoeeh3yHbAUF6cTGlDqCbJmOrvfiYzyP1WIhWl-D_tsQblTmt1FsUN"
+                 ZoomLevel="12" MouseRightButtonUp="Map_MouseRightButtonUp" />
     </DockPanel>
 </Window>

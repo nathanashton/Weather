@@ -11,9 +11,9 @@ namespace Weather.Common.Entities.SensorValues
 
         public Pressure(double? hectopascals)
         {
-            Value = hectopascals;
+            RawValue = hectopascals;
             DisplayUnit = Units.Hectopascals;
-            DisplayValue = Value;
+            DisplayValue = CorrectedValue;
         }
 
         public Pressure(double? value, Unit unit)
@@ -25,14 +25,14 @@ namespace Weather.Common.Entities.SensorValues
             switch (unit.DisplayName)
             {
                 case "Hectopascals":
-                    Value = value;
-                    DisplayValue = Value;
+                    RawValue = value;
+                    DisplayValue = CorrectedValue;
                     break;
 
                 case "Inches Hg":
                     if (value != null)
                     {
-                        Value = UnitConversions.InHgToHectopascals((double) value);
+                        RawValue = UnitConversions.InHgToHectopascals((double) value);
                     }
                     DisplayValue = value;
                     break;
@@ -40,8 +40,20 @@ namespace Weather.Common.Entities.SensorValues
             DisplayUnit = unit;
         }
 
+        public long Id { get; set; }
         public ISensor Sensor { get; set; }
-        public double? Value { get; set; }
+        public double? RawValue { get; set; }
+        public double? CorrectedValue
+        {
+            get
+            {
+                if (Sensor != null)
+                {
+                    return RawValue + Sensor.Correction;
+                }
+                return RawValue;
+            }
+        }
         public Unit DisplayUnit { get; set; }
 
         public double? DisplayValue
@@ -62,9 +74,9 @@ namespace Weather.Common.Entities.SensorValues
             switch (DisplayUnit.DisplayName)
             {
                 case "Inches Hg":
-                    if (Value != null)
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.InHgToHectopascals((double) Value);
+                        DisplayValue = UnitConversions.InHgToHectopascals((double)CorrectedValue);
                     }
                     break;
             }
@@ -76,9 +88,9 @@ namespace Weather.Common.Entities.SensorValues
             switch (DisplayUnit.DisplayName)
             {
                 case "Hectopascals":
-                    if (Value != null)
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.HectopascalsToInHg((double) Value);
+                        DisplayValue = UnitConversions.HectopascalsToInHg((double)CorrectedValue);
                     }
                     break;
             }
@@ -87,7 +99,7 @@ namespace Weather.Common.Entities.SensorValues
 
         public void SetNull()
         {
-            Value = null;
+            RawValue = null;
             DisplayValue = null;
         }
 

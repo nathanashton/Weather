@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Weather.Common.Entities;
+using Weather.Common.Interfaces;
 
 namespace Weather.Core.Interfaces
 {
@@ -7,5 +9,8 @@ namespace Weather.Core.Interfaces
         void UpdateSensorForWeatherStation(Sensor sensor);
         void DeleteSensor(Sensor sensor);
         Sensor AddSensor(Sensor sensor);
+        void AddSensorValue(ISensorValue value);
+        void AddWeatherRecords(IEnumerable<IWeatherRecord> records);
+        void AddSensorValues(IEnumerable<ISensorValue> values);
     }
 }

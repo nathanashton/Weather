@@ -27,9 +27,11 @@
                 <Button Content="Stations" Click="Button_Click" />
             </ToolBar>
         </ToolBarTray>
-        <!--<Button Content="Click" DockPanel.Dock="Top" Click="Button_Click_1"/>
-
-        <DataGrid EnableColumnVirtualization="True" EnableRowVirtualization="True" Name="dg" CanUserAddRows="False" RowHeaderWidth="0" IsReadOnly="True" AutoGenerateColumns="False"  />-->
+        <Button Content="Click" DockPanel.Dock="Top" Click="Button_Click_1"/>
+        <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Stations}" DisplayMemberPath="Name" Name="lb" SelectionChanged="lb_SelectionChanged"
+                        HorizontalAlignment="Left" 
+                         Width="150" />
+        <DataGrid EnableColumnVirtualization="True" EnableRowVirtualization="True" Name="dg" CanUserAddRows="False" RowHeaderWidth="0" IsReadOnly="True" AutoGenerateColumns="False"  />
 
     </DockPanel>
 </Window>

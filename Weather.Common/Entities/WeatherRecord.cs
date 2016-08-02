@@ -14,5 +14,7 @@ namespace Weather.Common.Entities
         public DateTime TimeStamp { get; set; }
         public virtual ICollection<ISensorValue> SensorValues { get; set; } = new ObservableCollection<ISensorValue>();
         public virtual IWeatherStation Station { get; set; }
+
+
     }
 }

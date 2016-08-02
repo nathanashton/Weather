@@ -30,7 +30,7 @@ namespace Weather
             var log = container.Resolve<ILog>();
             var settings = container.Resolve<ISettings>();
             log.Info("Application Started");
-            RunApplication(container, log, settings);
+            RunApplication((UnityContainer) container, log, settings);
         }
 
         private static void RunApplication(UnityContainer container, ILog log, ISettings settings)

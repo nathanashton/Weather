@@ -13,9 +13,9 @@ namespace Weather.Common.Entities.SensorValues
 
         public Temperature(double? celsius)
         {
-            Value = celsius;
+            RawValue = celsius;
             DisplayUnit = Units.Celsius;
-            DisplayValue = Value;
+            DisplayValue = CorrectedValue;
         }
 
         public Temperature(double? value, Unit unit)
@@ -27,31 +27,45 @@ namespace Weather.Common.Entities.SensorValues
             switch (unit.DisplayName)
             {
                 case "Celsius":
-                    Value = value;
-                    DisplayValue = Value;
+                    RawValue = value;
+                    DisplayValue = CorrectedValue;
                     break;
 
                 case "Fahrenheit":
                     if (value != null)
                     {
-                        Value = UnitConversions.FahrenheitToCelsius((double) value);
+                        RawValue = UnitConversions.FahrenheitToCelsius((double) value);
                     }
-                    DisplayValue = value;
+                    DisplayValue = CorrectedValue;
                     break;
 
                 case "Kelvin":
                     if (value != null)
                     {
-                        Value = UnitConversions.KelvinToCelsius((double) value);
+                        RawValue = UnitConversions.KelvinToCelsius((double) value);
                     }
-                    DisplayValue = value;
+                    DisplayValue = CorrectedValue;
                     break;
             }
             DisplayUnit = unit;
         }
 
+        public long Id { get; set; }
         public ISensor Sensor { get; set; }
-        public double? Value { get; set; }
+        public double? RawValue { get; set; }
+
+        public double? CorrectedValue
+        {
+            get
+            {
+                if (Sensor != null)
+                {
+                    return RawValue + Sensor.Correction;
+                }
+                return RawValue;
+            }
+        }
+
         public Unit DisplayUnit { get; set; }
 
         public double? DisplayValue
@@ -73,7 +87,7 @@ namespace Weather.Common.Entities.SensorValues
 
         public void SetNull()
         {
-            Value = null;
+            RawValue = null;
             DisplayValue = null;
         }
 
@@ -81,17 +95,23 @@ namespace Weather.Common.Entities.SensorValues
         {
             switch (DisplayUnit.DisplayName)
             {
-                case "Fahrenheit":
-                    if (Value != null)
+                case "Celsius":
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.FahrenheitToCelsius((double) Value);
+                        DisplayValue = CorrectedValue;
+                    }
+                    break;
+                case "Fahrenheit":
+                    if (CorrectedValue != null)
+                    {
+                        DisplayValue = UnitConversions.FahrenheitToCelsius((double)CorrectedValue);
                     }
                     break;
 
                 case "Kelvin":
-                    if (Value != null)
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.KelvinToCelsius((double) Value);
+                        DisplayValue = UnitConversions.KelvinToCelsius((double) CorrectedValue);
                     }
                     break;
             }
@@ -102,17 +122,23 @@ namespace Weather.Common.Entities.SensorValues
         {
             switch (DisplayUnit.DisplayName)
             {
-                case "Celsius":
-                    if (Value != null)
+                case "Fahrenheit":
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.CelsiusToFahrenheit((double) Value);
+                        DisplayValue = CorrectedValue;
+                    }
+                    break;
+                case "Celsius":
+                    if (CorrectedValue != null)
+                    {
+                        DisplayValue = UnitConversions.CelsiusToFahrenheit((double)CorrectedValue);
                     }
                     break;
 
                 case "Kelvin":
-                    if (Value != null)
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.KelvinToFahrenheit((double) Value);
+                        DisplayValue = UnitConversions.KelvinToFahrenheit((double)CorrectedValue);
                     }
                     break;
             }
@@ -123,17 +149,23 @@ namespace Weather.Common.Entities.SensorValues
         {
             switch (DisplayUnit.DisplayName)
             {
-                case "Celsius":
-                    if (Value != null)
+                case "Kelvin":
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.CelsiusToKelvin((double) Value);
+                        DisplayValue = CorrectedValue;
+                    }
+                    break;
+                case "Celsius":
+                    if (CorrectedValue != null)
+                    {
+                        DisplayValue = UnitConversions.CelsiusToKelvin((double)CorrectedValue);
                     }
                     break;
 
                 case "Fahrenheit":
-                    if (Value != null)
+                    if (CorrectedValue != null)
                     {
-                        DisplayValue = UnitConversions.FahrenheitToKelvin((double) Value);
+                        DisplayValue = UnitConversions.FahrenheitToKelvin((double)CorrectedValue);
                     }
                     break;
             }

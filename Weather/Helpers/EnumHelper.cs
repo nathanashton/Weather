@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Weather.Helpers
 {
     public class EnumHelper
     {
-        public static IEnumerable<KeyValuePair<string, string>> GetAllValuesAndDescriptions<TEnum>() where TEnum : struct, IConvertible, IComparable, IFormattable
+        public static IEnumerable<KeyValuePair<string, string>> GetAllValuesAndDescriptions<TEnum>()
+            where TEnum : struct, IConvertible, IComparable, IFormattable
         {
             if (!typeof(TEnum).IsEnum)
             {
@@ -16,7 +15,7 @@ namespace Weather.Helpers
             }
 
             return from e in Enum.GetValues(typeof(TEnum)).Cast<Enum>()
-                   select new KeyValuePair<string, string>(e.ToString(), e.ToString());
+                select new KeyValuePair<string, string>(e.ToString(), e.ToString());
         }
     }
 }

@@ -1,34 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Maps.MapControl.WPF;
 
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for StationMapWindow.xaml
+    ///     Interaction logic for StationMapWindow.xaml
     /// </summary>
     public partial class StationMapWindow : Window
     {
-
-        public double Latitude { get; set; }
-        public double Longitude { get; set;}
-
         public StationMapWindow()
         {
             InitializeComponent();
             Loaded += StationMapWindow_Loaded;
         }
+
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
         private void StationMapWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -38,7 +26,6 @@ namespace Weather.Views
                 pushpin.Location = new Location {Latitude = Latitude, Longitude = Longitude};
                 myMap.Children.Add(pushpin);
                 myMap.Center = pushpin.Location;
-                
             }
         }
 
@@ -46,7 +33,7 @@ namespace Weather.Views
         {
             if (myMap.Children.Count > 0)
             {
-                for (var i= 0; i < myMap.Children.Count; i++)
+                for (var i = 0; i < myMap.Children.Count; i++)
                 {
                     myMap.Children.RemoveAt(i);
                 }

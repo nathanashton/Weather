@@ -11,23 +11,25 @@ namespace Weather.DependencyResolver
 {
     public class Resolver
     {
-        public static UnityContainer Container { get; set; }
+        private static IUnityContainer _container = null;
 
-        public static UnityContainer Bootstrap()
+        public static IUnityContainer Bootstrap()
         {
-            Container = new UnityContainer();
+            if (_container == null)
+            {
+                _container = new UnityContainer();
+                _container.RegisterType<ISettings, Settings>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<ILog, Log>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<IStationRepository, StationRepository>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<ISensorRepository, SensorRepository>(new ContainerControlledLifetimeManager());
 
-            Container.RegisterType<ISettings, Settings>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<ILog, Log>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<IStationRepository, StationRepository>();
-            Container.RegisterType<ISensorRepository, SensorRepository>();
+                _container.RegisterType<IStationCore, StationCore>(new ContainerControlledLifetimeManager());
+                _container.RegisterType<ISensorCore, SensorCore>(new ContainerControlledLifetimeManager());
 
-            Container.RegisterType<IStationCore, StationCore>();
-            Container.RegisterType<ISensorCore, SensorCore>();
+            }
 
 
-
-            return Container;
+            return _container;
         }
     }
 }

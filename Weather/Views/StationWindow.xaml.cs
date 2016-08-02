@@ -6,11 +6,11 @@ using Weather.ViewModels;
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for StationWindow.xaml
+    ///     Interaction logic for StationWindow.xaml
     /// </summary>
     public partial class StationWindow
     {
-        private StationWindowViewModel _viewModel;
+        private readonly StationWindowViewModel _viewModel;
 
         public StationWindow(StationWindowViewModel viewModel)
         {
@@ -29,12 +29,15 @@ namespace Weather.Views
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_viewModel.SelectedStation == null) return;
-            var idOfSelected = _viewModel.SelectedStation.Id;
-            var weatherStation = ((ListBox)e.Source).SelectedItem as WeatherStation;
+            var weatherStation = ((ListBox) e.Source).SelectedItem as WeatherStation;
             if (weatherStation == null) return;
             if (_viewModel.IsDirty)
             {
-                var result = MessageBox.Show("Save changes to " + _viewModel.SelectedStation.Manufacturer + " " + _viewModel.SelectedStation.Model + "?", "Save Changes", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result =
+                    MessageBox.Show(
+                        "Save changes to " + _viewModel.SelectedStation.Manufacturer + " " +
+                        _viewModel.SelectedStation.Model + "?", "Save Changes", MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     _viewModel.SaveSpecificStation(_viewModel.SelectedStation);
@@ -42,6 +45,41 @@ namespace Weather.Views
             }
 
             _viewModel.SelectedStation = weatherStation;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_viewModel.IsDirty)
+            {
+                var result =
+                    MessageBox.Show(
+                        "Save changes to " + _viewModel.SelectedStation.Manufacturer + " " +
+                        _viewModel.SelectedStation.Model + "?", "Save Changes", MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _viewModel.SaveSpecificStation(_viewModel.SelectedStation);
+                }
+            }
+            Close();
+        }
+
+        private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender != null)
+            {
+                DataGrid grid = sender as DataGrid;
+                if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
+                {
+                    DataGridRow dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                    _viewModel.SelectedSensor = (Sensor)dgr.Item;
+                    _viewModel.EditSensor(null);
+                }
+            }
+
+
+
+         
         }
     }
 }

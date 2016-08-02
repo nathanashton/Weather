@@ -20,13 +20,11 @@ namespace Weather.Repository
             {
                 _connection.Open();
             }
-            catch
-            {
-                throw;
-            }
             finally
             {
+                
             }
+     
             return _connection;
         }
     }
