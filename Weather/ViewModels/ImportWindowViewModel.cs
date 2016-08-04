@@ -17,7 +17,7 @@ namespace Weather.ViewModels
         public WeatherStation SelectedStation { get; set; }
         public int RecordsCount { get; set; }
         public ObservableCollection<string> Record { get; set; }
-        public ObservableCollection<ObservableCollection<string>>Records { get; set; }
+        public ObservableCollection<ObservableCollection<string>> Records { get; set; }
         private IStationCore _stationCore;
 
         public ImportWindowViewModel(IStationCore stationCore)
@@ -32,7 +32,7 @@ namespace Weather.ViewModels
         {
             using (var csv = new CachedCsvReader(new StreamReader(filePath), false))
             {
-                while(csv.ReadNextRecord())
+                while (csv.ReadNextRecord())
                 {
                     var list = new ObservableCollection<string>();
                     for (int i = 0; i < csv.FieldCount; i++)
@@ -44,5 +44,9 @@ namespace Weather.ViewModels
             }
             RecordsCount = Records.Count;
         }
+
+      
     }
+
+
 }

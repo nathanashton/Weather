@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
+using System.Windows.Controls;
+using Weather.Common.Entities;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -52,6 +54,23 @@ namespace Weather.Views
                 lb.ItemsSource = _viewModel.Records[next];
                 _viewModel.CurrentRecord += 1;
             }
+        }
+
+        private void SomeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var comboBox = sender as ComboBox;
+            //if (comboBox != null)
+            //{
+            //    var f =(Sensor) comboBox.SelectedItem;
+            //    var index = lb.SelectedIndex;
+            //    _viewModel.SetSensors(f, index);
+            //}
+            //lb.ItemsSource = _viewModel.Records[_viewModel.CurrentRecord];
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var f = _viewModel.Records;
         }
     }
 }

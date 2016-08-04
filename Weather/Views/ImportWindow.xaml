@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Weather.Views"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Name="w" Background="#F8F8F8"
         Title="ImportWindow" Height="300" Width="300">
+    <Window.Resources>
+        <CollectionViewSource Source="{Binding Path=SelectedStation.Sensors}" x:Key="ViewModelCollection1" />
+
+    </Window.Resources>
     <DockPanel>
         <Button Content="Choose File" DockPanel.Dock="Top" Click="Button_Click"/>
 
@@ -16,23 +20,29 @@
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
             <DockPanel Margin="10" Grid.Column="0">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <Button Content="Prev" Click="Button_Click_1"/>
-                    <Button Content="Next" Click="Button_Click_2"/>
-                    <Label Content="{Binding CurrentRecordDisplay}"/>
-                </StackPanel>
                 <ListBox BorderThickness="1" ItemsSource="{Binding SelectedStation.Sensors}" BorderBrush="Black" />
             </DockPanel>
 
 
             <DockPanel Margin="10" Grid.Column="2">
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <Button Content="Prev" Click="Button_Click_1"/>
-                <Button Content="Next" Click="Button_Click_2"/>
-                <Label Content="{Binding CurrentRecordDisplay}"/>
-            </StackPanel>
-            <ListBox BorderThickness="1" BorderBrush="Black" Name="lb" />
-        </DockPanel>
+                
+ <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="&lt;&lt;" Click="Button_Click_1"/>
+                    <Button Grid.Column="2" Content=">>" Click="Button_Click_2"/>
+                    <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="{Binding CurrentRecordDisplay}"/>
+
+                </Grid>
+               
+                <ListBox BorderThickness="1" BorderBrush="Black" Name="lb" />
+
+
+
+            </DockPanel>
             
             
         </Grid>
