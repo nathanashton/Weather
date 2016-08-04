@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weather.Common.Entities;
 
 namespace Weather.Common.Interfaces
 {
@@ -7,6 +8,6 @@ namespace Weather.Common.Interfaces
     {
         long Id { get; set; }
         DateTime TimeStamp { get; set; }
-        ICollection<ISensorValue> SensorValues { get; set; }
+        ICollection<SensorValue> SensorValues { get; set; }
     }
 }

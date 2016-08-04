@@ -1,49 +1,28 @@
 ﻿using System.Collections.Generic;
 using Weather.Common.Entities;
-using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
-using Weather.Repository.Interfaces;
 
 namespace Weather.Core
 {
     public class SensorCore : ISensorCore
     {
-        private readonly ISensorRepository _sensorRepository;
+        private readonly Database _context;
 
-        public SensorCore(ISensorRepository sensorRepository)
+        public SensorCore(Database db)
         {
-            _sensorRepository = sensorRepository;
+            _context = db;
         }
 
-        public void UpdateSensorForWeatherStation(Sensor sensor)
+        public void AddSensorValue(SensorValue sensorValue)
         {
-            _sensorRepository.Update(sensor);
+            _context.SensorValues.Add(sensorValue);
+            _context.SaveChanges();
         }
 
-        public void DeleteSensor(Sensor sensor)
+        public void AddSensorValues(IEnumerable<SensorValue> sensorValues)
         {
-            _sensorRepository.DeleteSensor(sensor);
-        }
-
-        public Sensor AddSensor(Sensor sensor)
-        {
-            sensor.Id = _sensorRepository.AddSensor(sensor);
-            return sensor;
-        }
-
-        public void AddSensorValue(ISensorValue value)
-        {
-            value.Id = _sensorRepository.InsertSensorValue(value);
-        }
-
-        public void AddSensorValues(IEnumerable<ISensorValue> values)
-        {
-            _sensorRepository.InsertSensorValues(values);
-        }
-
-        public void AddWeatherRecords(IEnumerable<IWeatherRecord> records)
-        {
-            _sensorRepository.InsertWeatherRecords(records);
+            _context.SensorValues.AddRange(sensorValues);
+            _context.SaveChanges();
         }
     }
 }

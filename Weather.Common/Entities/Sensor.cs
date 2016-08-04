@@ -1,4 +1,6 @@
-﻿using PropertyChanged;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using PropertyChanged;
 using Weather.Common.Interfaces;
 
 namespace Weather.Common.Entities
@@ -10,21 +12,13 @@ namespace Weather.Common.Entities
         public string Name { get; set; }
         public double Correction { get; set; }
         public Enums.UnitType Type { get; set; }
-        public IWeatherStation Station { get; set; }
+
+        public virtual WeatherStation Station { get; set; }
+        public virtual ICollection<SensorValue> SensorValues { get; set; } = new ObservableCollection<SensorValue>();
+
         public override string ToString()
         {
-            if (Correction == 0)
-            {
-                return Name + " (" + Type + ")";
-            }
-            if (Correction > 0)
-            {
-                return Name + " (" + Type + ")" + " +" + Correction;
-            } if (Correction <= 0)
-            {
-                return Name + " (" + Type + ")" + " " + Correction;
-            }
-            return Name + " (" + Type + ")" + " " + Correction;
+            return Name + " (" + Type + ")";
         }
     }
 }

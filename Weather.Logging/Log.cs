@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
-using log4net;
+﻿using log4net;
 using log4net.Core;
+using System;
+using System.Reflection;
 
 namespace Weather.Logging
 {

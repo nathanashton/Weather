@@ -8,14 +8,19 @@ namespace Weather.Common.Entities
         {
             [Description("°C")]
             Temperature,
+
             [Description("hPa")]
             Pressure,
+
             [Description("km/h")]
             WindSpeed,
+
             [Description("%")]
             Humidity,
+
             [Description("mm")]
             Rainfall,
+
             [Description("mm/h")]
             RainfallRate
         }
@@ -77,7 +82,7 @@ namespace Weather.Common.Entities
             DisplayName = "Inches Hg"
         };
 
-        public static Unit MmHg = new Unit {Type = Enums.UnitType.Pressure, DisplayUnit = "mmHg", DisplayName = "Mm Hg"};
-        public static Unit Kmh = new Unit {Type = Enums.UnitType.WindSpeed, DisplayUnit = "kmh", DisplayName = "Km/H"};
+        public static Unit MmHg = new Unit { Type = Enums.UnitType.Pressure, DisplayUnit = "mmHg", DisplayName = "Mm Hg" };
+        public static Unit Kmh = new Unit { Type = Enums.UnitType.WindSpeed, DisplayUnit = "kmh", DisplayName = "Km/H" };
     }
 }

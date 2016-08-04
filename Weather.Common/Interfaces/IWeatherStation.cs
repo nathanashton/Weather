@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Weather.Common.Entities;
 
 namespace Weather.Common.Interfaces
@@ -11,17 +10,11 @@ namespace Weather.Common.Interfaces
         string Model { get; set; }
         double Latitude { get; set; }
         double Longitude { get; set; }
-        ObservableCollection<IWeatherRecord> WeatherRecords { get; set; }
-        ObservableCollection<ISensor> Sensors { get; set; }
+        ICollection<WeatherRecord> WeatherRecords { get; set; }
+        ICollection<Sensor> Sensors { get; set; }
 
-        void AddRecord(IWeatherRecord record);
-        void AddSensor(ISensor sensor);
+        void AddSensor(Sensor sensor);
 
-        ICollection<IWeatherRecordSingleSensor> GetValuesForSensorType(Enums.UnitType sensorType);
-        //ObservableCollection<ISensorValue> AllSensorValues { get; set; }
-        //ObservableCollection<SensorDataGridRow> SensorDataGridRows { get; set; }
-        //void RefreshSensorValues();
-
-        //void AddSensor(ISensor sensor);
+        void AddRecord(WeatherRecord record);
     }
 }

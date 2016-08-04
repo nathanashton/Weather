@@ -64,10 +64,6 @@
       <Project>{8d73174a-ae16-43a8-b705-8ee114da7221}</Project>
       <Name>Weather.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Weather.Repository\Weather.Repository.csproj">
-      <Project>{85fae9d3-90e6-4562-9d78-abb7714676b0}</Project>
-      <Name>Weather.Repository</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

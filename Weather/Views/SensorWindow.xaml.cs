@@ -37,7 +37,7 @@ namespace Weather.Views
                         Type = ViewModel.EditSensor.Type,
                         Id = ViewModel.EditSensor.Id,
                         Station = ViewModel.EditSensor.Station,
-                        Correction = ViewModel.EditSensor.Correction
+                        // Correction = ViewModel.EditSensor.Correction
                     };
             }
         }
@@ -66,7 +66,7 @@ namespace Weather.Views
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Types.SelectedItem == null) return;
-            var f = (KeyValuePair<string, string>) Types.SelectedItem;
+            var f = (KeyValuePair<string, string>)Types.SelectedItem;
 
             var allEnums = Enum.GetValues(typeof(Enums.UnitType));
             foreach (var value in allEnums)
@@ -76,7 +76,7 @@ namespace Weather.Views
                     var type = value.GetType();
                     var memInfo = type.GetMember(value.ToString());
                     var attributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
-                    var description = ((DescriptionAttribute) attributes[0]).Description;
+                    var description = ((DescriptionAttribute)attributes[0]).Description;
                     ViewModel.CorrectionValue = description;
                 }
             }

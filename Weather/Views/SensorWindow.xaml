@@ -27,7 +27,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-
             </Grid.RowDefinitions>
             <Label Margin="2" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="Name"
                    Grid.Column="0" Grid.Row="0" />
@@ -55,8 +54,6 @@
                                    ShowButtonSpinner="False" />
                 <Label Content="{Binding CorrectionValue}" Grid.Column="1" VerticalContentAlignment="Center" />
             </Grid>
-
-
         </Grid>
     </DockPanel>
 </Window>

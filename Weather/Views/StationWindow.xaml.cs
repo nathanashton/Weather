@@ -23,13 +23,13 @@ namespace Weather.Views
 
         private void StationWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel.RegisterFirtyHandlers();
+            _viewModel.RegisterDirtyHandlers();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_viewModel.SelectedStation == null) return;
-            var weatherStation = ((ListBox) e.Source).SelectedItem as WeatherStation;
+            var weatherStation = ((ListBox)e.Source).SelectedItem as WeatherStation;
             if (weatherStation == null) return;
             if (_viewModel.IsDirty)
             {
@@ -76,10 +76,6 @@ namespace Weather.Views
                     _viewModel.EditSensor(null);
                 }
             }
-
-
-
-         
         }
     }
 }

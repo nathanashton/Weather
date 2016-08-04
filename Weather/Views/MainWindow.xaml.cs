@@ -1,10 +1,9 @@
-﻿using System.Linq;
+﻿using Microsoft.Practices.Unity;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Microsoft.Practices.Unity;
 using Weather.Common.Entities;
-using Weather.Common.Interfaces;
 using Weather.DependencyResolver;
 using Weather.ViewModels;
 
@@ -15,52 +14,33 @@ namespace Weather.Views
     /// </summary>
     public partial class MainWindow
     {
-        private readonly MainWindowViewModel vm;
+        private readonly MainWindowViewModel _viewModel;
 
         public MainWindow(MainWindowViewModel viewModel)
         {
             InitializeComponent();
-            vm = viewModel;
-            DataContext = vm;
-
-            vm.Go();
-            CreateDataGrid();
+            _viewModel = viewModel;
+            DataContext = _viewModel;
             Loaded += MainWindow_Loaded;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            CreateDataGrid();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var p = "t";
-
-
-            if (vm.SelectedStation == null) return;
-            //foreach (var sensor in vm.SelectedStation.Sensors)
-            //{
-            //    sensor.Correction = 10;
-            //}
-            foreach (var t in vm.SelectedStation.WeatherRecords)
-            {
-                foreach (var pp in t.SensorValues)
-                {
-                    if (pp is ITemperature)
-                    {
-                        ((ITemperature)pp).DisplayDegreesCelsius();
-                    }
-                }
-            }
-
+            _viewModel.ImportRecords();
             dg.Items.Refresh();
         }
 
         private void CreateDataGrid()
         {
+            cmb.SelectedItem = _viewModel.SelectedStation;
             dg.Columns.Clear();
-            if (vm.SelectedStation == null) return;
-            var columns = vm.SelectedStation
+            if (_viewModel.SelectedStation == null) return;
+            var columns = _viewModel.SelectedStation
               .Sensors.Select((x, i) => new { x.Name, Index = i }).ToArray();
             dg.Columns.Add(new DataGridTextColumn() { Header = "Time", Binding = new Binding("TimeStamp") });
 
@@ -71,9 +51,7 @@ namespace Weather.Views
                 dg.Columns.Add(new DataGridTextColumn() { Header = column.Name, Binding = binding, SortMemberPath = sort });
             }
 
-       
-           dg.ItemsSource = vm.SelectedStation.WeatherRecords;
-            
+            dg.ItemsSource = _viewModel.SelectedStation.WeatherRecords;
 
             //Resize
             foreach (var column in dg.Columns)
@@ -88,15 +66,23 @@ namespace Weather.Views
             var container = Resolver.Bootstrap();
             var window = container.Resolve<StationWindow>();
             window.ShowDialog();
+            CreateDataGrid();
+
         }
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var weatherStation = ((ListBox)e.Source).SelectedItem as WeatherStation;
+            var weatherStation = ((ComboBox)e.Source).SelectedItem as WeatherStation;
             if (weatherStation == null) return;
-            vm.SelectedStation = weatherStation;
+            _viewModel.SelectedStation = weatherStation;
             CreateDataGrid();
+        }
 
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var container = Resolver.Bootstrap();
+            var window = container.Resolve<ImportWindow>();
+            window.ShowDialog();
         }
     }
 }

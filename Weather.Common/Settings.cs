@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.IO;
-using PropertyChanged;
 using Weather.Common.Interfaces;
 
 namespace Weather.Common

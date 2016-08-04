@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using PropertyChanged;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Weather.Common.Entities;
-using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
-using Weather.Repository.Interfaces;
 
 namespace Weather.Core
 {
@@ -13,77 +11,92 @@ namespace Weather.Core
     public class StationCore : IStationCore
     {
         public ObservableCollection<WeatherStation> Stations { get; set; }
-        public event EventHandler StationsChanged;
-        private readonly IStationRepository _stationRepository;
-
-        public StationCore(IStationRepository stationRepository)
-        {
-            _stationRepository = stationRepository;
-            Stations = new ObservableCollection<WeatherStation>();
-        }
-
-        public List<WeatherStation> GetAllStations()
-        {
-            var allStations = _stationRepository.GetAllStations();
-            foreach (var station in allStations)
-            {
-                station.Sensors = new ObservableCollection<ISensor>(_stationRepository.GetSensorsForStation(station));
-            }
-            Stations = new ObservableCollection<WeatherStation>(allStations);
-            return allStations;
-        }
-
-        private void OnStationsChanged()
-        {
-            StationsChanged?.Invoke(this, null);
-        }
-
-        public WeatherStation AddStation(WeatherStation station)
-        {
-            station.Id = _stationRepository.AddStation(station);
-            GetAllStations();
-            OnStationsChanged();
-            return station;
-        }
+        private readonly Database _context;
 
         public void DeleteStation(WeatherStation station)
         {
-            _stationRepository.DeleteStation(station);
+            _context.WeatherStations.Remove(station);
+            _context.SaveChanges();
+            Stations.Remove(station);
+        }
+
+        public void UpdateStation(WeatherStation station)
+        {
+            var existing = _context.WeatherStations.FirstOrDefault(x => x.Id == station.Id);
+            if (existing == null) return;
+            _context.Entry(existing).CurrentValues.SetValues(station);
+            _context.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+            Stations.Remove(station);
+            Stations.Add(station);
+        }
+
+        public void AddSensor(Sensor sensor)
+        {
+            _context.Sensors.Add(sensor);
+            _context.SaveChanges();
+        }
+
+        public void AddWeatherRecord(WeatherRecord record)
+        {
+            _context.WeatherRecords.Add(record);
+            _context.SaveChanges();
+        }
+
+        public void AddWeatherRecords(IEnumerable<WeatherRecord> records)
+        {
+            _context.WeatherRecords.AddRange(records);
+            _context.SaveChanges();
             GetAllStations();
-            OnStationsChanged();
         }
 
-        public WeatherStation Update(WeatherStation station)
+        public StationCore(Database ctx)
         {
-            if (station.Id == 0)
-            {
-                station.Id = _stationRepository.AddStation(station);
-                return station;
-            }
-            station.Id = _stationRepository.Update(station);
+            _context = ctx;
             GetAllStations();
-            OnStationsChanged();
-            return station;
         }
 
-        public void CreateTables()
+        public void DeleteSensor(Sensor sensor)
         {
-            _stationRepository.CreateTables();
+            var foundsensorvalues = _context.SensorValues.Where(x => x.Sensor.Id == sensor.Id);
+            _context.SensorValues.RemoveRange(foundsensorvalues);
+            _context.SaveChanges();
+            var found = _context.Sensors.Find(sensor.Id);
+
+            _context.Entry(found).State = System.Data.Entity.EntityState.Deleted;
+            _context.SaveChanges();
+
+            //TODO if all sensors for a weatherrecord are deleted the weather record still exists. It should be removed too.
         }
 
-        public List<WeatherRecord> GetRecordsForStation(WeatherStation station)
+        public void UpdateSensor(Sensor sensor)
         {
-            List<WeatherRecord> records = _stationRepository.GetWeatherRecordsForStation(station);
+            var existing = _context.Sensors.FirstOrDefault(x => x.Id == sensor.Id);
+            if (existing == null) return;
+            _context.Entry(existing).CurrentValues.SetValues(sensor);
+            _context.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+        }
 
+        public void AddStation(WeatherStation station)
+        {
+            _context.WeatherStations.Add(station);
+            _context.SaveChanges();
+            Stations.Add(station);
+        }
 
-
-
-            foreach (var record in records)
+        public void GetAllStations()
+        {
+            if (Stations == null)
             {
-                record.SensorValues = _stationRepository.GetSensorValuesForRecordId(record.Id);
+                Stations = new ObservableCollection<WeatherStation>();
             }
-
-            return records;
+            Stations.Clear();
+            var all = _context.WeatherStations.ToList();
+            foreach (var station in all)
+            {
+                Stations.Add(station);
+            }
         }
     }
 }

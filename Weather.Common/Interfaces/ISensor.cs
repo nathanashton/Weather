@@ -8,6 +8,6 @@ namespace Weather.Common.Interfaces
         string Name { get; set; }
         double Correction { get; set; }
         Enums.UnitType Type { get; set; }
-        IWeatherStation Station { get; set; }
+        WeatherStation Station { get; set; }
     }
 }
