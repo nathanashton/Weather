@@ -3,47 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Weather.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d" Name="w" Background="#F8F8F8"
-        Title="ImportWindow" Height="300" Width="300">
-    <Window.Resources>
-        <CollectionViewSource Source="{Binding Path=SelectedStation.Sensors}" x:Key="ViewModelCollection1" />
-
-    </Window.Resources>
+        Title="ImportWindow" SizeToContent="Width" Height="467">
     <DockPanel>
-        <Button Content="Choose File" DockPanel.Dock="Top" Click="Button_Click"/>
-
+        <Button Margin="10" Width="100" HorizontalAlignment="Left" Content="Choose File" DockPanel.Dock="Top" Click="Button_Click" />
+        <DockPanel Background="#F0F0F0" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom">
+            <Button Margin="5" HorizontalAlignment="Right" DockPanel.Dock="Right" Height="23" Width="60" Content="Ok"
+                  />
+        </DockPanel>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
-            <DockPanel Margin="10" Grid.Column="0">
-                <ListBox BorderThickness="1" ItemsSource="{Binding SelectedStation.Sensors}" BorderBrush="Black" />
-            </DockPanel>
-
-
-            <DockPanel Margin="10" Grid.Column="2">
-                
- <Grid DockPanel.Dock="Top">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="&lt;&lt;" Click="Button_Click_1"/>
-                    <Button Grid.Column="2" Content=">>" Click="Button_Click_2"/>
-                    <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="{Binding CurrentRecordDisplay}"/>
-
-                </Grid>
-               
-                <ListBox BorderThickness="1" BorderBrush="Black" Name="lb" />
-
-
-
-            </DockPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+<Label Margin="5,0,0,0" FontWeight="Bold" Content="{Binding SelectedStation}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left"/>
             
+            <StackPanel Margin="5,5,5,0" Grid.Row="0" Grid.Column="2"  Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label  HorizontalAlignment="Right" Content="Line " />
+                <xctk:IntegerUpDown  HorizontalAlignment="Right"  Minimum="1" Maximum="{Binding RecordsCount}" Value="{Binding CurrentRecord, Mode=TwoWay}" ValueChanged="IntegerUpDown_ValueChanged" />
+                <Label HorizontalContentAlignment="Right" Content="{Binding CurrentRecordDisplay}" />
+            </StackPanel>
+
+            <GroupBox Header="Sensors" Padding="5" Grid.Column="0" Grid.Row="1">
+                <ListBox BorderThickness="1" ItemsSource="{Binding SelectedStation.Sensors}" BorderBrush="DarkGray" />
+            </GroupBox>
+
+            <GroupBox Padding="5" Header="File" Grid.Row="1" Grid.Column="2">
+                <ListBox BorderThickness="1" ItemsSource="{Binding Record}" BorderBrush="DarkGray" Name="lb" />
+            </GroupBox>
+
+            <GroupBox Header="Matches" Padding="5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.6*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox Grid.Column="0"/>
+
+                <StackPanel Margin="5" Orientation="Vertical"  Grid.Column="1">
+                <Button Margin="5" Content="Match"/>
+                    <Button Margin="5" Content="Un-Match"/>
+                </StackPanel>
+
+            </Grid>
+            </GroupBox>
+      
             
         </Grid>
     </DockPanel>

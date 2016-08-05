@@ -12,8 +12,7 @@ namespace Weather.ViewModels
     public class ImportWindowViewModel
     {
         public int CurrentRecord { get; set; }
-
-        public string CurrentRecordDisplay => "Record " + (CurrentRecord + 1) + " of " + RecordsCount;
+        public string CurrentRecordDisplay => "of " + RecordsCount;
         public WeatherStation SelectedStation { get; set; }
         public int RecordsCount { get; set; }
         public ObservableCollection<string> Record { get; set; }
@@ -30,6 +29,8 @@ namespace Weather.ViewModels
 
         public void ReadFile(string filePath)
         {
+            Records.Clear();
+            Record.Clear();
             using (var csv = new CachedCsvReader(new StreamReader(filePath), false))
             {
                 while (csv.ReadNextRecord())
@@ -43,10 +44,7 @@ namespace Weather.ViewModels
                 }
             }
             RecordsCount = Records.Count;
+            CurrentRecord = 1;
         }
-
-      
     }
-
-
 }

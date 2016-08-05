@@ -19,16 +19,20 @@
         </DockPanel>
 
         <DockPanel Margin="5">
-            <DockPanel>
+            <GroupBox Padding="5" Header="Stations">
+                <DockPanel>
                 <DockPanel Background="DarkGray" DockPanel.Dock="Bottom" LastChildFill="False">
                     <Button Width="20" DockPanel.Dock="Right" Content="A" Command="{Binding AddStationCommand}" />
                     <Button Width="20" DockPanel.Dock="Right" Content="D" Command="{Binding DeleteStationCommand}" />
                 </DockPanel>
 
+               
                 <ListBox ItemsSource="{Binding Stations}" DisplayMemberPath="Name"
                          SelectionChanged="ListBox_SelectionChanged" HorizontalAlignment="Left" DockPanel.Dock="Left"
                          Width="150" />
+               
             </DockPanel>
+            </GroupBox>
 
             <Grid Margin="10,0,10,0">
                 <Grid.ColumnDefinitions>
@@ -76,17 +80,19 @@
                                    Text="{Binding SelectedStation.Longitude, UpdateSourceTrigger=Explicit}"
                                    ShowButtonSpinner="False"  IsEnabled="{Binding SelectedStation, Converter={StaticResource NullBoolConverter}}" />
 
-                <Label Margin="2" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="Sensors"
-                       Grid.Column="0" Grid.Row="4" />
-
                 <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
                     <Button Width="60" Height="20" HorizontalAlignment="Left" Content="Save" DockPanel.Dock="Bottom"
                             Margin="0,5,0,0" Command="{Binding SaveStationCommand}" />
+
+                    <GroupBox Header="Sensors" Padding="5">
+                        <DockPanel>
                     <DockPanel Background="DarkGray" DockPanel.Dock="Bottom" LastChildFill="False">
                         <Button Width="20" DockPanel.Dock="Right" Content="A" Command="{Binding AddSensorCommand}" />
                         <Button Width="20" DockPanel.Dock="Right" Content="E" Command="{Binding EditSensorCommand}" />
                         <Button Width="20" DockPanel.Dock="Right" Content="D" Command="{Binding DeleteSensorCommand}" />
                     </DockPanel>
+
+                    
                     <DataGrid Background="White" ColumnWidth="*" SelectionUnit="FullRow" GridLinesVisibility="None"
                               RowHeaderWidth="0" HeadersVisibility="None" AutoGenerateColumns="False"
                               CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding SelectedStation.Sensors}" MouseDoubleClick="DataGrid_MouseDoubleClick"
@@ -126,6 +132,8 @@
                             </DataGridTextColumn>-->
                         </DataGrid.Columns>
                     </DataGrid>
+                        </DockPanel>
+                    </GroupBox>
                 </DockPanel>
             </Grid>
         </DockPanel>
