@@ -29,11 +29,6 @@ namespace Weather.Views
             CreateDataGrid();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            _viewModel.ImportRecords();
-            dg.Items.Refresh();
-        }
 
         private void CreateDataGrid()
         {
@@ -80,9 +75,7 @@ namespace Weather.Views
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var container = Resolver.Bootstrap();
-            var window = container.Resolve<ImportWindow>();
-            window.ShowDialog();
+    
         }
     }
 }

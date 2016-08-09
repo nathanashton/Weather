@@ -15,7 +15,7 @@ namespace Weather.Core.Interfaces
         //void CreateTables();
         //List<WeatherRecord> GetRecordsForStation(WeatherStation station);
 
-
+            WeatherStation SelectedStation { get; set; }
 
         void AddStation(WeatherStation station);
         void DeleteStation(WeatherStation station);

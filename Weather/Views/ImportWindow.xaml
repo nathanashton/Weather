@@ -4,13 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        mc:Ignorable="d" Name="w" Background="#F8F8F8"
-        Title="ImportWindow" SizeToContent="Width" Height="467">
+        mc:Ignorable="d" Name="w" Background="#F8F8F8" WindowStartupLocation="CenterScreen"
+        Title="Import" SizeToContent="WidthAndHeight" Height="625">
+    <Window.Resources>
+        <Style x:Key="myLBStyle"  TargetType="ListBoxItem">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border
+           Name="Border"
+           Padding="2"
+           SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Border" Property="Background"
+                     Value="Yellow" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <DockPanel>
-        <Button Margin="10" Width="100" HorizontalAlignment="Left" Content="Choose File" DockPanel.Dock="Top" Click="Button_Click" />
+        <DockPanel DockPanel.Dock="Top" >
+            <Button Margin="10" Width="100" HorizontalAlignment="Left" Content="Choose File" Click="Button_Click" />
+<Label VerticalContentAlignment="Center" Content="{Binding FilePath}" HorizontalContentAlignment="Right"/>
+        </DockPanel>
+        
         <DockPanel Background="#F0F0F0" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom">
-            <Button Margin="5" HorizontalAlignment="Right" DockPanel.Dock="Right" Height="23" Width="60" Content="Ok"
-                  />
+            <Button Margin="5" HorizontalAlignment="Right" DockPanel.Dock="Right" Height="23" Width="60" Content="Import" Command="{Binding ImportCommand}" />
         </DockPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -19,44 +45,68 @@
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="200"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <RowDefinition Height="200" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-<Label Margin="5,0,0,0" FontWeight="Bold" Content="{Binding SelectedStation}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left"/>
-            
+            <Label Margin="5,0,0,0" FontWeight="Bold" Content="{Binding SelectedStation}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" />
+
             <StackPanel Margin="5,5,5,0" Grid.Row="0" Grid.Column="2"  Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label  HorizontalAlignment="Right" Content="Line " />
                 <xctk:IntegerUpDown  HorizontalAlignment="Right"  Minimum="1" Maximum="{Binding RecordsCount}" Value="{Binding CurrentRecord, Mode=TwoWay}" ValueChanged="IntegerUpDown_ValueChanged" />
                 <Label HorizontalContentAlignment="Right" Content="{Binding CurrentRecordDisplay}" />
             </StackPanel>
 
-            <GroupBox Header="Sensors" Padding="5" Grid.Column="0" Grid.Row="1">
-                <ListBox BorderThickness="1" ItemsSource="{Binding SelectedStation.Sensors}" BorderBrush="DarkGray" />
-            </GroupBox>
-
-            <GroupBox Padding="5" Header="File" Grid.Row="1" Grid.Column="2">
-                <ListBox BorderThickness="1" ItemsSource="{Binding Record}" BorderBrush="DarkGray" Name="lb" />
-            </GroupBox>
-
-            <GroupBox Header="Matches" Padding="5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.6*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                
-                <TextBox Grid.Column="0"/>
-
-                <StackPanel Margin="5" Orientation="Vertical"  Grid.Column="1">
-                <Button Margin="5" Content="Match"/>
-                    <Button Margin="5" Content="Un-Match"/>
+            <GroupBox  IsEnabled="{Binding FileSelected}"  Padding="5" Grid.Row="1" Grid.Column="0" Header="Timestamp">
+                <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                <RadioButton IsChecked="{Binding SingleChecked, Mode=TwoWay}"  Margin="0,0,0,3" Content="Single field"/>
+                    <RadioButton IsChecked="{Binding MultipleChecked, Mode=TwoWay}" Content="Date and time field"/>
                 </StackPanel>
-
-            </Grid>
             </GroupBox>
-      
-            
+
+            <GroupBox  IsEnabled="{Binding FileSelected}"  Padding="5" Grid.Row="1" Grid.Column="2" Header="Timestamp">
+                <StackPanel Orientation="Vertical">
+                <DockPanel Margin="0,0,0,3">
+                    <Label Content="Date"/>
+                    <ComboBox SelectedItem="{Binding SelectedRecordDate, Mode=TwoWay}" DisplayMemberPath="Value" Width="130"  ItemsSource="{Binding DateRecord}" Height="23"></ComboBox>
+                </DockPanel>
+                <DockPanel Visibility="{Binding TimeFieldVisible}">
+                    <Label Content="Time"/>
+                        <ComboBox Width="130" SelectedItem="{Binding SelectedRecordTime, Mode=TwoWay}" DisplayMemberPath="Value" ItemsSource="{Binding DateRecord}" Height="23"></ComboBox>
+                </DockPanel>
+                </StackPanel>
+            </GroupBox>
+
+
+            <GroupBox IsEnabled="{Binding FileSelected}" Header="Sensors" Padding="5" Grid.Row="2" Grid.Column="0">
+                <ListBox BorderThickness="1" ItemsSource="{Binding SelectedStation.Sensors}" SelectedItem="{Binding SelectedSensor, Mode=TwoWay}"  BorderBrush="DarkGray" ItemContainerStyle="{StaticResource myLBStyle}">
+                </ListBox>
+            </GroupBox>
+
+            <GroupBox  IsEnabled="{Binding FileSelected}"  Padding="5" Header="File" Grid.Row="2" Grid.Column="2">
+                <ListBox SelectedItem="{Binding SelectedRecord, Mode=TwoWay}" DisplayMemberPath="Value" BorderThickness="1" ItemsSource="{Binding Record}" BorderBrush="DarkGray" Name="lb"  ItemContainerStyle="{StaticResource myLBStyle}" />
+            </GroupBox>
+
+
+
+            <GroupBox  IsEnabled="{Binding FileSelected}"  Header="Matches" Padding="5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.6*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox ItemsSource="{Binding Matches}" Grid.Column="0" SelectedItem="{Binding SelectedMatch, Mode=TwoWay}" />
+
+                    <StackPanel Margin="5" Orientation="Vertical"  Grid.Column="1">
+                        <Button Margin="5" Content="Match" Command="{Binding MatchCommand}" />
+                        <Button Margin="5" Content="Un-Match" Command="{Binding RemoveMatchCommand}" />
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
         </Grid>
     </DockPanel>
 </Window>

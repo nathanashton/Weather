@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Weather" Height="350" Width="525">
     <Window.Resources>
         <Style TargetType="ComboBoxItem" x:Key="ContainerStyle">
             <Style.Triggers>
@@ -26,32 +26,20 @@
         </Menu>
         <ToolBarTray Background="DarkGray" DockPanel.Dock="Top" VerticalAlignment="Top">
             <ToolBar>
-                <Button Click="Button_Click_2" Content="Import" />
-                <Button Command="Open" Content="Open" />
-                <Button Command="Save" Content="Save" />
+                <Button Command="{Binding ImportCommand}" Content="Import" />
             </ToolBar>
             <ToolBar>
-                <Button Command="Cut" Content="Cut" />
-                <Button Command="Copy" Content="Copy" />
-                <Button Content="Stations" Click="Button_Click" />
+       <Button Content="Stations" Click="Button_Click" />
                 <ComboBox Name="cmb" IsReadOnly="True" IsEditable="False" SelectionChanged="lb_SelectionChanged" Width="150" ItemsSource="{Binding Stations}" DisplayMemberPath="Name">
                     <ComboBox.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
                     </ComboBox.Resources>
-
                 </ComboBox>
-
             </ToolBar>
         </ToolBarTray>
-        
-        <Button Content="Click" DockPanel.Dock="Top" Click="Button_Click_1" />
-        <!--<ListBox DockPanel.Dock="Left" ItemsSource="{Binding Stations}" DisplayMemberPath="Name" Name="lb" SelectionChanged="lb_SelectionChanged"
-                        HorizontalAlignment="Left"
-                         Width="150" />-->
+
         <DataGrid EnableColumnVirtualization="True" EnableRowVirtualization="True" Name="dg" CanUserAddRows="False" RowHeaderWidth="0" IsReadOnly="True" AutoGenerateColumns="False" />
-        <!--<DataGrid ItemsSource="{Binding SelectedStation.WeatherRecords}"/>-->
-  
     </DockPanel>
 </Window>

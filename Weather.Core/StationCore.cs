@@ -78,6 +78,8 @@ namespace Weather.Core
             _context.SaveChanges();
         }
 
+        public WeatherStation SelectedStation { get; set; }
+
         public void AddStation(WeatherStation station)
         {
             _context.WeatherStations.Add(station);
