@@ -27,7 +27,7 @@ namespace Weather.ViewModels
         public StationWindowViewModel(IStationCore stationCore)
         {
             _stationCore = stationCore;
-            Stations = _stationCore.Stations;
+            Stations = new ObservableCollection<WeatherStation>();
             GetAllStations();
             SelectedStation = Stations.FirstOrDefault();
         }
@@ -67,9 +67,14 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Map, x => SelectedStation != null); }
         }
 
-        public void GetAllStations()
+        private void GetAllStations()
         {
-            _stationCore.GetAllStations();
+            Stations.Clear();
+            var all = _stationCore.GetAllStations();
+            foreach (var station in all)
+            {
+                Stations.Add(station);
+            }
         }
 
         private void DeleteStation(object obj)
@@ -82,6 +87,7 @@ namespace Weather.ViewModels
 
             if (result != MessageBoxResult.Yes) return;
             _stationCore.DeleteStation(SelectedStation);
+            Stations.Remove(SelectedStation);
             SelectedStation = Stations.FirstOrDefault();
         }
 
@@ -162,16 +168,15 @@ namespace Weather.ViewModels
 
         private void AddSensor(object obj)
         {
-            var container = Resolver.Bootstrap();
+            var container = new Resolver().Bootstrap();
             var window = container.Resolve<SensorWindow>();
             window.ShowDialog();
 
             var sensor = window.ViewModel.Sensor;
             if (sensor == null) return;
+
             sensor.Station = SelectedStation;
-
             SelectedStation.AddSensor(sensor);
-
             _stationCore.AddSensor(sensor);
         }
 
@@ -189,7 +194,7 @@ namespace Weather.ViewModels
 
         public void EditSensor(object obj)
         {
-            var container = Resolver.Bootstrap();
+            var container = new Resolver().Bootstrap();
             var window = container.Resolve<SensorWindow>();
 
             window.ViewModel.EditSensor = SelectedSensor;
@@ -207,7 +212,7 @@ namespace Weather.ViewModels
 
         private void Map(object obj)
         {
-            var container = Resolver.Bootstrap();
+            var container = new Resolver().Bootstrap();
             var window = container.Resolve<StationMapWindow>();
             window.Latitude = SelectedStation.Latitude;
             window.Longitude = SelectedStation.Longitude;

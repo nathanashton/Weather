@@ -103,8 +103,12 @@ namespace Weather.ViewModels
             {
                 _importer.Import(FilePath, SelectedStation, data, SelectedRecordDate.Index, SelectedRecordTime.Index);
             }
-
+            _importer.Start();
         }
+
+
+
+        public int Progress { get; set; }
 
         public string FilePath { get; set; }
 
@@ -116,9 +120,21 @@ namespace Weather.ViewModels
             DateRecords = new ObservableCollection<ObservableCollection<Record>>();
             _importer = importer;
             _stationCore = stationCore;
-            SelectedStation = _stationCore.SelectedStation;
+            importer.ImportChanged += Importer_ImportChanged;
+
+
+            //TODO
+            SelectedStation = _stationCore.GetAllStations()[0];
+
+
             Matches = new ObservableCollection<ViewModels.Match>();
             SingleChecked = true;
+        }
+
+        private void Importer_ImportChanged(object sender, Common.EventArgs.ImportEventArgs e)
+        {
+            Progress = (int)e.Progress;
+
         }
 
         public void ReadFile(string filePath)

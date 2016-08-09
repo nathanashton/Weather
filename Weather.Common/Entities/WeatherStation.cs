@@ -14,7 +14,7 @@ namespace Weather.Common.Entities
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Name => Manufacturer + " " + Model;
-        public virtual ICollection<WeatherRecord> WeatherRecords { get; set; } = new ObservableCollection<WeatherRecord>();
+        public ICollection<WeatherRecord> WeatherRecords { get; set; } = new ObservableCollection<WeatherRecord>();
         public virtual ICollection<Sensor> Sensors { get; set; } = new ObservableCollection<Sensor>();
 
         public void AddSensor(Sensor sensor)

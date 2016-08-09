@@ -15,12 +15,12 @@ namespace Weather.Core.Interfaces
         //void CreateTables();
         //List<WeatherRecord> GetRecordsForStation(WeatherStation station);
 
-            WeatherStation SelectedStation { get; set; }
+        WeatherStation SelectedStation { get; set; }
+        ObservableCollection<WeatherStation> Stations { get; set; }
 
         void AddStation(WeatherStation station);
         void DeleteStation(WeatherStation station);
-        ObservableCollection<WeatherStation> Stations { get; set; }
-        void GetAllStations();
+        List<WeatherStation> GetAllStations();
         void DeleteSensor(Sensor sensor);
         void UpdateSensor(Sensor sensor);
         void UpdateStation(WeatherStation station);

@@ -14,7 +14,7 @@ namespace Weather
         [STAThread]
         private static void Main()
         {
-            var container = Resolver.Bootstrap();
+            var container = new Resolver().Bootstrap();
             container.RegisterType<MainWindow>();
             container.RegisterType<MainWindowViewModel>();
 

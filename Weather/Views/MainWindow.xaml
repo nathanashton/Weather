@@ -29,7 +29,7 @@
                 <Button Command="{Binding ImportCommand}" Content="Import" />
             </ToolBar>
             <ToolBar>
-       <Button Content="Stations" Click="Button_Click" />
+       <Button Content="Stations" Command="{Binding StationsCommand}" />
                 <ComboBox Name="cmb" IsReadOnly="True" IsEditable="False" SelectionChanged="lb_SelectionChanged" Width="150" ItemsSource="{Binding Stations}" DisplayMemberPath="Name">
                     <ComboBox.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />

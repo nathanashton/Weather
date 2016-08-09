@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\SensorValue.cs" />
+    <Compile Include="EventArgs\ImportEventArgs.cs" />
     <Compile Include="Interfaces\ISensorValue.cs" />
     <Compile Include="Interfaces\IWeatherRecord.cs" />
     <Compile Include="Interfaces\IWeatherStation.cs" />

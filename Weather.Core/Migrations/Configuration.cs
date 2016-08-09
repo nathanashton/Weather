@@ -1,8 +1,8 @@
+using System.Data.Entity.Migrations;
+
 namespace Weather.Core.Migrations
 {
-    using System.Data.Entity.Migrations;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<Weather.Core.Database>
+    internal sealed class Configuration : DbMigrationsConfiguration<Database>
     {
         public Configuration()
         {
@@ -10,7 +10,7 @@ namespace Weather.Core.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(Weather.Core.Database context)
+        protected override void Seed(Database context)
         {
             //  This method will be called after migrating to the latest version.
 

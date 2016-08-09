@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using LumenWorks.Framework.IO.Csv;
 using Weather.Common.Entities;
+using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 
@@ -12,32 +14,73 @@ namespace Weather.Core
     {
         private readonly ISensorCore _sensorCore;
         private readonly IStationCore _stationCore;
+        private List<Tuple<ISensor, int>> _data;
+
+        private string _filePath;
+        private WeatherStation _station;
+        private int[] _timestamp;
+        private readonly BackgroundWorker _worker;
 
         public Importer(ISensorCore sensorCore, IStationCore stationCore)
         {
             _sensorCore = sensorCore;
             _stationCore = stationCore;
+            _worker = new BackgroundWorker();
+            _worker.DoWork += _worker_DoWork;
+            _worker.ProgressChanged += _worker_ProgressChanged;
+            _worker.WorkerReportsProgress = true;
+            _worker.RunWorkerCompleted += _worker_RunWorkerCompleted;
+        }
+
+        public void Start()
+        {
+            _worker.RunWorkerAsync();
+        }
+
+        public event EventHandler<ImportEventArgs> ImportChanged;
+
+        private void OnChanged(int p)
+        {
+            ImportChanged?.Invoke(this, new ImportEventArgs {Progress = p});
         }
 
         public void Import(string filePath, WeatherStation station, List<Tuple<ISensor, int>> data,
             params int[] timestamp)
         {
-            using (var csv = new CachedCsvReader(new StreamReader(filePath), false))
+            _filePath = filePath;
+            _data = data;
+            _timestamp = timestamp;
+            _station = station;
+        }
+
+        private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // throw new NotImplementedException();
+        }
+
+        private void _worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            OnChanged(e.ProgressPercentage);
+        }
+
+        private void _worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            using (var csv = new CachedCsvReader(new StreamReader(_filePath), false))
             {
                 while (csv.ReadNextRecord())
                 {
                     var dt = DateTime.Now;
-                    if (timestamp.Length == 1)
+                    if (_timestamp.Length == 1)
                     {
-                        dt = DateTime.Parse(csv[timestamp[0]]);
+                        dt = DateTime.Parse(csv[_timestamp[0]]);
                     }
-                    else if (timestamp.Length == 2)
+                    else if (_timestamp.Length == 2)
                     {
-                        dt = DateTime.Parse(csv[timestamp[0]] + " " + csv[timestamp[1]]);
+                        dt = DateTime.Parse(csv[_timestamp[0]] + " " + csv[_timestamp[1]]);
                     }
-                    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = station};
+                    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
 
-                    foreach (var d in data)
+                    foreach (var d in _data)
                     {
                         double value;
                         var s = new SensorValue();
@@ -66,7 +109,9 @@ namespace Weather.Core
                         weatherrecord.SensorValues.Add(s);
                     }
                     _stationCore.AddWeatherRecord(weatherrecord);
-                    station.WeatherRecords.Add(weatherrecord);
+
+                    var pr = Utils.CalculatePercentage(csv.CurrentRecordIndex, 1, 42000);
+                    _worker.ReportProgress(pr);
                 }
             }
         }

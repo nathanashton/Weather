@@ -38,24 +38,48 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Import, x => SelectedStation !=null); }
         }
 
+        public ICommand StationsCommand
+        {
+            get { return new RelayCommand(OpenStations, x => true); }
+        }
+
+
+        private void OpenStations(object obj)
+        {
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<StationWindow>();
+            window.ShowDialog();
+
+            GetAllStations();
+        }
+
         public MainWindowViewModel(IStationCore stationCore, IImporter importer, Database database)
         {
             _stationCore = stationCore;
             _importer = importer;
             _database = database;
-            Stations = _stationCore.Stations;
+            Stations = new ObservableCollection<WeatherStation>();
+            GetAllStations();
+        }
+
+
+        private void GetAllStations()
+        {
+            Stations.Clear();
+            var all = _stationCore.GetAllStations();
+            foreach (var station in all)
+            {
+                Stations.Add(station);
+            }
         }
 
         private void Import(object obj)
         {
-            var container = Resolver.Bootstrap();
+            var container = new Resolver().Bootstrap();
             var window = container.Resolve<ImportWindow>();
             window.ShowDialog();
-        }
 
-        public void ImportRecords()
-        {
-            //  _importer.Import(@"C:\Users\nathana\Desktop\temp2.csv", SelectedStation);
+            GetAllStations();
         }
 
         public void ClearAll()

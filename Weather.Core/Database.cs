@@ -22,17 +22,25 @@ namespace Weather.Core
             modelBuilder.Entity<Sensor>().HasRequired(x => x.Station);
 
             modelBuilder.Entity<SensorValue>().HasKey(x => x.Id);
-            modelBuilder.Entity<SensorValue>().HasRequired(x => x.Sensor).WithMany(y=> y.SensorValues).WillCascadeOnDelete();
+            modelBuilder.Entity<SensorValue>()
+                .HasRequired(x => x.Sensor)
+                .WithMany(y => y.SensorValues)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<WeatherStation>().HasKey(x => x.Id);
-            modelBuilder.Entity<WeatherStation>().HasMany(x => x.Sensors).WithRequired(x=> x.Station).WillCascadeOnDelete();
-            modelBuilder.Entity<WeatherStation>().HasMany(x => x.WeatherRecords).WithRequired(x => x.Station).WillCascadeOnDelete();
+            modelBuilder.Entity<WeatherStation>()
+                .HasMany(x => x.Sensors)
+                .WithRequired(x => x.Station)
+                .WillCascadeOnDelete();
+            modelBuilder.Entity<WeatherStation>()
+                .HasMany(x => x.WeatherRecords)
+                .WithRequired(x => x.Station)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<WeatherRecord>().HasKey(x => x.Id);
             modelBuilder.Entity<WeatherRecord>().HasRequired(x => x.Station);
             modelBuilder.Entity<WeatherRecord>()
                 .HasMany(x => x.SensorValues);
-
         }
 
         public void ClearAll()

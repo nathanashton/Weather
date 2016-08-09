@@ -6,23 +6,24 @@ namespace Weather.Core
 {
     public class SensorCore : ISensorCore
     {
-        private readonly Database _context;
-
-        public SensorCore(Database db)
-        {
-            _context = db;
-        }
-
         public void AddSensorValue(SensorValue sensorValue)
         {
-            _context.SensorValues.Add(sensorValue);
-            _context.SaveChanges();
+            using (var ctx = new Database())
+            {
+                ctx.SensorValues.Attach(sensorValue);
+                ctx.Entry(sensorValue).State = System.Data.Entity.EntityState.Added;
+              //  ctx.SensorValues.Add(sensorValue);
+                ctx.SaveChanges();
+            }
         }
 
         public void AddSensorValues(IEnumerable<SensorValue> sensorValues)
         {
-            _context.SensorValues.AddRange(sensorValues);
-            _context.SaveChanges();
+            using (var ctx = new Database())
+            {
+                ctx.SensorValues.AddRange(sensorValues);
+                ctx.SaveChanges();
+            }
         }
     }
 }

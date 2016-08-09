@@ -27,7 +27,7 @@ namespace Weather.Views
             {
                 _viewModel.ReadFile(openFileDialog.FileName);
             }
-            _viewModel.DateRecord = _viewModel.DateRecords[0];
+          _viewModel.DateRecord = _viewModel.DateRecords[0];
         }
 
         private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -36,11 +36,6 @@ namespace Weather.Views
             {
                 _viewModel.Record = _viewModel.Records[_viewModel.CurrentRecord - 1];
             }
-        }
-
-        private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
         }
     }
 }

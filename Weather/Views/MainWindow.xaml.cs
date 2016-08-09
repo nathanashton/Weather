@@ -42,7 +42,7 @@ namespace Weather.Views
             foreach (var column in columns)
             {
                 var binding = new Binding($"SensorValues[{column.Index}].");
-                string sort = $"SensorValues[{column.Index}].Value";
+                string sort = $"SensorValues[{column.Index}].RawValue";
                 dg.Columns.Add(new DataGridTextColumn() { Header = column.Name, Binding = binding, SortMemberPath = sort });
             }
 
@@ -58,9 +58,7 @@ namespace Weather.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var container = Resolver.Bootstrap();
-            var window = container.Resolve<StationWindow>();
-            window.ShowDialog();
+
             CreateDataGrid();
 
         }
@@ -73,9 +71,6 @@ namespace Weather.Views
             CreateDataGrid();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-    
-        }
+
     }
 }
