@@ -1,7 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using Microsoft.Win32;
 using System.Windows;
-using System.Windows.Controls;
-using Weather.Common.Entities;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -27,15 +27,42 @@ namespace Weather.Views
             {
                 _viewModel.ReadFile(openFileDialog.FileName);
             }
-          _viewModel.DateRecord = _viewModel.DateRecords[0];
+            _viewModel.DateRecord = _viewModel.DateRecords[0];
         }
 
         private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            int date = 0;
+            int time = 0;
+            if (_viewModel.SelectedRecordDate != null && _viewModel.SelectedRecordTime != null)
+            {
+                date = _viewModel.SelectedRecordDate.Index;
+                time = _viewModel.SelectedRecordTime.Index;
+            }
             if (_viewModel.Records != null && _viewModel.CurrentRecord != 0)
             {
-                _viewModel.Record = _viewModel.Records[_viewModel.CurrentRecord - 1];
+                _viewModel.Record = _viewModel.FilteredRecords[_viewModel.CurrentRecord - 1];
+                _viewModel.DateRecord = _viewModel.FilteredDateRecords[_viewModel.CurrentRecord - 1]; // fails if file has headers
+
+                try
+                {
+                    _viewModel.SelectedRecordDate = _viewModel.DateRecord[date];
+                    _viewModel.SelectedRecordTime = _viewModel.DateRecord[time];
+                }
+                catch 
+                {
+                    
+                }
+               
             }
+        }
+
+        private void IntegerUpDown_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            _viewModel.FilteredRecords = new ObservableCollection<ObservableCollection<Record>>(_viewModel.Records.ToList().GetRange(_viewModel.ExcludeLineCount, _viewModel.Records.Count - _viewModel.ExcludeLineCount));
+            _viewModel.FilteredDateRecords = new ObservableCollection<ObservableCollection<Record>>(_viewModel.DateRecords.ToList().GetRange(_viewModel.ExcludeLineCount, _viewModel.DateRecords.Count - _viewModel.ExcludeLineCount));
+
+            IntegerUpDown_ValueChanged(null, null);
         }
     }
 }
