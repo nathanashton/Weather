@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+
 using LumenWorks.Framework.IO.Csv;
 using Weather.Common.Entities;
 using Weather.Common.EventArgs;
@@ -21,6 +22,16 @@ namespace Weather.Core
         private WeatherStation _station;
         private int[] _timestamp;
         private readonly BackgroundWorker _worker;
+
+
+
+
+
+        List<SensorValue> listSensorValues = new List<SensorValue>();
+        List<WeatherRecord>listWeatherRecords = new List<WeatherRecord>();
+
+
+
 
         public Importer(ISensorCore sensorCore, IStationCore stationCore)
         {
@@ -58,6 +69,8 @@ namespace Weather.Core
 
         private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _sensorCore.AddSensorValues(listSensorValues);
+         //   _stationCore.AddWeatherRecords(listWeatherRecords);
             ImportComplete?.Invoke(this,null);
         }
 
@@ -68,6 +81,12 @@ namespace Weather.Core
 
         private void _worker_DoWork(object sender, DoWorkEventArgs e)
         {
+
+
+         //   var listSensorValues = new List<SensorValue>();
+           // var listWeatherRecords = new List<WeatherRecord>();
+
+
             var lineCount = File.ReadLines(_filePath).Count();
             using (var csv = new CachedCsvReader(new StreamReader(_filePath), false))
             {
@@ -112,10 +131,12 @@ namespace Weather.Core
                                     s.DisplayUnit = Units.Kmh;
                                 }
                             }
-                            _sensorCore.AddSensorValue(s);
+                         //   _sensorCore.AddSensorValue(s);
+                            listSensorValues.Add(s); // Bulk insert
                             weatherrecord.SensorValues.Add(s);
                         }
-                        _stationCore.AddWeatherRecord(weatherrecord);
+                      //  _stationCore.AddWeatherRecord(weatherrecord);
+                        listWeatherRecords.Add(weatherrecord); // Bulk insert
 
                         var pr = Utils.CalculatePercentage(csv.CurrentRecordIndex + 1, 0, lineCount);
                         _worker.ReportProgress(pr);

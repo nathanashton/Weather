@@ -1,4 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.Entity.Core.Mapping;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using Weather.Common.Entities;
 using Weather.Core.Migrations;
 
@@ -9,6 +16,8 @@ namespace Weather.Core
         public Database() : base("Data Source=weather.sdf")
         {
             System.Data.Entity.Database.SetInitializer(new MigrateDatabaseToLatestVersion<Database, Configuration>());
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<WeatherStation> WeatherStations { get; set; }
@@ -49,5 +58,10 @@ namespace Weather.Core
             Sensors.RemoveRange(Sensors);
             SensorValues.RemoveRange(SensorValues);
         }
+
+
     }
+
+
+
 }

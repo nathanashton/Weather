@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -24,6 +25,10 @@ namespace Weather.ViewModels
         private bool _multipleChecked;
         private bool _singleChecked;
 
+
+        private Stopwatch s =
+        new Stopwatch();
+
         public ImportWindowViewModel(IStationCore stationCore, IImporter importer)
         {
             Record = new ObservableCollection<Record>();
@@ -38,7 +43,7 @@ namespace Weather.ViewModels
             importer.ImportComplete += Importer_ImportComplete;
 
             //TODO
-            SelectedStation = stationCore.GetAllStations()[0];
+          SelectedStation = stationCore.GetAllStations().GetAwaiter().GetResult()[0];
 
             Matches = new ObservableCollection<Match>();
             SingleChecked = true;
@@ -46,6 +51,8 @@ namespace Weather.ViewModels
 
         private void Importer_ImportComplete(object sender, EventArgs e)
         {
+            s.Stop();
+            var t = s.ElapsedMilliseconds;
             Importing = false;
         }
 
@@ -217,6 +224,7 @@ namespace Weather.ViewModels
             {
                 _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index, SelectedRecordTime.Index);
             }
+            s.Start();
             _importer.Start();
             Importing = true;
         }

@@ -63,10 +63,10 @@ namespace Weather.ViewModels
         }
 
 
-        private void GetAllStations()
+        private async void GetAllStations()
         {
             Stations.Clear();
-            var all = _stationCore.GetAllStations();
+            var all = await _stationCore.GetAllStations();
             foreach (var station in all)
             {
                 Stations.Add(station);

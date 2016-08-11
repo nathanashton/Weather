@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Weather.Common.Entities;
 
 namespace Weather.Core.Interfaces
@@ -20,7 +21,7 @@ namespace Weather.Core.Interfaces
 
         void AddStation(WeatherStation station);
         void DeleteStation(WeatherStation station);
-        List<WeatherStation> GetAllStations();
+        Task<List<WeatherStation>> GetAllStations();
         void DeleteSensor(Sensor sensor);
         void UpdateSensor(Sensor sensor);
         void UpdateStation(WeatherStation station);

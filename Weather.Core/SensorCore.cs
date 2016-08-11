@@ -1,4 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Linq;
+using System.Transactions;
 using Weather.Common.Entities;
 using Weather.Core.Interfaces;
 
@@ -12,18 +17,30 @@ namespace Weather.Core
             {
                 ctx.SensorValues.Attach(sensorValue);
                 ctx.Entry(sensorValue).State = System.Data.Entity.EntityState.Added;
-              //  ctx.SensorValues.Add(sensorValue);
                 ctx.SaveChanges();
             }
         }
 
-        public void AddSensorValues(IEnumerable<SensorValue> sensorValues)
+        public async void AddSensorValues(IEnumerable<SensorValue> sensorValues)
         {
+
+
+
+
+
             using (var ctx = new Database())
             {
+          //      ctx.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+                ctx.Configuration.AutoDetectChangesEnabled = false;
+                ctx.Configuration.ValidateOnSaveEnabled = false;
                 ctx.SensorValues.AddRange(sensorValues);
-                ctx.SaveChanges();
+              
+               await ctx.SaveChangesAsync();
             }
+
+        
+
+
         }
     }
 }

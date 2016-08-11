@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
 using Weather.Common.Entities;
 using Weather.Core.Interfaces;
 
@@ -59,19 +62,31 @@ namespace Weather.Core
             {
                 ctx.WeatherRecords.Attach(record);
                 ctx.Entry(record).State = EntityState.Added;
-               // ctx.WeatherRecords.Add(record);
                 ctx.SaveChanges();
             }
         }
 
-        public void AddWeatherRecords(IEnumerable<WeatherRecord> records)
+        public async void AddWeatherRecords(IEnumerable<WeatherRecord> records)
         {
-            using (var ctx = new Database())
-            {
-                ctx.WeatherRecords.AddRange(records);
-                ctx.SaveChanges();
-                GetAllStations();
-            }
+            //using (var ctx = new Database())
+            //{
+            //    ctx.Configuration.AutoDetectChangesEnabled = false;
+            //    ctx.Configuration.ValidateOnSaveEnabled = false;
+            //    ctx.WeatherRecords.AddRange(records);
+            //    await ctx.SaveChangesAsync();
+            //}
+
+            //using (var ctx = new Database())
+            //{
+            //    using (var t = new TransactionScope())
+            //    {
+            //        ctx.BulkInsert(records);
+            //        //ctx.SensorValues.AddRange(sensorValues);
+            //        await ctx.SaveChangesAsync();
+            //        t.Complete();
+            //    }
+
+            //}
         }
 
         public void DeleteSensor(Sensor sensor)
@@ -114,7 +129,7 @@ namespace Weather.Core
             }
         }
 
-        public List<WeatherStation> GetAllStations()
+        public async Task<List<WeatherStation>> GetAllStations()
         {
             using (var ctx = new Database())
             {
@@ -123,7 +138,8 @@ namespace Weather.Core
                     Stations = new ObservableCollection<WeatherStation>();
                 }
                 Stations.Clear();
-                var all = ctx.WeatherStations.Include(x => x.WeatherRecords.Select(p=> p.SensorValues)).Include(y => y.Sensors).ToList();
+
+                var all = await ctx.WeatherStations.Include(x => x.WeatherRecords.Select(p => p.SensorValues)).Include(y => y.Sensors).AsNoTracking().ToListAsync();
 
                 return all;
             }
