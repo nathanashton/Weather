@@ -75,6 +75,10 @@
       <Project>{8f90586c-231d-4244-9385-ded6f041a15c}</Project>
       <Name>Weather.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Weather.Repository\Weather.Repository.csproj">
+      <Project>{85fae9d3-90e6-4562-9d78-abb7714676b0}</Project>
+      <Name>Weather.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

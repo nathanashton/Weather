@@ -1,13 +1,14 @@
+using System.Collections.Generic;
 using Weather.Common.Entities;
 
 namespace Weather.Common.Interfaces
 {
     public interface ISensor
     {
-        long Id { get; set; }
+        int SensorId { get; set; }
         string Name { get; set; }
         double Correction { get; set; }
         Enums.UnitType Type { get; set; }
-        WeatherStation Station { get; set; }
+        IList<ISensorValue> SensorValues { get; set; }
     }
 }

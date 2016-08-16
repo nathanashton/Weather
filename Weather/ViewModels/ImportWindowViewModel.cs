@@ -43,7 +43,7 @@ namespace Weather.ViewModels
             importer.ImportComplete += Importer_ImportComplete;
 
             //TODO
-          SelectedStation = stationCore.GetAllStations().GetAwaiter().GetResult()[0];
+         // SelectedStation = stationCore.GetAllStationsAsync()[0];
 
             Matches = new ObservableCollection<Match>();
             SingleChecked = true;

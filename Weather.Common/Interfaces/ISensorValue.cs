@@ -4,10 +4,12 @@ namespace Weather.Common.Interfaces
 {
     public interface ISensorValue
     {
-        long Id { get; set; }
+        int SensorValueId { get; set; }
         double? RawValue { get; set; }
         double? CorrectedValue { get; }
         Unit DisplayUnit { get; set; }
         double? DisplayValue { get; set; }
+
+        ISensor Sensor { get; set; }
     }
 }

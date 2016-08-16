@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Weather.Common.Entities;
 
 namespace Weather.Common.Interfaces
 {
     public interface IWeatherRecord
     {
-        long Id { get; set; }
+        int WeatherRecordId { get; set; }
         DateTime TimeStamp { get; set; }
-        ICollection<SensorValue> SensorValues { get; set; }
+        IList<ISensorValue> SensorValues { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace Weather.Views
 
         private void StationWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel.RegisterDirtyHandlers();
+        //    _viewModel.RegisterDirtyHandlers();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -28,18 +28,18 @@ namespace Weather.Views
 
         private void SensorWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.EditSensor != null)
-            {
-                ViewModel.Sensor =
-                    new Sensor
-                    {
-                        Name = ViewModel.EditSensor.Name,
-                        Type = ViewModel.EditSensor.Type,
-                        Id = ViewModel.EditSensor.Id,
-                        Station = ViewModel.EditSensor.Station,
-                        // Correction = ViewModel.EditSensor.Correction
-                    };
-            }
+            //if (ViewModel.EditSensor != null)
+            //{
+            //    ViewModel.Sensor =
+            //        new Sensor
+            //        {
+            //            Name = ViewModel.EditSensor.Name,
+            //            Type = ViewModel.EditSensor.Type,
+            //            SensorId = ViewModel.EditSensor.SensorId,
+            //            Station = ViewModel.EditSensor.Station,
+            //            // Correction = ViewModel.EditSensor.Correction
+            //        };
+            //}
         }
 
         private void AddSensorWindow_Closing(object sender, CancelEventArgs e)

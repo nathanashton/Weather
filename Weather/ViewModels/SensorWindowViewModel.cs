@@ -1,5 +1,5 @@
-﻿using PropertyChanged;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Entities;
 using Weather.Helpers;

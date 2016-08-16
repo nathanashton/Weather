@@ -1,46 +1,49 @@
 ﻿using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Transactions;
 using Weather.Common.Entities;
+using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
+using Weather.Repository.Interfaces;
 
 namespace Weather.Core
 {
     public class SensorCore : ISensorCore
     {
-        public void AddSensorValue(SensorValue sensorValue)
+        private readonly ISensorRepository _sensorRepository;
+
+        public SensorCore(ISensorRepository sensorRepository)
         {
-            using (var ctx = new Database())
-            {
-                ctx.SensorValues.Attach(sensorValue);
-                ctx.Entry(sensorValue).State = System.Data.Entity.EntityState.Added;
-                ctx.SaveChanges();
-            }
+            _sensorRepository = sensorRepository;
         }
 
-        public async void AddSensorValues(IEnumerable<SensorValue> sensorValues)
+        public void UpdateSensorForWeatherStation(Sensor sensor)
         {
+            _sensorRepository.Update(sensor);
+        }
 
+        public void DeleteSensor(Sensor sensor)
+        {
+            _sensorRepository.DeleteSensor(sensor);
+        }
 
+        public Sensor AddSensor(Sensor sensor)
+        {
+           // sensor.Id = _sensorRepository.AddSensor(sensor);
+            return sensor;
+        }
 
+        public void AddSensorValue(ISensorValue value)
+        {
+          //  value.Id = _sensorRepository.InsertSensorValue(value);
+        }
 
+        public void AddSensorValues(IEnumerable<ISensorValue> values)
+        {
+            _sensorRepository.InsertSensorValues(values);
+        }
 
-            using (var ctx = new Database())
-            {
-          //      ctx.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-                ctx.Configuration.AutoDetectChangesEnabled = false;
-                ctx.Configuration.ValidateOnSaveEnabled = false;
-                ctx.SensorValues.AddRange(sensorValues);
-              
-               await ctx.SaveChangesAsync();
-            }
-
-        
-
-
+        public void AddWeatherRecords(IEnumerable<IWeatherRecord> records)
+        {
+            _sensorRepository.InsertWeatherRecords(records);
         }
     }
 }

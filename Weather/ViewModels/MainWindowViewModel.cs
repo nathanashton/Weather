@@ -18,7 +18,6 @@ namespace Weather.ViewModels
         public ObservableCollection<WeatherStation> Stations { get; set; }
         private readonly IStationCore _stationCore;
         private readonly IImporter _importer;
-        private readonly Database _database;
 
         private WeatherStation _selectedStation;
 
@@ -29,13 +28,13 @@ namespace Weather.ViewModels
             {
                 _selectedStation = value;
                 OnPropertyChanged(() => SelectedStation);
-                _stationCore.SelectedStation = value;
+               // _stationCore.SelectedStation = value;
             }
         }
 
         public ICommand ImportCommand
         {
-            get { return new RelayCommand(Import, x => SelectedStation !=null); }
+            get { return new RelayCommand(Import, x => SelectedStation != null); }
         }
 
         public ICommand StationsCommand
@@ -53,11 +52,10 @@ namespace Weather.ViewModels
             GetAllStations();
         }
 
-        public MainWindowViewModel(IStationCore stationCore, IImporter importer, Database database)
+        public MainWindowViewModel(IStationCore stationCore, IImporter importer)
         {
             _stationCore = stationCore;
             _importer = importer;
-            _database = database;
             Stations = new ObservableCollection<WeatherStation>();
             GetAllStations();
         }
@@ -65,12 +63,12 @@ namespace Weather.ViewModels
 
         private async void GetAllStations()
         {
-            Stations.Clear();
-            var all = await _stationCore.GetAllStations();
-            foreach (var station in all)
-            {
-                Stations.Add(station);
-            }
+            //Stations.Clear();
+            //var all = await _stationCore.GetAllStations();
+            //foreach (var station in all)
+            //{
+            //    Stations.Add(station);
+            //}
         }
 
         private void Import(object obj)
@@ -84,7 +82,7 @@ namespace Weather.ViewModels
 
         public void ClearAll()
         {
-            _database.ClearAll();
+          //  _database.ClearAll();
         }
     }
 }

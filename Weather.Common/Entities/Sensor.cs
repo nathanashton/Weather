@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using PropertyChanged;
 using Weather.Common.Interfaces;
 
@@ -8,13 +7,11 @@ namespace Weather.Common.Entities
     [ImplementPropertyChanged]
     public class Sensor : ISensor
     {
-        public long Id { get; set; }
+        public int SensorId { get; set; }
         public string Name { get; set; }
-        public double Correction { get; set; }
+        public double Correction { get; set; } = 0;
         public Enums.UnitType Type { get; set; }
-
-        public virtual WeatherStation Station { get; set; }
-        public virtual ICollection<SensorValue> SensorValues { get; set; } = new ObservableCollection<SensorValue>();
+        public IList<ISensorValue> SensorValues { get; set; } = new List<ISensorValue>();
 
         public override string ToString()
         {

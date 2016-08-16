@@ -1,10 +1,11 @@
 ﻿using Microsoft.Practices.Unity;
-using System.Data.Entity;
 using Weather.Common;
 using Weather.Common.Interfaces;
 using Weather.Core;
 using Weather.Core.Interfaces;
 using Weather.Logging;
+using Weather.Repository.Interfaces;
+using Weather.Repository.Repositories;
 
 namespace Weather.DependencyResolver
 {
@@ -20,7 +21,8 @@ namespace Weather.DependencyResolver
             container.RegisterType<ISensorCore, SensorCore>();
             container.RegisterType<IImporter, Importer>();
 
-          //  container.RegisterType<DbContext, Core.Database>();
+            container.RegisterType<IStationRepository, StationRepository>();
+            container.RegisterType<ISensorRepository, SensorRepository>();
 
             return container;
         }

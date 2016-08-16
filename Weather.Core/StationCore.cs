@@ -1,148 +1,126 @@
-﻿using PropertyChanged;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
+using PropertyChanged;
 using Weather.Common.Entities;
+using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
+using Weather.Repository.Interfaces;
 
 namespace Weather.Core
 {
     [ImplementPropertyChanged]
     public class StationCore : IStationCore
     {
-        public StationCore()
+
+        public ObservableCollection<IWeatherStation> Stations { get; set; }
+        public event EventHandler StationsChanged;
+        private readonly IStationRepository _stationRepository;
+
+
+        public StationCore(IStationRepository stationRepository)
         {
-            GetAllStations();
+            _stationRepository = stationRepository;
+            Stations = new ObservableCollection<IWeatherStation>();
         }
 
-        public ObservableCollection<WeatherStation> Stations { get; set; }
 
-        public void DeleteStation(WeatherStation station)
+        public Task<IWeatherStation> UpdateStationAsync(IWeatherStation station)
         {
-            using (var ctx = new Database())
-            {
-                ctx.WeatherStations.Attach(station);
-                ctx.WeatherStations.Remove(station);
-                ctx.SaveChanges();
-                Stations.Remove(station);
-            }
+            throw new NotImplementedException();
         }
 
-        public void UpdateStation(WeatherStation station)
+
+
+        public async void GetAllStationsAsync()
         {
-            using (var ctx = new Database())
-            {
-                var existing = ctx.WeatherStations.FirstOrDefault(x => x.Id == station.Id);
-                if (existing == null) return;
-                ctx.Entry(existing).CurrentValues.SetValues(station);
-                ctx.Entry(existing).State = EntityState.Modified;
-                ctx.SaveChanges();
-                Stations.Remove(station);
-                Stations.Add(station);
-            }
+            var allStations = await _stationRepository.GetAllWeatherStationsAsync();
+            Stations = new ObservableCollection<IWeatherStation>(allStations);
+            StationsChanged?.Invoke(this, null);
         }
 
-        public void AddSensor(Sensor sensor)
+
+
+        public async Task<IWeatherStation> AddStationAsync(IWeatherStation station)
         {
-            using (var ctx = new Database())
-            {
-                ctx.Sensors.Attach(sensor);
-                ctx.Entry(sensor).State = EntityState.Added;
-                ctx.SaveChanges();
-            }
+            station.WeatherStationId = await _stationRepository.AddStationAsync(station);
+            GetAllStationsAsync();
+            OnStationsChanged();
+            return station;
         }
 
-        public void AddWeatherRecord(WeatherRecord record)
+
+
+
+
+        public void DeleteStationAsync(IWeatherStation station)
         {
-            using (var ctx = new Database())
-            {
-                ctx.WeatherRecords.Attach(record);
-                ctx.Entry(record).State = EntityState.Added;
-                ctx.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
 
-        public async void AddWeatherRecords(IEnumerable<WeatherRecord> records)
+        private void OnStationsChanged()
         {
-            //using (var ctx = new Database())
+            StationsChanged?.Invoke(this, null);
+        }
+
+
+
+        public async void DeleteStation(WeatherStation station)
+        {
+            await _stationRepository.DeleteStationAsync(station);
+            GetAllStationsAsync();
+            OnStationsChanged();
+        }
+
+        public WeatherStation Update(WeatherStation station)
+        {
+            //if (station.Id == 0)
             //{
-            //    ctx.Configuration.AutoDetectChangesEnabled = false;
-            //    ctx.Configuration.ValidateOnSaveEnabled = false;
-            //    ctx.WeatherRecords.AddRange(records);
-            //    await ctx.SaveChangesAsync();
+            //    station.Id = _stationRepository.AddStationAsync(station);
+            //    return station;
+            //}
+            //station.Id = _stationRepository.UpdateStationAsync(station);
+            //GetAllStations();
+            //OnStationsChanged();
+            return station;
+        }
+
+        public void CreateTables()
+        {
+            _stationRepository.CreateTables();
+        }
+
+
+
+
+
+
+
+
+        public Task<List<IWeatherRecord>> GetRecordsForStationAsync(IWeatherStation station)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+
+
+        public List<WeatherRecord> GetRecordsForStation(WeatherStation station)
+        {
+           // List<WeatherRecord> records = _stationRepository.GetWeatherRecordsForStation(station);
+
+
+
+
+            //foreach (var record in records)
+            //{
+            //    record.SensorValues = _stationRepository.GetSensorValuesForRecordId(record.Id);
             //}
 
-            //using (var ctx = new Database())
-            //{
-            //    using (var t = new TransactionScope())
-            //    {
-            //        ctx.BulkInsert(records);
-            //        //ctx.SensorValues.AddRange(sensorValues);
-            //        await ctx.SaveChangesAsync();
-            //        t.Complete();
-            //    }
-
-            //}
-        }
-
-        public void DeleteSensor(Sensor sensor)
-        {
-            using (var ctx = new Database())
-            {
-                var foundsensorvalues = ctx.SensorValues.Where(x => x.Sensor.Id == sensor.Id);
-                ctx.SensorValues.RemoveRange(foundsensorvalues);
-                ctx.SaveChanges();
-                var found = ctx.Sensors.Find(sensor.Id);
-
-                ctx.Entry(found).State = EntityState.Deleted;
-                ctx.SaveChanges();
-            }
-
-            //TODO if all sensors for a weatherrecord are deleted the weather record still exists. It should be removed too.
-        }
-
-        public void UpdateSensor(Sensor sensor)
-        {
-            using (var ctx = new Database())
-            {
-                var existing = ctx.Sensors.FirstOrDefault(x => x.Id == sensor.Id);
-                if (existing == null) return;
-                ctx.Entry(existing).CurrentValues.SetValues(sensor);
-                ctx.Entry(existing).State = EntityState.Modified;
-                ctx.SaveChanges();
-            }
-        }
-
-        public WeatherStation SelectedStation { get; set; }
-
-        public void AddStation(WeatherStation station)
-        {
-            using (var ctx = new Database())
-            {
-                ctx.WeatherStations.Add(station);
-                ctx.SaveChanges();
-                Stations.Add(station);
-            }
-        }
-
-        public async Task<List<WeatherStation>> GetAllStations()
-        {
-            using (var ctx = new Database())
-            {
-                if (Stations == null)
-                {
-                    Stations = new ObservableCollection<WeatherStation>();
-                }
-                Stations.Clear();
-
-                var all = await ctx.WeatherStations.Include(x => x.WeatherRecords.Select(p => p.SensorValues)).Include(y => y.Sensors).AsNoTracking().ToListAsync();
-
-                return all;
-            }
+            return null;
         }
     }
 }

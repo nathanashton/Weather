@@ -1,32 +1,40 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Weather.Common.Entities;
+using Weather.Common.Interfaces;
 
 namespace Weather.Core.Interfaces
 {
     public interface IStationCore
     {
-        //List<WeatherStation> GetAllStations();
-        //WeatherStation AddStation(WeatherStation station);
-        //void DeleteStation(WeatherStation station);
-        //WeatherStation Update(WeatherStation station);
-        //ObservableCollection<WeatherStation> Stations { get; set; }
-        //event EventHandler StationsChanged;
-        //void CreateTables();
-        //List<WeatherRecord> GetRecordsForStation(WeatherStation station);
+        void GetAllStationsAsync();
 
-        WeatherStation SelectedStation { get; set; }
-        ObservableCollection<WeatherStation> Stations { get; set; }
 
-        void AddStation(WeatherStation station);
-        void DeleteStation(WeatherStation station);
-        Task<List<WeatherStation>> GetAllStations();
-        void DeleteSensor(Sensor sensor);
-        void UpdateSensor(Sensor sensor);
-        void UpdateStation(WeatherStation station);
-        void AddSensor(Sensor sensor);
-        void AddWeatherRecord(WeatherRecord record);
-        void AddWeatherRecords(IEnumerable<WeatherRecord> records);
+
+
+
+        Task<IWeatherStation> AddStationAsync(IWeatherStation station);
+
+
+
+
+
+
+
+        void DeleteStationAsync(IWeatherStation station);
+
+
+        Task<IWeatherStation> UpdateStationAsync(IWeatherStation station);
+
+
+
+        ObservableCollection<IWeatherStation> Stations { get; set; }
+        event EventHandler StationsChanged;
+        void CreateTables();
+
+
+        Task<List<IWeatherRecord>> GetRecordsForStationAsync(IWeatherStation station);
     }
 }
