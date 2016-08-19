@@ -14,73 +14,51 @@ namespace Weather.Core
     public class StationCore : IStationCore
     {
 
-        public ObservableCollection<IWeatherStation> Stations { get; set; }
-        public event EventHandler StationsChanged;
-        private readonly IStationRepository _stationRepository;
+     
+    
+        private readonly IWeatherStationRepository _weatherStationRepository;
 
-
-        public StationCore(IStationRepository stationRepository)
+        public StationCore(IWeatherStationRepository weatherStationRepository)
         {
-            _stationRepository = stationRepository;
-            Stations = new ObservableCollection<IWeatherStation>();
+            _weatherStationRepository = weatherStationRepository;
+ }
+
+        public async Task<IWeatherStation> UpdateStationAsync(IWeatherStation station)
+        {
+          //  await _weatherStationRepository.UpdateStationAsync(station);
+            return station;
         }
 
-
-        public Task<IWeatherStation> UpdateStationAsync(IWeatherStation station)
+        public async Task<List<IWeatherStation>> GetAllStationsAsync()
         {
-            throw new NotImplementedException();
-        }
-
-
-
-        public async void GetAllStationsAsync()
-        {
-            var allStations = await _stationRepository.GetAllWeatherStationsAsync();
-            Stations = new ObservableCollection<IWeatherStation>(allStations);
-            StationsChanged?.Invoke(this, null);
+          //  var allStations = await _weatherStationRepository.GetAllWeatherStationsWithSensorsAndRecordsAsync();
+            return null;
         }
 
 
 
         public async Task<IWeatherStation> AddStationAsync(IWeatherStation station)
         {
-            station.WeatherStationId = await _stationRepository.AddStationAsync(station);
-            GetAllStationsAsync();
-            OnStationsChanged();
+           // station.WeatherStationId = await _weatherStationRepository.AddStationAsync(station);
             return station;
         }
-
-
-
-
-
+        
         public void DeleteStationAsync(IWeatherStation station)
         {
-            throw new NotImplementedException();
+           // _weatherStationRepository.DeleteStationAsync(station);
         }
 
-        private void OnStationsChanged()
-        {
-            StationsChanged?.Invoke(this, null);
-        }
+      
 
-
-
-        public async void DeleteStation(WeatherStation station)
-        {
-            await _stationRepository.DeleteStationAsync(station);
-            GetAllStationsAsync();
-            OnStationsChanged();
-        }
-
+   
         public WeatherStation Update(WeatherStation station)
         {
             //if (station.Id == 0)
             //{
-            //    station.Id = _stationRepository.AddStationAsync(station);
+            //    station.Id = _weatherStationRepository.AddStationAsync(station);
             //    return station;
             //}
-            //station.Id = _stationRepository.UpdateStationAsync(station);
+            //station.Id = _weatherStationRepository.UpdateStationAsync(station);
             //GetAllStations();
             //OnStationsChanged();
             return station;
@@ -88,7 +66,7 @@ namespace Weather.Core
 
         public void CreateTables()
         {
-            _stationRepository.CreateTables();
+           // _weatherStationRepository.CreateTables();
         }
 
 
@@ -110,14 +88,14 @@ namespace Weather.Core
 
         public List<WeatherRecord> GetRecordsForStation(WeatherStation station)
         {
-           // List<WeatherRecord> records = _stationRepository.GetWeatherRecordsForStation(station);
+           // List<WeatherRecord> records = _weatherStationRepository.GetWeatherRecordsForStation(station);
 
 
 
 
             //foreach (var record in records)
             //{
-            //    record.SensorValues = _stationRepository.GetSensorValuesForRecordId(record.Id);
+            //    record.SensorValues = _weatherStationRepository.GetSensorValuesForRecordId(record.Id);
             //}
 
             return null;

@@ -20,9 +20,14 @@ namespace Weather.DependencyResolver
             container.RegisterType<IStationCore, StationCore>();
             container.RegisterType<ISensorCore, SensorCore>();
             container.RegisterType<IImporter, Importer>();
+            container.RegisterType<IUnitTypesCore, UnitTypesCore>();
 
-            container.RegisterType<IStationRepository, StationRepository>();
+            container.RegisterType<IWeatherStationRepository, WeatherStationRepository>();
             container.RegisterType<ISensorRepository, SensorRepository>();
+
+            container.RegisterType<ISensorTypeRepository, SensorTypeRepository>();
+            container.RegisterType<ISensorTypeCore, SensorTypeCore>();
+
 
             return container;
         }

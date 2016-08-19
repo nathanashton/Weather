@@ -11,8 +11,8 @@ namespace Weather.Common.Entities
         public string Name => Manufacturer + " " + Model;
         public string Manufacturer { get; set; }
         public string Model { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
         public IList<IWeatherRecord> WeatherRecords { get; set; } = new List<IWeatherRecord>();
         public IList<ISensor> Sensors { get; set; } = new List<ISensor>();
 

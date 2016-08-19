@@ -1,10 +1,14 @@
-﻿using PropertyChanged;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Practices.Unity;
+using PropertyChanged;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using Weather.Common;
 using Weather.Common.Entities;
-using Weather.Core;
+using Weather.Common.Interfaces;
+using Weather.Common.Units;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
@@ -15,9 +19,11 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class MainWindowViewModel : NotifyBase
     {
-        public ObservableCollection<WeatherStation> Stations { get; set; }
+        public ObservableCollection<IWeatherStation> Stations { get; set; }
         private readonly IStationCore _stationCore;
-        private readonly IImporter _importer;
+
+
+
 
         private WeatherStation _selectedStation;
 
@@ -28,8 +34,20 @@ namespace Weather.ViewModels
             {
                 _selectedStation = value;
                 OnPropertyChanged(() => SelectedStation);
-               // _stationCore.SelectedStation = value;
+              //  _stationCore.SelectedStation = value;
             }
+        }
+
+        public MainWindowViewModel(IStationCore stationCore, IImporter importer)
+        {
+            _stationCore = stationCore;
+            Stations = new ObservableCollection<IWeatherStation>();
+        //   GetAllStations();
+
+
+            var all = Units.UnitsList;
+            var lltypes = UnitTypes.UnitTypesList;
+
         }
 
         public ICommand ImportCommand
@@ -37,11 +55,15 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Import, x => SelectedStation != null); }
         }
 
+        public ICommand SensorTypesCommand
+        {
+            get { return new RelayCommand(SensorTypes, x =>true); }
+        }
+
         public ICommand StationsCommand
         {
             get { return new RelayCommand(OpenStations, x => true); }
         }
-
 
         private void OpenStations(object obj)
         {
@@ -52,23 +74,12 @@ namespace Weather.ViewModels
             GetAllStations();
         }
 
-        public MainWindowViewModel(IStationCore stationCore, IImporter importer)
-        {
-            _stationCore = stationCore;
-            _importer = importer;
-            Stations = new ObservableCollection<WeatherStation>();
-            GetAllStations();
-        }
-
-
         private async void GetAllStations()
         {
-            //Stations.Clear();
-            //var all = await _stationCore.GetAllStations();
-            //foreach (var station in all)
-            //{
-            //    Stations.Add(station);
-            //}
+            Stations.Clear();
+            var allstations = await _stationCore.GetAllStationsAsync();
+            Stations = new ObservableCollection<IWeatherStation>(allstations);
+
         }
 
         private void Import(object obj)
@@ -80,9 +91,16 @@ namespace Weather.ViewModels
             GetAllStations();
         }
 
+        private void SensorTypes(object obj)
+        {
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<SensorTypesWindow>();
+            window.ShowDialog();
+        }
+
         public void ClearAll()
         {
-          //  _database.ClearAll();
+            //  _database.ClearAll();
         }
     }
 }

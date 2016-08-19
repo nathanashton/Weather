@@ -17,12 +17,12 @@ namespace Weather.Core
 
         public void UpdateSensorForWeatherStation(Sensor sensor)
         {
-            _sensorRepository.Update(sensor);
+           // _sensorRepository.Update(sensor);
         }
 
         public void DeleteSensor(Sensor sensor)
         {
-            _sensorRepository.DeleteSensor(sensor);
+          //  _sensorRepository.DeleteSensor(sensor);
         }
 
         public Sensor AddSensor(Sensor sensor)
@@ -38,12 +38,12 @@ namespace Weather.Core
 
         public void AddSensorValues(IEnumerable<ISensorValue> values)
         {
-            _sensorRepository.InsertSensorValues(values);
+          //  _sensorRepository.InsertSensorValues(values);
         }
 
         public void AddWeatherRecords(IEnumerable<IWeatherRecord> records)
         {
-            _sensorRepository.InsertWeatherRecords(records);
+          //  _sensorRepository.InsertWeatherRecords(records);
         }
     }
 }

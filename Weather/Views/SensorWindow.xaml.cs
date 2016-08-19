@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using Weather.Common.Entities;
+using Weather.Common.Units;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -68,7 +69,7 @@ namespace Weather.Views
             if (Types.SelectedItem == null) return;
             var f = (KeyValuePair<string, string>)Types.SelectedItem;
 
-            var allEnums = Enum.GetValues(typeof(Enums.UnitType));
+            var allEnums = Enum.GetValues(typeof(UnitType));
             foreach (var value in allEnums)
             {
                 if (f.Key == value.ToString())

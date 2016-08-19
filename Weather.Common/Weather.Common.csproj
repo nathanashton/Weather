@@ -41,14 +41,19 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\SensorType.cs" />
     <Compile Include="Entities\SensorValue.cs" />
+    <Compile Include="Interfaces\ISensorType.cs" />
+    <Compile Include="Units\Unit.cs" />
+    <Compile Include="Units\UnitType.cs" />
+    <Compile Include="Units\UnitTypes.cs" />
     <Compile Include="EventArgs\ImportEventArgs.cs" />
     <Compile Include="Interfaces\ISensorValue.cs" />
     <Compile Include="Interfaces\IWeatherRecord.cs" />
     <Compile Include="Interfaces\IWeatherStation.cs" />
     <Compile Include="Interfaces\ISensor.cs" />
     <Compile Include="Entities\Sensor.cs" />
-    <Compile Include="Entities\Units.cs" />
+    <Compile Include="Units\Units.cs" />
     <Compile Include="Entities\WeatherRecord.cs" />
     <Compile Include="Entities\WeatherStation.cs" />
     <Compile Include="Exceptions\BookieException.cs" />

@@ -125,11 +125,11 @@
     </ApplicationDefinition>
     <Compile Include="Converters\NullBoolConverter.cs" />
     <Compile Include="Converters\NullEnabledConverter.cs" />
-    <Compile Include="EnumToItemsSource.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorWindowViewModel.cs" />
     <Compile Include="ViewModels\StationWindowViewModel.cs" />
+    <Compile Include="ViewModels\SensorTypeWindowViewModel.cs" />
     <Compile Include="Views\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
     </Compile>
@@ -141,6 +141,9 @@
     </Compile>
     <Compile Include="Views\StationWindow.xaml.cs">
       <DependentUpon>StationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SensorTypesWindow.xaml.cs">
+      <DependentUpon>SensorTypesWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ImportWindow.xaml">
       <SubType>Designer</SubType>
@@ -170,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SensorTypesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +225,10 @@
       <Project>{55462379-e855-495e-b91d-149f8b44329a}</Project>
       <Name>Weather.DependencyResolver</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\minus_48px.png" />
+    <Resource Include="Resources\Icons\plus_48px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />

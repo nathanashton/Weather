@@ -104,7 +104,9 @@ namespace Weather.Core
                         {
                             dt = DateTime.Parse(csv[_timestamp[0]] + " " + csv[_timestamp[1]]);
                         }
-                        var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
+                        //    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
+                     var weatherrecord = new WeatherRecord {TimeStamp = dt};
+
 
                         foreach (var d in _data)
                         {
@@ -112,24 +114,24 @@ namespace Weather.Core
                             var s = new SensorValue();
                             if (double.TryParse(csv[d.Item2], out value))
                             {
-                                s.Sensor = d.Item1 as Sensor;
-                                s.RawValue = value;
-                                if (s.Sensor.Type == Enums.UnitType.Temperature)
-                                {
-                                    s.DisplayUnit = Units.Celsius;
-                                }
-                                if (s.Sensor.Type == Enums.UnitType.Humidity)
-                                {
-                                    s.DisplayUnit = Units.Humidity;
-                                }
-                                if (s.Sensor.Type == Enums.UnitType.Pressure)
-                                {
-                                    s.DisplayUnit = Units.Hectopascals;
-                                }
-                                if (s.Sensor.Type == Enums.UnitType.WindSpeed)
-                                {
-                                    s.DisplayUnit = Units.Kmh;
-                                }
+                                //s.Sensor = d.Item1 as Sensor;
+                                //s.RawValue = value;
+                                //if (s.Sensor.Type == Enums.UnitType.Temperature)
+                                //{
+                                //    s.DisplayUnit = Units.Celsius;
+                                //}
+                                //if (s.Sensor.Type == Enums.UnitType.Humidity)
+                                //{
+                                //    s.DisplayUnit = Units.Humidity;
+                                //}
+                                //if (s.Sensor.Type == Enums.UnitType.Pressure)
+                                //{
+                                //    s.DisplayUnit = Units.Hectopascals;
+                                //}
+                                //if (s.Sensor.Type == Enums.UnitType.WindSpeed)
+                                //{
+                                //    s.DisplayUnit = Units.Kmh;
+                                //}
                             }
                          //   _sensorCore.AddSensorValue(s);
                             listSensorValues.Add(s); // Bulk insert

@@ -9,7 +9,7 @@ namespace Weather.Core.Interfaces
 {
     public interface IStationCore
     {
-        void GetAllStationsAsync();
+        Task<List<IWeatherStation>> GetAllStationsAsync();
 
 
 
@@ -30,8 +30,6 @@ namespace Weather.Core.Interfaces
 
 
 
-        ObservableCollection<IWeatherStation> Stations { get; set; }
-        event EventHandler StationsChanged;
         void CreateTables();
 
 

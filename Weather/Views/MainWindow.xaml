@@ -17,11 +17,14 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" />
+                <MenuItem Header="Sensor Types" Command="{Binding SensorTypesCommand}"/>
                 <MenuItem Header="_Open" />
                 <MenuItem Header="_Save" />
                 <Separator />
                 <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="Sensor Types" Command="{Binding SensorTypesCommand}"/>
             </MenuItem>
         </Menu>
         <ToolBarTray Background="DarkGray" DockPanel.Dock="Top" VerticalAlignment="Top">

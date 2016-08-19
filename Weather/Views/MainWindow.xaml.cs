@@ -36,14 +36,14 @@ namespace Weather.Views
             dg.Columns.Clear();
             if (_viewModel.SelectedStation == null) return;
             var columns = _viewModel.SelectedStation
-              .Sensors.Select((x, i) => new { x.Name, Index = i }).ToArray();
+              .Sensors.Select((x, i) => new { x.Model, Index = i }).ToArray();
             dg.Columns.Add(new DataGridTextColumn() { Header = "Time", Binding = new Binding("TimeStamp") });
 
             foreach (var column in columns)
             {
                 var binding = new Binding($"SensorValues[{column.Index}].");
                 string sort = $"SensorValues[{column.Index}].RawValue";
-                dg.Columns.Add(new DataGridTextColumn() { Header = column.Name, Binding = binding, SortMemberPath = sort });
+                dg.Columns.Add(new DataGridTextColumn() { Header = column.Model, Binding = binding, SortMemberPath = sort });
             }
 
             dg.ItemsSource = _viewModel.SelectedStation.WeatherRecords;

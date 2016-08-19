@@ -15,15 +15,15 @@ namespace Weather.Views
             Loaded += StationMapWindow_Loaded;
         }
 
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
 
         private void StationMapWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Latitude != 0 && Longitude != 0)
+            if (Latitude != 0 && Longitude != 0 && Latitude != null && Longitude != null)
             {
                 var pushpin = new Pushpin();
-                pushpin.Location = new Location { Latitude = Latitude, Longitude = Longitude };
+                pushpin.Location = new Location { Latitude = (double)Latitude, Longitude = (double)Longitude };
                 myMap.Children.Add(pushpin);
                 myMap.Center = pushpin.Location;
             }

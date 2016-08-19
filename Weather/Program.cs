@@ -27,6 +27,9 @@ namespace Weather
             container.RegisterType<ImportWindow>();
             container.RegisterType<ImportWindowViewModel>();
 
+            container.RegisterType<SensorTypesWindow>();
+            container.RegisterType<SensorTypeWindowViewModel>();
+
             container.RegisterType<StationMapWindow>();
 
             var log = container.Resolve<ILog>();

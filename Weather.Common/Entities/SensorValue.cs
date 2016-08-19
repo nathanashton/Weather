@@ -1,4 +1,5 @@
 ﻿using Weather.Common.Interfaces;
+using Weather.Common.Units;
 
 namespace Weather.Common.Entities
 {
@@ -9,7 +10,6 @@ namespace Weather.Common.Entities
         public double? CorrectedValue { get; }
         public Unit DisplayUnit { get; set; }
         public double? DisplayValue { get; set; }
-
         public ISensor Sensor { get; set; }
 
         public override string ToString()

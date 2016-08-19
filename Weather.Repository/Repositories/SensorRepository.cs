@@ -36,6 +36,11 @@ namespace Weather.Repository.Repositories
             //}
         }
 
+        public void UpdateSensor(Sensor sensor)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteSensor(Sensor sensor)
         {
             //using (
@@ -54,6 +59,16 @@ namespace Weather.Repository.Repositories
             //    }
             //}
 
+        }
+
+        public void GetAllSensors()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetSensorsForWeatherStation(WeatherStation station)
+        {
+            throw new NotImplementedException();
         }
 
         public long AddSensor(Sensor sensor)

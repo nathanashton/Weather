@@ -2,6 +2,7 @@
 using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Entities;
+using Weather.Common.Units;
 using Weather.Helpers;
 
 namespace Weather.ViewModels
@@ -14,14 +15,14 @@ namespace Weather.ViewModels
             Sensor = new Sensor();
         }
 
-        public Enums.UnitType SelectedType { get; set; }
+        public UnitType SelectedType { get; set; }
 
         public Sensor Sensor { get; set; }
         public Sensor EditSensor { get; set; }
 
         public string CorrectionValue { get; set; }
 
-        public IEnumerable<KeyValuePair<string, string>> Types
-            => EnumHelper.GetAllValuesAndDescriptions<Enums.UnitType>();
+        //public IEnumerable<KeyValuePair<string, string>> Types
+        //    => EnumHelper.GetAllValuesAndDescriptions<UnitType>();
     }
 }
