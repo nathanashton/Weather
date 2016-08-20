@@ -56,11 +56,13 @@
     <Compile Include="Interfaces\ISensorTypeCore.cs" />
     <Compile Include="Interfaces\IStationCore.cs" />
     <Compile Include="Interfaces\ISensorCore.cs" />
+    <Compile Include="Interfaces\IUnitCore.cs" />
     <Compile Include="Interfaces\IUnitTypesCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SensorCore.cs" />
     <Compile Include="SensorTypeCore.cs" />
     <Compile Include="StationCore.cs" />
+    <Compile Include="UnitCore.cs" />
     <Compile Include="UnitTypesCore.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>

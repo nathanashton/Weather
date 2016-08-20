@@ -170,10 +170,6 @@ namespace Weather.ViewModels
 
         private void AddSensor(object obj)
         {
-            //var container = Resolver.Bootstrap();
-            //var window = container.Resolve<SensorWindow>();
-            //window.ShowDialog();
-
             //var sensor = window.ViewModel.Sensor;
             //if (sensor == null) return;
             //sensor.Station = SelectedStation;

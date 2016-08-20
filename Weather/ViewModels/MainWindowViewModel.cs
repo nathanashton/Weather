@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using PropertyChanged;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Weather.Common;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
-using Weather.Common.Units;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
@@ -22,9 +18,6 @@ namespace Weather.ViewModels
         public ObservableCollection<IWeatherStation> Stations { get; set; }
         private readonly IStationCore _stationCore;
 
-
-
-
         private WeatherStation _selectedStation;
 
         public WeatherStation SelectedStation
@@ -34,7 +27,7 @@ namespace Weather.ViewModels
             {
                 _selectedStation = value;
                 OnPropertyChanged(() => SelectedStation);
-              //  _stationCore.SelectedStation = value;
+                //  _stationCore.SelectedStation = value;
             }
         }
 
@@ -42,12 +35,7 @@ namespace Weather.ViewModels
         {
             _stationCore = stationCore;
             Stations = new ObservableCollection<IWeatherStation>();
-        //   GetAllStations();
-
-
-            var all = Units.UnitsList;
-            var lltypes = UnitTypes.UnitTypesList;
-
+            //   GetAllStations();
         }
 
         public ICommand ImportCommand
@@ -57,7 +45,12 @@ namespace Weather.ViewModels
 
         public ICommand SensorTypesCommand
         {
-            get { return new RelayCommand(SensorTypes, x =>true); }
+            get { return new RelayCommand(SensorTypes, x => true); }
+        }
+
+        public ICommand UnitsCommand
+        {
+            get { return new RelayCommand(Units, x => true); }
         }
 
         public ICommand StationsCommand
@@ -79,7 +72,6 @@ namespace Weather.ViewModels
             Stations.Clear();
             var allstations = await _stationCore.GetAllStationsAsync();
             Stations = new ObservableCollection<IWeatherStation>(allstations);
-
         }
 
         private void Import(object obj)
@@ -95,6 +87,13 @@ namespace Weather.ViewModels
         {
             var container = new Resolver().Bootstrap();
             var window = container.Resolve<SensorTypesWindow>();
+            window.ShowDialog();
+        }
+
+        private void Units(object obj)
+        {
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<UnitsWindow>();
             window.ShowDialog();
         }
 

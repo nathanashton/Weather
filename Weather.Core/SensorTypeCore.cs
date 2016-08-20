@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Weather.Common.Interfaces;
+using Weather.Common.Units;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
 
@@ -48,6 +50,12 @@ namespace Weather.Core
                 return sensorType;
             }
             Update(sensorType);
+            return sensorType;
+        }
+
+        public ISensorType AddUnitToSensorType(Unit unit, ISensorType sensorType)
+        {
+            _repository.AddUnitToSensorType(unit, sensorType);
             return sensorType;
         }
     }

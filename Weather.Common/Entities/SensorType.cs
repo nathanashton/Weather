@@ -1,4 +1,7 @@
-﻿using Weather.Common.Interfaces;
+﻿using System;
+using System.Collections.ObjectModel;
+using Weather.Common.Interfaces;
+using Weather.Common.Units;
 
 namespace Weather.Common.Entities
 {
@@ -6,5 +9,6 @@ namespace Weather.Common.Entities
     {
         public int SensorTypeId { get; set; }
         public string Name { get; set; }
+        public ObservableCollection<Unit> Units { get; set; } = new ObservableCollection<Unit>();
     }
 }

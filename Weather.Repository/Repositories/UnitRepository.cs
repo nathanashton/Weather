@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
@@ -9,27 +8,20 @@ using Weather.Repository.Interfaces;
 
 namespace Weather.Repository.Repositories
 {
-    public class SensorTypeRepository : ISensorTypeRepository
+    public class UnitRepository : IUnitRepository
     {
         private const string DbConnectionString = @"Data Source=weather.sqlite;Version=3;foreign keys=true;";
         private readonly ILog _log;
 
-        public SensorTypeRepository(ILog log)
+        public UnitRepository(ILog log)
         {
             _log = log;
         }
 
-        public List<ISensorType> GetAll()
+        public List<Unit> GetAll()
         {
-            var sensorTypes = new List<ISensorType>();
-            var sql = @"SELECT 
-                        st.[SensorTypeId] as SensorTypeId,
-                        st.[Name] as Name,
-                        u.[UnitId] as UnitId,
-                        u.[DisplayName] as DisplayName
-                        FROM [SensorTypes] st
-                        LEFT JOIN SensorTypes_Units stu ON st.SensorTypeId = stu.SensorTypeId
-                        LEFT JOIN Units u ON stu.UnitId = u.UnitId";
+            var units = new List<Unit>();
+            var sql = @"SELECT * FROM Units";
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))
@@ -42,33 +34,12 @@ namespace Weather.Repository.Repositories
                             {
                                 while (reader.Read())
                                 {
-                                    var sensorTypeId = Convert.ToInt32(reader["SensorTypeId"]);
-                                    var name = reader["Name"].ToString();
-                                    var unitId = Convert.ToInt32(reader["UnitId"]);
-                                    var displayName = reader["DisplayName"].ToString();
-                                    var sensorType = sensorTypes.Where(p => p.SensorTypeId == sensorTypeId).FirstOrDefault();
-                                    if (sensorType == null)
+                                    var sensorType = new Unit
                                     {
-                                        sensorType = new SensorType();
-                                        sensorType.SensorTypeId = sensorTypeId;
-                                        sensorType.Name = name;
-                                        var unit = new Unit();
-                                        unit.UnitId = unitId;
-                                        unit.DisplayName = displayName;
-                                        sensorType.Units.Add(unit);
-                                    }
-                                    else
-                                    {
-                                        var unit = new Unit();
-                                        unit.UnitId = unitId;
-                                        unit.DisplayName = displayName;
-                                        if (!sensorType.Units.Contains(unit))
-                                        {
-                                            sensorType.Units.Add(unit);
-                                        }
-                                    }
-                                    sensorTypes.Add(sensorType);
-   
+                                        UnitId = Convert.ToInt32(reader["UnitId"]),
+                                        DisplayName = reader["DisplayName"].ToString()
+                                    };
+                                    units.Add(sensorType);
                                 }
                             }
                         }
@@ -79,13 +50,13 @@ namespace Weather.Repository.Repositories
             {
                 _log.Error("", ex);
             }
-            return sensorTypes;
+            return units;
         }
 
-        public ISensorType GetById(int id)
+        public Unit GetById(int id)
         {
-            ISensorType sensorType = null;
-            var sql = @"SELECT * FROM SensorTypes WHERE SensorId = @Id";
+            Unit unit = null;
+            var sql = @"SELECT * FROM Units WHERE UnitId = @Id";
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))
@@ -103,10 +74,10 @@ namespace Weather.Repository.Repositories
                                 }
                                 while (reader.Read())
                                 {
-                                    sensorType = new SensorType
+                                    unit = new Unit
                                     {
-                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
-                                        Name = reader["Name"].ToString()
+                                        UnitId = Convert.ToInt32(reader["UnitId"]),
+                                        DisplayName = reader["DisplayName"].ToString()
                                     };
                                 }
                             }
@@ -118,12 +89,12 @@ namespace Weather.Repository.Repositories
             {
                 _log.Error("", ex);
             }
-            return sensorType;
+            return unit;
         }
 
-        public int Add(ISensorType sensorType)
+        public int Add(Unit unit)
         {
-            var sql = @"INSERT INTO SensorTypes (Name) VALUES (@Name)";
+            var sql = @"INSERT INTO Units (DisplayName) VALUES (@DisplayName)";
             var sql2 = "SELECT last_insert_rowid();";
             try
             {
@@ -133,7 +104,7 @@ namespace Weather.Repository.Repositories
                     {
                         using (var command = new SQLiteCommand(sql, connection))
                         {
-                            command.Parameters.AddWithValue("@Name", sensorType.Name);
+                            command.Parameters.AddWithValue("@DisplayName", unit.DisplayName);
                             command.ExecuteNonQuery();
 
                             var command2 = new SQLiteCommand(sql2, connection);
@@ -152,7 +123,7 @@ namespace Weather.Repository.Repositories
 
         public void Delete(int id)
         {
-            var sql = @"DELETE FROM SensorTypes WHERE SensorTypeId = @Id";
+            var sql = @"DELETE FROM Units WHERE UnitId = @Id";
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))
@@ -173,9 +144,9 @@ namespace Weather.Repository.Repositories
             }
         }
 
-        public void Update(ISensorType sensorType)
+        public void Update(Unit unit)
         {
-            var sql = @"UPDATE SensorTypes SET Name = @Name WHERE SensorTypeId = @Id";
+            var sql = @"UPDATE Units SET DisplayName = @DisplayName WHERE UnitId = @Id";
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))
@@ -184,33 +155,8 @@ namespace Weather.Repository.Repositories
                     {
                         using (var command = new SQLiteCommand(sql, connection))
                         {
-                            command.Parameters.AddWithValue("@Id", sensorType.SensorTypeId);
-                            command.Parameters.AddWithValue("@Name", sensorType.Name);
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                _log.Error("", ex);
-            }
-        }
-
-        public void AddUnitToSensorType(Unit unit, ISensorType sensorType)
-        {
-            var sql = @"INSERT INTO SensorTypes_Units (SensorTypeId, UnitId) VALUES (@SensorTypeId, @UnitId)";
-            try
-            {
-                using (var connection = new SQLiteConnection(DbConnectionString))
-                {
-                    connection.Open();
-                    {
-                        using (var command = new SQLiteCommand(sql, connection))
-                        {
-                            command.Parameters.AddWithValue("@SensorTypeId", sensorType.SensorTypeId);
-                            command.Parameters.AddWithValue("@UnitId", unit.UnitId);
-
+                            command.Parameters.AddWithValue("@Id", unit.UnitId);
+                            command.Parameters.AddWithValue("@DisplayName", unit.DisplayName);
                             command.ExecuteNonQuery();
                         }
                     }

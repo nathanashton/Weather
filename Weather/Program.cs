@@ -30,6 +30,12 @@ namespace Weather
             container.RegisterType<SensorTypesWindow>();
             container.RegisterType<SensorTypeWindowViewModel>();
 
+            container.RegisterType<UnitsWindow>();
+            container.RegisterType<UnitsWindowViewModel>();
+
+            container.RegisterType<UnitSelectorWindow>();
+            container.RegisterType<UnitSelectorWindowViewModel>();
+
             container.RegisterType<StationMapWindow>();
 
             var log = container.Resolve<ILog>();

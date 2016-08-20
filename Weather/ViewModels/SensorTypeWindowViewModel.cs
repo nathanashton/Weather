@@ -6,10 +6,14 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
+using Weather.Common.Units;
 using Weather.Core.Interfaces;
+using Weather.DependencyResolver;
 using Weather.Helpers;
 using Weather.Views;
 using static System.String;
+using Microsoft.Practices.Unity;
+
 
 namespace Weather.ViewModels
 {
@@ -19,6 +23,7 @@ namespace Weather.ViewModels
         public SensorTypesWindow SensorTypesWindow { get; set; }
         public bool IsDirty { get; set; }
         public ObservableCollection<ISensorType> SensorTypes { get; set; }
+        public Unit SelectedUnit { get; set; }
         public ISensorType SelectedSensorType { get; set; }
         private readonly ISensorTypeCore _sensorTypeCore;
 
@@ -27,11 +32,21 @@ namespace Weather.ViewModels
             _sensorTypeCore = sensorTypeCore;
             SensorTypes = new ObservableCollection<ISensorType>();
             GetSensorTypes();
-        }
+        } 
 
-        public ICommand SaveCommand
+             public ICommand SaveCommand
         {
             get { return new RelayCommand(Save, x => IsDirty); }
+        }
+
+        public ICommand AddUnitCommand
+        {
+            get { return new RelayCommand(AddUnit, x => SelectedSensorType != null); }
+        }
+
+        public ICommand DeleteUnitCommand
+        {
+            get { return new RelayCommand(DeleteUnit, x => SelectedUnit != null); }
         }
 
         public ICommand AddCommand
@@ -46,6 +61,7 @@ namespace Weather.ViewModels
 
         private void GetSensorTypes()
         {
+            SensorTypes.Clear();
             SensorTypes = new ObservableCollection<ISensorType>(_sensorTypeCore.GetAll());
             SelectedSensorType = SensorTypes.Count == 0 ? null : SensorTypes.First();
         }
@@ -110,5 +126,21 @@ namespace Weather.ViewModels
             IsDirty = false;
             GetSensorTypes();
         }
+
+        private void AddUnit(object obj)
+        {
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<UnitSelectorWindow>();
+            window._viewModel.SensorType = SelectedSensorType;
+            window.ShowDialog();
+            GetSensorTypes();
+        }
+
+        private void DeleteUnit(object obj)
+        {
+
+        }
     }
+
+
 }

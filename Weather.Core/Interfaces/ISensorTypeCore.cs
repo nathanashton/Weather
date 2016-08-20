@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
+using Weather.Common.Units;
 
 namespace Weather.Core.Interfaces
 {
@@ -12,5 +13,6 @@ namespace Weather.Core.Interfaces
         void Delete(ISensorType sensorType);
         void Update(ISensorType sensorType);
         ISensorType AddOrUpdate(ISensorType sensorType);
+        ISensorType AddUnitToSensorType(Unit unit, ISensorType sensorType);
     }
 }

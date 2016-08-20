@@ -125,11 +125,14 @@
     </ApplicationDefinition>
     <Compile Include="Converters\NullBoolConverter.cs" />
     <Compile Include="Converters\NullEnabledConverter.cs" />
+    <Compile Include="Converters\TestConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorWindowViewModel.cs" />
     <Compile Include="ViewModels\StationWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorTypeWindowViewModel.cs" />
+    <Compile Include="ViewModels\UnitSelectorWindowViewModel.cs" />
+    <Compile Include="ViewModels\UnitsWindowViewModel.cs" />
     <Compile Include="Views\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,12 @@
     </Compile>
     <Compile Include="Views\SensorTypesWindow.xaml.cs">
       <DependentUpon>SensorTypesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UnitSelectorWindow.xaml.cs">
+      <DependentUpon>UnitSelectorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UnitsWindow.xaml.cs">
+      <DependentUpon>UnitsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ImportWindow.xaml">
       <SubType>Designer</SubType>
@@ -177,6 +186,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SensorTypesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UnitSelectorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UnitsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

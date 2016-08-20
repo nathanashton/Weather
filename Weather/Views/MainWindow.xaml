@@ -25,6 +25,8 @@
             </MenuItem>
             <MenuItem Header="_Options">
                 <MenuItem Header="Sensor Types" Command="{Binding SensorTypesCommand}"/>
+                <MenuItem Header="Units" Command="{Binding UnitsCommand}"/>
+
             </MenuItem>
         </Menu>
         <ToolBarTray Background="DarkGray" DockPanel.Dock="Top" VerticalAlignment="Top">
