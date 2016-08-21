@@ -138,7 +138,8 @@ namespace Weather.ViewModels
 
         private void DeleteUnit(object obj)
         {
-
+            _sensorTypeCore.RemoveUnitFromSensorType(SelectedUnit, SelectedSensorType);
+            GetSensorTypes();
         }
     }
 

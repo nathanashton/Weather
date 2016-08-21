@@ -28,6 +28,18 @@ namespace Weather.Views
             InitializeComponent();
             _viewModel = viewModel;
             DataContext = _viewModel;
+            _viewModel.Window = this;
+            Loaded += UnitSelectorWindow_Loaded;
+        }
+
+        private void UnitSelectorWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.GetAllUnits();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

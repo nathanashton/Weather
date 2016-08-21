@@ -58,5 +58,9 @@ namespace Weather.Core
             _repository.AddUnitToSensorType(unit, sensorType);
             return sensorType;
         }
+
+        public void RemoveUnitFromSensorType(Unit unit, ISensorType sensorType)
+        {
+            _repository.RemoveUnitFromSensorType(unit, sensorType);       }
     }
 }

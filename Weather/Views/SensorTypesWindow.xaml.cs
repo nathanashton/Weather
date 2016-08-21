@@ -46,5 +46,10 @@ namespace Weather.Views
 
             _viewModel.SelectedSensorType = selection;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

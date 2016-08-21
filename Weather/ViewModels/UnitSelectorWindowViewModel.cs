@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
@@ -16,6 +17,7 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class UnitSelectorWindowViewModel
     {
+        public Window Window { get; set; }
         private IUnitCore _unitCore;
         private ISensorTypeCore _sensorTypeCore;
         public ObservableCollection<Unit> Units { get; set; }
@@ -27,7 +29,6 @@ namespace Weather.ViewModels
         {
             _unitCore = unitCore;
             _sensorTypeCore = sensorTypeCore;
-            GetAllUnits();
         }
 
         public ICommand AddCommand
@@ -35,15 +36,19 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Add, x => SelectedUnit != null); }
         }
 
-        private void GetAllUnits()
+        public void GetAllUnits()
         {
-            Units = new ObservableCollection<Unit>(_unitCore.GetAll());
+            if (SensorType == null) return;
+            var allUnits = _unitCore.GetAll();
+            var pp = allUnits.Where(p => !SensorType.Units.Any(p2 => p2.UnitId == p.UnitId));
+            Units = new ObservableCollection<Unit>(pp);
             SelectedUnit = Units.Count == 0 ? null : Units.First();
         }
 
         private void Add(object obj)
         {
             _sensorTypeCore.AddUnitToSensorType(SelectedUnit, SensorType);
+            Window.Close();
         }
     }
 }

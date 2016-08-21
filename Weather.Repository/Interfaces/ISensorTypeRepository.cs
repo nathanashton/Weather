@@ -12,5 +12,6 @@ namespace Weather.Repository.Interfaces
         void Delete(int id);
         void Update(ISensorType sensorType);
         void AddUnitToSensorType(Unit unit, ISensorType sensorType);
+        void RemoveUnitFromSensorType(Unit unit, ISensorType sensortype);
     }
 }
