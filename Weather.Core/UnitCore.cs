@@ -9,14 +9,17 @@ namespace Weather.Core
     public class UnitCore : IUnitCore
     {
         private readonly IUnitRepository _repository;
+        private readonly ILog _log;
 
-        public UnitCore(IUnitRepository repository)
+        public UnitCore(IUnitRepository repository, ILog log)
         {
             _repository = repository;
+            _log = log;
         }
 
         public List<Unit> GetAll()
         {
+            _log.Debug("Get all Units");
             return _repository.GetAll();
         }
 

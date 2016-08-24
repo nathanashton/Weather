@@ -26,8 +26,8 @@ namespace Weather.ViewModels
         private bool _singleChecked;
 
 
-        private Stopwatch s =
-        new Stopwatch();
+        private readonly Stopwatch s =
+            new Stopwatch();
 
         public ImportWindowViewModel(IStationCore stationCore, IImporter importer)
         {
@@ -35,25 +35,18 @@ namespace Weather.ViewModels
             Records = new ObservableCollection<ObservableCollection<Record>>();
             DateRecord = new ObservableCollection<Record>();
             DateRecords = new ObservableCollection<ObservableCollection<Record>>();
-            FilteredRecords = new ObservableCollection<ObservableCollection<ViewModels.Record>>();
-            FilteredDateRecords = new ObservableCollection<ObservableCollection<ViewModels.Record>>();
+            FilteredRecords = new ObservableCollection<ObservableCollection<Record>>();
+            FilteredDateRecords = new ObservableCollection<ObservableCollection<Record>>();
 
             _importer = importer;
             importer.ImportChanged += Importer_ImportChanged;
             importer.ImportComplete += Importer_ImportComplete;
 
             //TODO
-         // SelectedStation = stationCore.GetAllStationsAsync()[0];
+            // SelectedStation = stationCore.GetAllStationsAsync()[0];
 
             Matches = new ObservableCollection<Match>();
             SingleChecked = true;
-        }
-
-        private void Importer_ImportComplete(object sender, EventArgs e)
-        {
-            s.Stop();
-            var t = s.ElapsedMilliseconds;
-            Importing = false;
         }
 
         public bool SingleChecked
@@ -144,7 +137,6 @@ namespace Weather.ViewModels
         public ObservableCollection<ObservableCollection<Record>> FilteredDateRecords { get; set; }
 
 
-
         public Match SelectedMatch { get; set; }
         public Record SelectedRecordDate { get; set; }
         public Record SelectedRecordTime { get; set; }
@@ -179,6 +171,15 @@ namespace Weather.ViewModels
         public int Progress { get; set; }
 
         public string FilePath { get; set; }
+
+        public int ExcludeLineCount { get; set; }
+
+        private void Importer_ImportComplete(object sender, EventArgs e)
+        {
+            s.Stop();
+            var t = s.ElapsedMilliseconds;
+            Importing = false;
+        }
 
         public bool TimeStampSelected()
         {
@@ -222,7 +223,8 @@ namespace Weather.ViewModels
             }
             if (MultipleChecked)
             {
-                _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index, SelectedRecordTime.Index);
+                _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index,
+                    SelectedRecordTime.Index);
             }
             s.Start();
             _importer.Start();
@@ -233,8 +235,6 @@ namespace Weather.ViewModels
         {
             if (e.Progress != null) Progress = (int) e.Progress;
         }
-
-        public int ExcludeLineCount { get; set; }
 
         public void ReadFile(string filePath)
         {
@@ -287,7 +287,6 @@ namespace Weather.ViewModels
             RecordsCount = Records.Count;
             CurrentRecord = 1;
             FileSelected = true;
-
         }
 
         private bool CheckDate(string date)

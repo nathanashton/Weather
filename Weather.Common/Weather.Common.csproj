@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Entities\SensorType.cs" />
     <Compile Include="Entities\SensorValue.cs" />
+    <Compile Include="EventArgs\DebugMessageArgs.cs" />
     <Compile Include="Interfaces\ISensorType.cs" />
     <Compile Include="Units\Unit.cs" />
     <Compile Include="Units\UnitType.cs" />
@@ -53,7 +54,6 @@
     <Compile Include="Interfaces\IWeatherStation.cs" />
     <Compile Include="Interfaces\ISensor.cs" />
     <Compile Include="Entities\Sensor.cs" />
-    <Compile Include="Units\Units.cs" />
     <Compile Include="Entities\WeatherRecord.cs" />
     <Compile Include="Entities\WeatherStation.cs" />
     <Compile Include="Exceptions\BookieException.cs" />

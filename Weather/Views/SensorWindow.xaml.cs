@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Weather.Common.Entities;
 using Weather.Common.Units;
 using Weather.ViewModels;
 
@@ -67,20 +66,20 @@ namespace Weather.Views
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Types.SelectedItem == null) return;
-            var f = (KeyValuePair<string, string>)Types.SelectedItem;
+            var f = (KeyValuePair<string, string>) Types.SelectedItem;
 
-            var allEnums = Enum.GetValues(typeof(UnitType));
-            foreach (var value in allEnums)
-            {
-                if (f.Key == value.ToString())
-                {
-                    var type = value.GetType();
-                    var memInfo = type.GetMember(value.ToString());
-                    var attributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
-                    var description = ((DescriptionAttribute)attributes[0]).Description;
-                    ViewModel.CorrectionValue = description;
-                }
-            }
+           // var allEnums = Enum.GetValues(typeof(UnitType));
+            //foreach (var value in allEnums)
+            //{
+            //    if (f.Key == value.ToString())
+            //    {
+            //        var type = value.GetType();
+            //        var memInfo = type.GetMember(value.ToString());
+            //        var attributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+            //        var description = ((DescriptionAttribute) attributes[0]).Description;
+            //        ViewModel.CorrectionValue = description;
+            //    }
+            //}
         }
     }
 }

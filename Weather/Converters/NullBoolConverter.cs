@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows.Data;
 
 namespace Weather.Converters
 {
-    public class NullBoolConverter : System.Windows.Data.IValueConverter
+    public class NullBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

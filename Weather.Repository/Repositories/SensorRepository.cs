@@ -11,7 +11,6 @@ namespace Weather.Repository.Repositories
     {
         public int Count { get; set; }
 
-
         public void Update(Sensor sensor)
         {
             //using (
@@ -58,7 +57,6 @@ namespace Weather.Repository.Repositories
             //        command.ExecuteNonQuery();
             //    }
             //}
-
         }
 
         public void GetAllSensors()
@@ -122,7 +120,7 @@ namespace Weather.Repository.Repositories
                     var sql2 = "SELECT last_insert_rowid();";
                     var command2 = new SQLiteCommand(sql2, connection);
                     var id2 = command2.ExecuteScalar();
-                    return (long) id2;
+                    return (long)id2;
                 }
             }
         }

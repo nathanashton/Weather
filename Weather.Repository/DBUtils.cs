@@ -4,20 +4,15 @@ namespace Weather.Repository
 {
     internal static class DbUtils
     {
-
-
-
-
         internal static int? ParseIntNull(string input)
         {
             int value;
             if (int.TryParse(input, out value))
             {
-                return (int?) value;
+                return value;
             }
-            else return null;
+            return null;
         }
-
 
         internal static int ParseIntZero(string input)
         {
@@ -34,11 +29,10 @@ namespace Weather.Repository
             double value;
             if (double.TryParse(input, out value))
             {
-                return (double?) value;
+                return value;
             }
-            else return null;
+            return null;
         }
-
 
         internal static DateTime? ParseDateTimeNull(string input)
         {
@@ -51,7 +45,7 @@ namespace Weather.Repository
             {
                 return value;
             }
-            else return null;
+            return null;
         }
     }
 }

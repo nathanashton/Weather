@@ -1,4 +1,5 @@
 ﻿using System;
+using Weather.Common.EventArgs;
 
 namespace Weather.Common.Interfaces
 {
@@ -19,5 +20,7 @@ namespace Weather.Common.Interfaces
         void SetDebugLevel();
 
         void SetInfoLevel();
+
+        event EventHandler<DebugMessageArgs> DebugPanelMessage;
     }
 }

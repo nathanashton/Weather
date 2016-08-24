@@ -8,6 +8,9 @@ namespace Weather.Common.Interfaces
     {
         int SensorTypeId { get; set; }
         string Name { get; set; }
-        List<Unit> Units { get; set; }
+        IList<Unit> Units { get; set; }
+        Unit SIUnit { get; set; }
+        bool IsValid { get; }
+
     }
 }

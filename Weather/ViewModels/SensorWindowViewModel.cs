@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using PropertyChanged;
+﻿using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Entities;
 using Weather.Common.Units;
-using Weather.Helpers;
 
 namespace Weather.ViewModels
 {
@@ -15,14 +13,14 @@ namespace Weather.ViewModels
             Sensor = new Sensor();
         }
 
-        public UnitType SelectedType { get; set; }
+      //  public UnitType SelectedType { get; set; }
 
         public Sensor Sensor { get; set; }
         public Sensor EditSensor { get; set; }
 
         public string CorrectionValue { get; set; }
+        //    => EnumHelper.GetAllValuesAndDescriptions<UnitType>();
 
         //public IEnumerable<KeyValuePair<string, string>> Types
-        //    => EnumHelper.GetAllValuesAndDescriptions<UnitType>();
     }
 }

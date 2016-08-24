@@ -7,7 +7,6 @@ using Microsoft.Practices.Unity;
 using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
-using Weather.Core;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
@@ -24,13 +23,12 @@ namespace Weather.ViewModels
 
         public StationWindowViewModel(IStationCore stationCore, ISensorCore sensorCore)
         {
-             _stationCore = stationCore;
+            _stationCore = stationCore;
             _sensorCore = sensorCore;
             Stations = new ObservableCollection<IWeatherStation>();
             GetAllStations();
             SelectedStation = Stations.FirstOrDefault();
         }
-
 
 
         public ObservableCollection<IWeatherStation> Stations { get; set; }
@@ -66,7 +64,10 @@ namespace Weather.ViewModels
 
         public ICommand AddSensorCommand
         {
-            get { return new RelayCommand(AddSensor, x => SelectedStation != null && SelectedStation.WeatherStationId != 0); }
+            get
+            {
+                return new RelayCommand(AddSensor, x => SelectedStation != null && SelectedStation.WeatherStationId != 0);
+            }
         }
 
         public ICommand MapCommand
@@ -76,7 +77,7 @@ namespace Weather.ViewModels
 
         public async void GetAllStations()
         {
-            var allStations  = await _stationCore.GetAllStationsAsync();
+            var allStations = await _stationCore.GetAllStationsAsync();
             Stations = new ObservableCollection<IWeatherStation>(allStations);
         }
 
@@ -111,7 +112,7 @@ namespace Weather.ViewModels
             textLatitude?.UpdateSource();
             var textLongitude = StationWindow.Longitude.GetBindingExpression(InputBase.TextProperty);
             textLongitude?.UpdateSource();
-            SelectedStation =  (WeatherStation)await _stationCore.UpdateStationAsync(SelectedStation);
+            SelectedStation = (WeatherStation) await _stationCore.UpdateStationAsync(SelectedStation);
             IsDirty = false;
         }
 
@@ -185,8 +186,8 @@ namespace Weather.ViewModels
                     " sensor?. This will delete ALL sensor recordings as well.", "Delete?", MessageBoxButton.YesNo,
                     MessageBoxImage.Exclamation);
             if (result != MessageBoxResult.Yes) return;
-            _sensorCore.DeleteSensor((Sensor)SelectedSensor);
-            _sensorCore.DeleteSensor((Sensor)SelectedSensor);
+            _sensorCore.DeleteSensor((Sensor) SelectedSensor);
+            _sensorCore.DeleteSensor((Sensor) SelectedSensor);
             SelectedStation.Sensors.Remove(SelectedSensor);
         }
 

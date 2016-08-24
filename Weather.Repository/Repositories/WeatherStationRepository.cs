@@ -48,187 +48,166 @@ namespace Weather.Repository.Repositories
 
         public async Task<List<IWeatherStation>> GetAllWeatherStationsWithSensorsAndRecordsAsync()
         {
-    //        var mappedReader = Enumerable.Empty<object>().Select(r => new
-    //        {
-    //            WeatherStationId = 0,
-    //            Manufacturer = Empty,
-    //            Model = Empty,
-    //            Latitude = (double?)null,
-    //            Longitude = (double?)null,
+            //        var mappedReader = Enumerable.Empty<object>().Select(r => new
+            //        {
+            //            WeatherStationId = 0,
+            //            Manufacturer = Empty,
+            //            Model = Empty,
+            //            Latitude = (double?)null,
+            //            Longitude = (double?)null,
 
-    //            WeatherRecordId = (int?)null,
-    //            WeatherRecordTimestamp  = (DateTime?)null,
-    //            WeatherRecordSensorValueId = (int?)null,
-    //            WeatherRecordWeatherStationId = (int?)null,
-                
-    //            SensorValueId = (int?)null,
-    //            SensorValueRawValue = (double?)null,
-    //            SensorValueSensorId = (int?)null,
+            //            WeatherRecordId = (int?)null,
+            //            WeatherRecordTimestamp  = (DateTime?)null,
+            //            WeatherRecordSensorValueId = (int?)null,
+            //            WeatherRecordWeatherStationId = (int?)null,
 
-    //            SensorWeatherStationId = (int?)null,
-    //            SensorId = (int?)null,
-    //            SensorCorrection = (double?)null,
-    //            SensorName = Empty,
-    //            SensorUnitTypeId = (int?)null,
+            //            SensorValueId = (int?)null,
+            //            SensorValueRawValue = (double?)null,
+            //            SensorValueSensorId = (int?)null,
 
-    //            UnitTypeId = (int?)null,
-    //            UnitTypeName = Empty
-    //        }).ToList();
+            //            SensorWeatherStationId = (int?)null,
+            //            SensorId = (int?)null,
+            //            SensorCorrection = (double?)null,
+            //            SensorName = Empty,
+            //            SensorUnitTypeId = (int?)null,
 
-    //        var sql = @"SELECT ws.[WeatherStationId] as WeatherStationId
-    //                ,ws.[Manufacturer] as Manufacturer
-		  //          ,ws.[Model] as Model
-		  //          ,ws.[Latitude] as Latitude
-		  //          ,ws.[Longitude] as Longitude
-				//	,wr.[WeatherRecordId] as WeatherRecordId
-				//	,wr.[Timestamp] as WeatherRecordTimestamp
-				//	,wr.[SensorValueId] as WeatherRecordSensorValueId
-				//	,wr.[WeatherStationId] as WeatherRecordWeatherStationId
-				//	,sv.[SensorValueId] as SensorValueId
-				//	,sv.[RawValue] as SensorValueRawValue
-				//	,sv.[SensorId] as SensorValueSensorId
-				//	,sr.[SensorId] as SensorId
-		  //          ,sr.[Name] as SensorName
-				//	,sr.[UnitTypeId] as SensorUnitTypeId
-    //                ,sr.[WeatherStationId] as SensorWeatherStationId
-    //                ,sr.[Correction] as SensorCorrection
-				//	,ut.[UnitTypeId] as UnitTypeId
-				//	,ut.[Name] as UnitTypeName
+            //            UnitTypeId = (int?)null,
+            //            UnitTypeName = Empty
+            //        }).ToList();
 
-    //            FROM [WeatherStations] ws
-				//LEFT JOIN WeatherRecords wr ON wr.WeatherStationId = ws.WeatherStationId
-				//LEFT JOIN SensorValues sv ON wr.SensorValueId = sv.SensorValueId
-				//LEFT JOIN Sensors sr ON sv.SensorId = sr.SensorId
-				//LEFT JOIN UnitTypes ut ON sr.UnitTypeId = ut.UnitTypeId";
-    //        using (var connection = new SQLiteConnection(DbConnectionString))
-    //        {
-    //            connection.Open();
-    //            {
-    //                using (var command = new SQLiteCommand(sql, connection))
-    //                {
-    //                    using (IDataReader reader = await command.ExecuteReaderAsync())
-    //                    {
-    //                        while (reader.Read())
-    //                        {
-    //                            mappedReader.Add(new
-    //                            {
-    //                                WeatherStationId = Convert.ToInt32(reader["WeatherStationId"].ToString()),
-    //                                Manufacturer = reader["Manufacturer"].ToString(),
-    //                                Model = reader["Model"].ToString(),
-    //                                Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
-    //                                Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
+            //        var sql = @"SELECT ws.[WeatherStationId] as WeatherStationId
+            //                ,ws.[Manufacturer] as Manufacturer
+            //          ,ws.[Model] as Model
+            //          ,ws.[Latitude] as Latitude
+            //          ,ws.[Longitude] as Longitude
+            //	,wr.[WeatherRecordId] as WeatherRecordId
+            //	,wr.[Timestamp] as WeatherRecordTimestamp
+            //	,wr.[SensorValueId] as WeatherRecordSensorValueId
+            //	,wr.[WeatherStationId] as WeatherRecordWeatherStationId
+            //	,sv.[SensorValueId] as SensorValueId
+            //	,sv.[RawValue] as SensorValueRawValue
+            //	,sv.[SensorId] as SensorValueSensorId
+            //	,sr.[SensorId] as SensorId
+            //          ,sr.[Name] as SensorName
+            //	,sr.[UnitTypeId] as SensorUnitTypeId
+            //                ,sr.[WeatherStationId] as SensorWeatherStationId
+            //                ,sr.[Correction] as SensorCorrection
+            //	,ut.[UnitTypeId] as UnitTypeId
+            //	,ut.[Name] as UnitTypeName
 
+            //            FROM [WeatherStations] ws
+            //LEFT JOIN WeatherRecords wr ON wr.WeatherStationId = ws.WeatherStationId
+            //LEFT JOIN SensorValues sv ON wr.SensorValueId = sv.SensorValueId
+            //LEFT JOIN Sensors sr ON sv.SensorId = sr.SensorId
+            //LEFT JOIN UnitTypes ut ON sr.UnitTypeId = ut.UnitTypeId";
+            //        using (var connection = new SQLiteConnection(DbConnectionString))
+            //        {
+            //            connection.Open();
+            //            {
+            //                using (var command = new SQLiteCommand(sql, connection))
+            //                {
+            //                    using (IDataReader reader = await command.ExecuteReaderAsync())
+            //                    {
+            //                        while (reader.Read())
+            //                        {
+            //                            mappedReader.Add(new
+            //                            {
+            //                                WeatherStationId = Convert.ToInt32(reader["WeatherStationId"].ToString()),
+            //                                Manufacturer = reader["Manufacturer"].ToString(),
+            //                                Model = reader["Model"].ToString(),
+            //                                Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
+            //                                Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
 
-    //                                WeatherRecordId = DbUtils.ParseIntNull(reader["WeatherRecordId"].ToString()),
-    //                                WeatherRecordTimestamp = DbUtils.ParseDateTimeNull(reader["WeatherRecordTimestamp"].ToString()),
-    //                                WeatherRecordSensorValueId = DbUtils.ParseIntNull(reader["WeatherRecordSensorValueId"].ToString()),
-    //                                WeatherRecordWeatherStationId = DbUtils.ParseIntNull(reader["WeatherRecordWeatherStationId"].ToString()),
+            //                                WeatherRecordId = DbUtils.ParseIntNull(reader["WeatherRecordId"].ToString()),
+            //                                WeatherRecordTimestamp = DbUtils.ParseDateTimeNull(reader["WeatherRecordTimestamp"].ToString()),
+            //                                WeatherRecordSensorValueId = DbUtils.ParseIntNull(reader["WeatherRecordSensorValueId"].ToString()),
+            //                                WeatherRecordWeatherStationId = DbUtils.ParseIntNull(reader["WeatherRecordWeatherStationId"].ToString()),
 
+            //                                SensorValueId = DbUtils.ParseIntNull(reader["SensorValueId"].ToString()),
+            //                                SensorValueRawValue = DbUtils.ParseDoubleNull(reader["SensorValueRawValue"].ToString()),
+            //                                SensorValueSensorId = DbUtils.ParseIntNull(reader["SensorValueSensorId"].ToString()),
 
-    //                                SensorValueId = DbUtils.ParseIntNull(reader["SensorValueId"].ToString()),
-    //                                SensorValueRawValue = DbUtils.ParseDoubleNull(reader["SensorValueRawValue"].ToString()),
-    //                                SensorValueSensorId = DbUtils.ParseIntNull(reader["SensorValueSensorId"].ToString()),
+            //                                SensorWeatherStationId = DbUtils.ParseIntNull(reader["SensorWeatherStationId"].ToString()),
+            //                                SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
+            //                                SensorCorrection = DbUtils.ParseDoubleNull(reader["SensorCorrection"].ToString()),
+            //                                SensorName = reader["SensorName"].ToString(),
+            //                                SensorUnitTypeId = DbUtils.ParseIntNull(reader["SensorUnitTypeId"].ToString()),
 
+            //                                UnitTypeId = DbUtils.ParseIntNull(reader["UnitTypeId"].ToString()),
+            //                                UnitTypeName = reader["UnitTypeName"].ToString()
+            //                            });
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
 
-    //                                SensorWeatherStationId = DbUtils.ParseIntNull(reader["SensorWeatherStationId"].ToString()),
-    //                                SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
-    //                                SensorCorrection = DbUtils.ParseDoubleNull(reader["SensorCorrection"].ToString()),
-    //                                SensorName = reader["SensorName"].ToString(),
-    //                                SensorUnitTypeId = DbUtils.ParseIntNull(reader["SensorUnitTypeId"].ToString()),
+            //        var sensorValues = mappedReader.Where(r => r.SensorValueId != null)
+            //                .GroupBy(x => new { x.SensorValueId, x.SensorValueRawValue, x.SensorValueSensorId }, x => x,
+            //                    (key, g) =>
+            //                        new
+            //                        {
+            //                            key.SensorValueId,
+            //                            SensorValue =
+            //                                new SensorValue
+            //                                {
+            //                                    SensorValueId = (int)key.SensorValueId,
+            //                                    RawValue = (int)key.SensorValueRawValue,
+            //                                    SensorId = (int)key.SensorValueSensorId
+            //                                }
+            //                        }).ToList();
 
+            //        // Sensors with a null SensorId are not attached to a station
+            //        var attachedSensors =
+            //            mappedReader.Where(r => r.SensorId != null)
+            //                .GroupBy(x => new { x.SensorId, x.SensorName, x.WeatherStationId, x.SensorCorrection }, x => x,
+            //                    (key, g) =>
+            //                        new
+            //                        {
+            //                            key.WeatherStationId,
+            //                            Sensor =
+            //                                new Sensor
+            //                                {
+            //                                    SensorId = (int)key.SensorId,
+            //                                    Name = key.SensorName,
+            //                                    Correction = (double)key.SensorCorrection,
+            //                                    SensorValues = sensorValues.Where(x => x.SensorValue.SensorId == key.SensorId).Select(x => x.SensorValue).Cast<ISensorValue>().ToList()
+            //                                }
+            //                        }).ToList();
 
+            //        var records = mappedReader.Where(r => r.WeatherRecordId != null)
+            //                .GroupBy(x => new { x.WeatherRecordId, x.WeatherRecordSensorValueId, x.WeatherRecordTimestamp, x.WeatherRecordWeatherStationId }, x => x,
+            //                    (key, g) =>
+            //                        new
+            //                        {
+            //                            key.WeatherRecordId,
+            //                            WeatherRecord =
+            //                                new WeatherRecord
+            //                                {
+            //                                    WeatherRecordId = (int)key.WeatherRecordId,
+            //                                    TimeStamp = (DateTime)key.WeatherRecordTimestamp,
+            //                                    WeatherStationId = (int)key.WeatherRecordWeatherStationId,
+            //                                    SensorValues = sensorValues.Where(x => x.SensorValueId == key.WeatherRecordSensorValueId).Select(x => x.SensorValue).Cast < ISensorValue>().ToList()
+            //                                }
+            //                        }).ToList();
 
-    //                                UnitTypeId = DbUtils.ParseIntNull(reader["UnitTypeId"].ToString()),
-    //                                UnitTypeName = reader["UnitTypeName"].ToString()
-    //                            });
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
+            //        var stations =
+            //            mappedReader.GroupBy(x => new { x.WeatherStationId, x.Manufacturer, x.Model }, x => x,
+            //                (key, g) =>
+            //                    new WeatherStation
+            //                    {
+            //                        WeatherStationId = key.WeatherStationId,
+            //                        Manufacturer = key.Manufacturer,
+            //                        Model = key.Model,
+            //                        Sensors = attachedSensors.Where(x => x.WeatherStationId == key.WeatherStationId).Select(y => y.Sensor).Cast<ISensor>().ToList(),
+            //                        WeatherRecords = records.Where(x => x.WeatherRecord.WeatherStationId == key.WeatherStationId).Select(y => y.WeatherRecord).Cast<IWeatherRecord>().ToList()
 
-
-
-    //        var sensorValues = mappedReader.Where(r => r.SensorValueId != null)
-    //                .GroupBy(x => new { x.SensorValueId, x.SensorValueRawValue, x.SensorValueSensorId }, x => x,
-    //                    (key, g) =>
-    //                        new
-    //                        {
-    //                            key.SensorValueId,
-    //                            SensorValue =
-    //                                new SensorValue
-    //                                {
-    //                                    SensorValueId = (int)key.SensorValueId,
-    //                                    RawValue = (int)key.SensorValueRawValue,
-    //                                    SensorId = (int)key.SensorValueSensorId
-    //                                }
-    //                        }).ToList();
-
-    //        // Sensors with a null SensorId are not attached to a station
-    //        var attachedSensors =
-    //            mappedReader.Where(r => r.SensorId != null)
-    //                .GroupBy(x => new { x.SensorId, x.SensorName, x.WeatherStationId, x.SensorCorrection }, x => x,
-    //                    (key, g) =>
-    //                        new
-    //                        {
-    //                            key.WeatherStationId,
-    //                            Sensor =
-    //                                new Sensor
-    //                                {
-    //                                    SensorId = (int)key.SensorId,
-    //                                    Name = key.SensorName,
-    //                                    Correction = (double)key.SensorCorrection,
-    //                                    SensorValues = sensorValues.Where(x => x.SensorValue.SensorId == key.SensorId).Select(x => x.SensorValue).Cast<ISensorValue>().ToList()
-    //                                }
-    //                        }).ToList();
-
-
-    //        var records = mappedReader.Where(r => r.WeatherRecordId != null)
-    //                .GroupBy(x => new { x.WeatherRecordId, x.WeatherRecordSensorValueId, x.WeatherRecordTimestamp, x.WeatherRecordWeatherStationId }, x => x,
-    //                    (key, g) =>
-    //                        new
-    //                        {
-    //                            key.WeatherRecordId,
-    //                            WeatherRecord =
-    //                                new WeatherRecord
-    //                                {
-    //                                    WeatherRecordId = (int)key.WeatherRecordId,
-    //                                    TimeStamp = (DateTime)key.WeatherRecordTimestamp,
-    //                                    WeatherStationId = (int)key.WeatherRecordWeatherStationId,
-    //                                    SensorValues = sensorValues.Where(x => x.SensorValueId == key.WeatherRecordSensorValueId).Select(x => x.SensorValue).Cast < ISensorValue>().ToList()
-    //                                }
-    //                        }).ToList();
-
-
-
-    //        var stations =
-    //            mappedReader.GroupBy(x => new { x.WeatherStationId, x.Manufacturer, x.Model }, x => x,
-    //                (key, g) =>
-    //                    new WeatherStation
-    //                    {
-    //                        WeatherStationId = key.WeatherStationId,
-    //                        Manufacturer = key.Manufacturer,
-    //                        Model = key.Model,
-    //                        Sensors = attachedSensors.Where(x => x.WeatherStationId == key.WeatherStationId).Select(y => y.Sensor).Cast<ISensor>().ToList(),
-    //                        WeatherRecords = records.Where(x => x.WeatherRecord.WeatherStationId == key.WeatherStationId).Select(y => y.WeatherRecord).Cast<IWeatherRecord>().ToList()
-
-
-    //                    }).Cast<IWeatherStation>().ToList();
+            //                    }).Cast<IWeatherStation>().ToList();
             return null;
         }
 
-
-
-
         public async Task<List<IWeatherRecord>> GetWeatherRecordsForStationAsync(IWeatherStation station)
         {
-
-
-
-
-
-
-
             //var records = new List<WeatherRecord>();
             //using (
             //    var connection = new SQLiteConnection
@@ -300,7 +279,8 @@ namespace Weather.Repository.Repositories
 
         public async Task<int> AddStationAsync(IWeatherStation station)
         {
-            var sql = "INSERT INTO WeatherStations (Manufacturer, Model, Latitude, Longitude) VALUES (@manufacturer, @model, @latitude, @longitude)";
+            var sql =
+                "INSERT INTO WeatherStations (Manufacturer, Model, Latitude, Longitude) VALUES (@manufacturer, @model, @latitude, @longitude)";
             var sql2 = "SELECT last_insert_rowid();";
             SQLiteTransaction transaction = null;
             try
@@ -422,10 +402,11 @@ namespace Weather.Repository.Repositories
                                     Model = reader["Model"].ToString(),
                                     Latitude = Convert.ToDouble(reader["Latitude"]),
                                     Longitude = Convert.ToDouble(reader["Longitude"]),
-                                    SensorWeatherStationId = DbUtils.ParseIntNull(reader["SensorWeatherStationId"].ToString()),
+                                    SensorWeatherStationId =
+                                        DbUtils.ParseIntNull(reader["SensorWeatherStationId"].ToString()),
                                     SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
                                     SensorCorrection = DbUtils.ParseIntZero(reader["SensorCorrection"].ToString()),
-                                    SensorName = reader["SensorName"].ToString(),
+                                    SensorName = reader["SensorName"].ToString()
                                 });
                             }
                         }
@@ -458,7 +439,11 @@ namespace Weather.Repository.Repositories
                             WeatherStationId = key.WeatherStationId,
                             Manufacturer = key.Manufacturer,
                             Model = key.Model,
-                            Sensors = attachedSensors.Where(x => x.WeatherStationId == key.WeatherStationId).Select(y => y.Sensor).Cast<ISensor>().ToList()
+                            Sensors =
+                                attachedSensors.Where(x => x.WeatherStationId == key.WeatherStationId)
+                                    .Select(y => y.Sensor)
+                                    .Cast<ISensor>()
+                                    .ToList()
                         }).FirstOrDefault();
             return station;
         }
@@ -494,7 +479,8 @@ namespace Weather.Repository.Repositories
 
         public async Task<int> UpdateStationAsync(IWeatherStation station)
         {
-            var sql = "UPDATE WeatherStations SET Manufacturer=@manufacturer, Model=@model, Longitude=@longitude, Latitude=@latitude WHERE WeatherStationId = @id";
+            var sql =
+                "UPDATE WeatherStations SET Manufacturer=@manufacturer, Model=@model, Longitude=@longitude, Latitude=@latitude WHERE WeatherStationId = @id";
             SQLiteTransaction transaction = null;
             try
             {

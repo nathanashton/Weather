@@ -11,11 +11,18 @@ namespace Weather.DependencyResolver
 {
     public class Resolver
     {
+        public static ILog log = new Log();
+
+
         public IUnityContainer Bootstrap()
         {
             var container = new UnityContainer();
             container.RegisterType<ISettings, Settings>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ILog, Log>(new ContainerControlledLifetimeManager());
+
+
+            container.RegisterInstance<ILog>(log);
+
+
 
             container.RegisterType<IStationCore, StationCore>();
             container.RegisterType<ISensorCore, SensorCore>();

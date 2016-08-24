@@ -15,7 +15,7 @@ namespace Weather.Helpers
             }
 
             return from e in Enum.GetValues(typeof(TEnum)).Cast<Enum>()
-                   select new KeyValuePair<string, string>(e.ToString(), e.ToString());
+                select new KeyValuePair<string, string>(e.ToString(), e.ToString());
         }
     }
 }

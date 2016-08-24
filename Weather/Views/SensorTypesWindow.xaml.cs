@@ -1,7 +1,19 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
+using Weather.Common.Units;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -11,45 +23,40 @@ namespace Weather.Views
     /// </summary>
     public partial class SensorTypesWindow : Window
     {
-        private readonly SensorTypeWindowViewModel _viewModel;
+        
+        private readonly SensorTypesViewModel _viewModel;
 
-        public SensorTypesWindow(SensorTypeWindowViewModel viewModel)
+        public SensorTypesWindow(SensorTypesViewModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;
             DataContext = _viewModel;
-            _viewModel.SensorTypesWindow = this;
+            _viewModel.Window = this;
             Loaded += SensorTypesWindow_Loaded;
         }
 
         private void SensorTypesWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            _viewModel.GetSensorTypes();
             _viewModel.RegisterDirtyHandlers();
         }
 
-        private void ListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_viewModel.SelectedSensorType == null) return;
-            var selection = ((ListBox)e.Source).SelectedItem as ISensorType;
+            var selection = ((ListBox)e.Source).SelectedItem;
             if (selection == null) return;
-            if (_viewModel.IsDirty)
+            _viewModel.Unit = ((ListBox)e.Source).SelectedItem as ISensorType;
+            _viewModel.SelectedSensorType = new SensorType
             {
-                var result =
-                    MessageBox.Show(
-                        "Save changes to " + _viewModel.SelectedSensorType.Name + "?", "Save Changes", MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    _viewModel.Save(null);
-                }
-            }
-
-            _viewModel.SelectedSensorType = selection;
+                SensorTypeId = _viewModel.Unit.SensorTypeId,
+                Name = _viewModel.Unit.Name,
+                SIUnit = _viewModel.Unit.SIUnit,
+            };
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        public void SelectUnitInListBox(ISensorType sensorType)
         {
-            Close();
+            lb.SelectedItem = sensorType;
         }
     }
 }

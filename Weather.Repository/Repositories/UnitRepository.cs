@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using Weather.Common.Entities;
+using System.Linq;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using Weather.Repository.Interfaces;
@@ -22,6 +22,8 @@ namespace Weather.Repository.Repositories
         {
             var units = new List<Unit>();
             var sql = @"SELECT * FROM Units";
+            _log.Debug(sql);
+
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))
@@ -37,7 +39,9 @@ namespace Weather.Repository.Repositories
                                     var sensorType = new Unit
                                     {
                                         UnitId = Convert.ToInt32(reader["UnitId"]),
-                                        DisplayName = reader["DisplayName"].ToString()
+                                        DisplayName = reader["DisplayName"].ToString(),
+                                        DisplayUnit = reader["DisplayUnit"].ToString(),
+                                        UnitType = UnitTypes.UnitsList.FirstOrDefault(x => x.Name == reader["UnitType"].ToString())
                                     };
                                     units.Add(sensorType);
                                 }
@@ -49,6 +53,7 @@ namespace Weather.Repository.Repositories
             catch (SQLiteException ex)
             {
                 _log.Error("", ex);
+                throw;
             }
             return units;
         }
@@ -77,7 +82,9 @@ namespace Weather.Repository.Repositories
                                     unit = new Unit
                                     {
                                         UnitId = Convert.ToInt32(reader["UnitId"]),
-                                        DisplayName = reader["DisplayName"].ToString()
+                                        DisplayName = reader["DisplayName"].ToString(),
+                                        DisplayUnit = reader["DisplayUnit"].ToString(),
+                                        UnitType = UnitTypes.UnitsList.FirstOrDefault(x => x.Name == reader["UnitType"].ToString())
                                     };
                                 }
                             }
@@ -88,13 +95,14 @@ namespace Weather.Repository.Repositories
             catch (SQLiteException ex)
             {
                 _log.Error("", ex);
+                throw;
             }
             return unit;
         }
 
         public int Add(Unit unit)
         {
-            var sql = @"INSERT INTO Units (DisplayName) VALUES (@DisplayName)";
+            var sql = @"INSERT INTO Units (DisplayName, DisplayUnit, UnitType) VALUES (@DisplayName, @DisplayUnit, @UnitType)";
             var sql2 = "SELECT last_insert_rowid();";
             try
             {
@@ -105,6 +113,8 @@ namespace Weather.Repository.Repositories
                         using (var command = new SQLiteCommand(sql, connection))
                         {
                             command.Parameters.AddWithValue("@DisplayName", unit.DisplayName);
+                            command.Parameters.AddWithValue("@DisplayUnit", unit.DisplayUnit);
+                            command.Parameters.AddWithValue("@UnitType", unit.UnitType.Name);
                             command.ExecuteNonQuery();
 
                             var command2 = new SQLiteCommand(sql2, connection);
@@ -117,7 +127,7 @@ namespace Weather.Repository.Repositories
             catch (SQLiteException ex)
             {
                 _log.Error("", ex);
-                return 0;
+                throw;
             }
         }
 
@@ -141,12 +151,13 @@ namespace Weather.Repository.Repositories
             catch (SQLiteException ex)
             {
                 _log.Error("", ex);
+                throw;
             }
         }
 
         public void Update(Unit unit)
         {
-            var sql = @"UPDATE Units SET DisplayName = @DisplayName WHERE UnitId = @Id";
+            var sql = @"UPDATE Units SET DisplayName = @DisplayName, DisplayUnit = @DisplayUnit, UnitType = @UnitType WHERE UnitId = @Id";
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))
@@ -157,6 +168,8 @@ namespace Weather.Repository.Repositories
                         {
                             command.Parameters.AddWithValue("@Id", unit.UnitId);
                             command.Parameters.AddWithValue("@DisplayName", unit.DisplayName);
+                            command.Parameters.AddWithValue("@DisplayUnit", unit.DisplayUnit);
+                            command.Parameters.AddWithValue("@UnitType", unit.UnitType.Name);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -165,6 +178,7 @@ namespace Weather.Repository.Repositories
             catch (SQLiteException ex)
             {
                 _log.Error("", ex);
+                throw;
             }
         }
     }

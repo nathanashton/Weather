@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Weather.UserControls.UnitsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Weather.UserControls"
+             xmlns:converters="clr-namespace:Weather.Converters"
+             mc:Ignorable="d" Background="#F8F8F8"
+             d:DesignHeight="300" Width="385.549">
+    <UserControl.Resources>
+        <converters:NullBoolConverter x:Key="NullBoolConverter"/>
+    </UserControl.Resources>
+    <DockPanel>
+        <DockPanel Margin="10">
+            <DockPanel>
+                <Border Height="20" DockPanel.Dock="Bottom" BorderThickness="1,0,1,1" BorderBrush="DarkGray">
+                    <DockPanel HorizontalAlignment="Stretch" Background="#E9E9E9">
+                        <Button Command="{Binding AddCommand}" BorderThickness="0" Margin="2" Padding="0"
+                                DockPanel.Dock="Right">
+                            <Image Source="pack://application:,,,/Resources/Icons/plus_48px.png" />
+                        </Button>
+                        <Button Command="{Binding DeleteCommand}" BorderThickness="0" Padding="0" Margin="2"
+                                DockPanel.Dock="Right" HorizontalAlignment="Right">
+                            <Image Source="pack://application:,,,/Resources/Icons/minus_48px.png" />
+                        </Button>
+                    </DockPanel>
+                </Border>
+                <ListBox SelectionChanged="ListBox_SelectionChanged" Width="150" DockPanel.Dock="Left"
+                         ItemsSource="{Binding Units}" />
+            </DockPanel>
+
+            <DockPanel Margin="5,0,0,0">
+               
+
+                   
+                    <Grid IsEnabled="{Binding SelectedUnit, Converter={StaticResource NullBoolConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"
+                           Content="FirstNameame" />
+                            <TextBox Height="22" Name="DisplayName" VerticalContentAlignment="Center"
+                             Text="{Binding SelectedUnit.DisplayName, UpdateSourceTrigger=Explicit}" Grid.Row="0"
+                             Grid.Column="1" />
+                            <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="0"
+                           Content="Unit" />
+                            <TextBox Height="22" Name="DisplayUnit" VerticalContentAlignment="Center"
+                             Text="{Binding SelectedUnit.DisplayUnit, UpdateSourceTrigger=Explicit}" Grid.Row="1"
+                             Grid.Column="1" />
+
+                            <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="0"
+                           Content="Type" />
+                            <ComboBox Height="22" Name="UnitType" VerticalContentAlignment="Center"
+                             ItemsSource="{Binding UnitTypes}" SelectedItem="{Binding SelectedUnit.UnitType, UpdateSourceTrigger=Explicit}" Grid.Row="2" DisplayMemberPath="FirstNameame"
+                             Grid.Column="1" />
+
+                            <Button Margin="0,10,0,0" Content="Save" Width="60" HorizontalAlignment="Right" Grid.Column="1"
+                            Grid.Row="3" Command="{Binding SaveCommand}" />
+
+                        </Grid>
+                 
+                    
+ 
+            </DockPanel>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

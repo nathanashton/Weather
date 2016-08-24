@@ -1,8 +1,11 @@
-﻿namespace Weather.Common.Units
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using PropertyChanged;
+
+namespace Weather.Common.Units
 {
-    public class UnitType
-    {
-        public string Name { get; set; }
-        public Unit DefaultUnit { get; set; }
-    }
+
 }

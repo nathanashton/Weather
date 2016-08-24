@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Weather.Common.Entities;
-using Weather.Common.Interfaces;
-
 namespace Weather.Repository.Interfaces
 {
     public interface ISensorRepository
@@ -13,17 +8,7 @@ namespace Weather.Repository.Interfaces
         //void UpdateSensor(Sensor sensor);
         //void DeleteSensor(Sensor sensor);
 
-
-
-
-
-
-
-
-
-
         //long InsertWeatherRecord(DateTime timestamp, long sensorValueId, long stationId);
-
 
         //long InsertSensorValue(ISensorValue sensorvalue);
         //void InsertSensorValues(IEnumerable<ISensorValue> sensorvalues);

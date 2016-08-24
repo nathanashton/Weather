@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Weather.Common.Entities;
 using Weather.ViewModels;
 
@@ -23,13 +24,13 @@ namespace Weather.Views
 
         private void StationWindow_Loaded(object sender, RoutedEventArgs e)
         {
-        //    _viewModel.RegisterDirtyHandlers();
+            //    _viewModel.RegisterDirtyHandlers();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_viewModel.SelectedStation == null) return;
-            var weatherStation = ((ListBox)e.Source).SelectedItem as WeatherStation;
+            var weatherStation = ((ListBox) e.Source).SelectedItem as WeatherStation;
             if (weatherStation == null) return;
             if (_viewModel.IsDirty)
             {
@@ -64,15 +65,15 @@ namespace Weather.Views
             Close();
         }
 
-        private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender != null)
             {
-                DataGrid grid = sender as DataGrid;
+                var grid = sender as DataGrid;
                 if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
                 {
-                    DataGridRow dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
-                    _viewModel.SelectedSensor = (Sensor)dgr.Item;
+                    var dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                    _viewModel.SelectedSensor = (Sensor) dgr.Item;
                     _viewModel.EditSensor(null);
                 }
             }

@@ -10,7 +10,7 @@ namespace Weather.Converters
         {
             if (value is string)
             {
-                if (string.IsNullOrEmpty((string)value))
+                if (string.IsNullOrEmpty((string) value))
                 {
                     return false;
                 }

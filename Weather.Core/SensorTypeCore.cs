@@ -10,14 +10,17 @@ namespace Weather.Core
     public class SensorTypeCore : ISensorTypeCore
     {
         private readonly ISensorTypeRepository _repository;
+        private readonly ILog _log;
 
-        public SensorTypeCore(ISensorTypeRepository repository)
+        public SensorTypeCore(ISensorTypeRepository repository, ILog log)
         {
             _repository = repository;
+            _log = log;
         }
 
         public List<ISensorType> GetAll()
         {
+            _log.Debug("Get all Sensor Types");
             return _repository.GetAll();
         }
 
@@ -62,5 +65,10 @@ namespace Weather.Core
         public void RemoveUnitFromSensorType(Unit unit, ISensorType sensorType)
         {
             _repository.RemoveUnitFromSensorType(unit, sensorType);       }
+
+        public bool AnySensorTypesUseUnit(Unit unit)
+        {
+            return _repository.AnySensorTypesUseUnit(unit);
+        }
     }
 }

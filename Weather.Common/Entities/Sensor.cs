@@ -12,13 +12,14 @@ namespace Weather.Common.Entities
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public double Correction { get; set; } = 0;
-        public UnitType Type { get; set; }
+        public ISensorType SensorType { get; set; }
         public IList<ISensorValue> SensorValues { get; set; } = new List<ISensorValue>();
 
         public override string ToString()
         {
-            return Name + " (" + Type + ")";
+            return Manufacturer + " " + Model;
         }
     }
 }

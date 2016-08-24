@@ -1,15 +1,15 @@
-﻿using System.Windows;
+﻿using PropertyChanged;
+using System.Windows;
 using System.Windows.Controls;
-using Weather.Common.Entities;
-using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using Weather.ViewModels;
 
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for SensorTypesWindow.xaml
+    /// Interaction logic for UnitsWindow.xaml
     /// </summary>
+    [ImplementPropertyChanged]
     public partial class UnitsWindow : Window
     {
         private readonly UnitsWindowViewModel _viewModel;
@@ -18,44 +18,34 @@ namespace Weather.Views
         {
             InitializeComponent();
             _viewModel = viewModel;
+            _viewModel.Window = this;
             DataContext = _viewModel;
-            _viewModel.UnitsWindow = this;
-            Loaded += SensorTypesWindow_Loaded;
+            Loaded += UnitsWindow_Loaded;
         }
 
-        private void SensorTypesWindow_Loaded(object sender, RoutedEventArgs e)
+        private void UnitsWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            _viewModel.GetAll();
             _viewModel.RegisterDirtyHandlers();
         }
 
         private void ListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (_viewModel.SelectedUnit == null) return;
-            var selection = ((ListBox)e.Source).SelectedItem as Unit;
+            var selection = ((ListBox)e.Source).SelectedItem;
             if (selection == null) return;
-            if (_viewModel.IsDirty)
+            _viewModel.Unit = ((ListBox)e.Source).SelectedItem as Unit;
+            _viewModel.SelectedUnit = new Unit
             {
-                var result =
-                    MessageBox.Show(
-                        "Save changes to " + _viewModel.SelectedUnit.DisplayName + "?", "Save Changes", MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    _viewModel.Save(null);
-                }
-            }
-
-            _viewModel.SelectedUnit = selection;
+                UnitId = _viewModel.Unit.UnitId,
+                DisplayName = _viewModel.Unit.DisplayName,
+                DisplayUnit = _viewModel.Unit.DisplayUnit,
+                UnitType = _viewModel.Unit.UnitType
+            };
         }
 
-        private void UnitsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void SelectUnitInListBox(Unit unit)
         {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            lb.SelectedItem = unit;
         }
     }
 }

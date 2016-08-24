@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Weather.Common.Entities;
-using Weather.Common.Interfaces;
-
-namespace Weather.Repository.Interfaces
+﻿namespace Weather.Repository.Interfaces
 {
     public interface IWeatherStationRepository
     {
@@ -11,18 +6,8 @@ namespace Weather.Repository.Interfaces
         //void GetWeatherStationById(int id);
         //void DeleteWeatherStation(int id);
 
-
         //void GetAllWeatherStationsWithSensors();
         //void GetWeatherStationWithSensorsById(int id);
-
-
-
-
-
-
-
-
-
 
         //Task<List<IWeatherStation>> GetAllWeatherStationsWithSensorsAndRecordsAsync();
 
@@ -41,6 +26,5 @@ namespace Weather.Repository.Interfaces
         //void CreateTables();
 
         //List<ISensorValue>GetSensorValuesForRecordId(int id);
-
     }
 }

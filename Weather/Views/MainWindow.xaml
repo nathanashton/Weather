@@ -4,38 +4,52 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Weather" Height="350" Width="525">
+        Title="Weather" Height="350" Width="525" MinHeight="350" MinWidth="500">
     <Window.Resources>
-        <Style TargetType="ComboBoxItem" x:Key="ContainerStyle">
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="Red" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
+        <Storyboard x:Key="ShowDebugPanel">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="dpanel">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="150" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="dpanel">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseDebugPanel">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="dpanel">
+                <EasingDoubleKeyFrame KeyTime="0" Value="150" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="dpanel">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <BooleanToVisibilityConverter x:Key="BoolVisConverter" />
+      </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="Sensor Types" Command="{Binding SensorTypesCommand}"/>
-                <MenuItem Header="_Open" />
-                <MenuItem Header="_Save" />
+                <MenuItem Header="Units" Command="{Binding UnitsWindowCommand}" />
+                <MenuItem Header="Sensor Types" Command="{Binding SensorTypesWindowCommand}" />
+                <MenuItem Header="Sensors"  />
+                <MenuItem Header="Weather Stations" />
                 <Separator />
                 <MenuItem Header="_Exit" />
             </MenuItem>
-            <MenuItem Header="_Options">
-                <MenuItem Header="Sensor Types" Command="{Binding SensorTypesCommand}"/>
-                <MenuItem Header="Units" Command="{Binding UnitsCommand}"/>
-
+            <MenuItem Header="_Setup">
+                <MenuItem Header="Sensor Types &amp; Units" Command="{Binding SetupSensorsUnitsCommand}" />
+                <MenuItem Header="Stations &amp; Sensors" Command="{Binding SetupStationsSensorsCommand}" />
+                <MenuItem IsCheckable="True" IsChecked="{Binding DebugPanelVisible, Mode=TwoWay}" Header="Debug Panel" Command="{Binding DebugPanel}" />
             </MenuItem>
         </Menu>
         <ToolBarTray Background="DarkGray" DockPanel.Dock="Top" VerticalAlignment="Top">
             <ToolBar>
-                <Button Command="{Binding ImportCommand}" Content="Import" />
+                <Button Click="Button_Click_1" Content="Import" />
             </ToolBar>
             <ToolBar>
-       <Button Content="Stations" Command="{Binding StationsCommand}" />
-                <ComboBox Name="cmb" IsReadOnly="True" IsEditable="False" SelectionChanged="lb_SelectionChanged" Width="150" ItemsSource="{Binding Stations}" DisplayMemberPath="Name">
+                <Button Content="Stations" Command="{Binding StationsCommand}" />
+                <ComboBox Name="cmb" IsReadOnly="True" IsEditable="False" SelectionChanged="lb_SelectionChanged"
+                          Width="150" ItemsSource="{Binding Stations}" DisplayMemberPath="Name">
                     <ComboBox.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
@@ -45,6 +59,30 @@
             </ToolBar>
         </ToolBarTray>
 
-        <DataGrid EnableColumnVirtualization="True" EnableRowVirtualization="True" Name="dg" CanUserAddRows="False" RowHeaderWidth="0" IsReadOnly="True" AutoGenerateColumns="False" />
+        <Border Height="25" DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="DarkGray">
+            <StatusBar  Background="#F8F8F8">
+                <DockPanel
+                Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StatusBar}}}"
+                LastChildFill="True">
+                    <Label Foreground="Black" Padding="0" Content="{Binding Clock}" />
+                </DockPanel>
+            </StatusBar>
+        </Border>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <DataGrid Grid.Row="0" VerticalAlignment="Stretch" EnableColumnVirtualization="True" EnableRowVirtualization="True" Name="dg" CanUserAddRows="False"
+                  RowHeaderWidth="0" IsReadOnly="True" AutoGenerateColumns="False" />
+
+            <DockPanel  Name="dpanel"  Height="150" Grid.Row="1" Background="Black" Visibility="{Binding DebugPanelVisible, Converter={StaticResource BoolVisConverter}}">
+                <Label DockPanel.Dock="Top" Background="Black" Foreground="Yellow" Content="DEBUG" />
+                <ScrollViewer Margin="10,0,0,0" Name="scroll" Background="Black" VerticalAlignment="Stretch"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Padding="5" FontSize="11" Text="{Binding DebugPanel}" Background="Black" Foreground="Yellow" />
+                </ScrollViewer>
+            </DockPanel>
+        </Grid>
     </DockPanel>
 </Window>

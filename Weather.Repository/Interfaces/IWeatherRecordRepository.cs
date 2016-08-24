@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Weather.Common.Entities;
-using Weather.Common.Interfaces;
-
-namespace Weather.Repository.Interfaces
+﻿namespace Weather.Repository.Interfaces
 {
     public interface IWeatherRecordRepository
     {

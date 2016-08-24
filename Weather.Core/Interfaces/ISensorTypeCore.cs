@@ -15,5 +15,6 @@ namespace Weather.Core.Interfaces
         ISensorType AddOrUpdate(ISensorType sensorType);
         ISensorType AddUnitToSensorType(Unit unit, ISensorType sensorType);
         void RemoveUnitFromSensorType(Unit unit, ISensorType sensorType);
+        bool AnySensorTypesUseUnit(Unit unit);
     }
 }
