@@ -28,7 +28,10 @@ namespace Weather.Repository.Repositories
                 UnitId = (int?)null,
                 DisplayName = string.Empty,
                 DisplayUnit = string.Empty,
-                SIUnitId = 0
+                SIUnitId = 0,
+                SIUnitUnitId = 0,
+                SIUnitDisplayName = string.Empty,
+                SIUnitDisplayUnit = string.Empty
             }).ToList();
 
             var sql = @"SELECT
@@ -37,11 +40,15 @@ namespace Weather.Repository.Repositories
                         st.[SIUnitId] as SIUnitId,
                         u.[UnitId] as UnitId,
                         u.[DisplayName] as DisplayName,
-                        u.[DisplayUnit] as DisplayUnit
+                        u.[DisplayUnit] as DisplayUnit,
+                        uu.[UnitId] as SIUnitUnitId,
+                        uu.[DisplayName] as SIUnitDisplayName,
+                        uu.[DisplayUnit] as SIUnitDisplayUnit
                         FROM [SensorTypes] st
                         LEFT JOIN SensorTypes_Units stu ON st.SensorTypeId = stu.SensorTypeId
                         LEFT JOIN Units u ON stu.UnitId = u.UnitId
                         LEFT JOIN Units uu ON st.SIUnitId = uu.UnitId";
+
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))
@@ -52,6 +59,11 @@ namespace Weather.Repository.Repositories
                         {
                             using (var reader = command.ExecuteReader())
                             {
+                                //if (reader.HasRows)
+                                //{
+                                //    var f = Mapper.Map<IDataReader, List<Unit>>(reader);
+                                //}
+
                                 while (reader.Read())
                                 {
                                     mappedReader.Add(new
@@ -61,7 +73,10 @@ namespace Weather.Repository.Repositories
                                         UnitId = DbUtils.ParseIntNull(reader["UnitId"].ToString()),
                                         DisplayName = reader["DisplayName"].ToString(),
                                         DisplayUnit = reader["DisplayUnit"].ToString(),
-                                        SIUnitId = Convert.ToInt32(reader["SIUnitId"])
+                                        SIUnitId = Convert.ToInt32(reader["SIUnitId"]),
+                                        SIUnitUnitId = Convert.ToInt32(reader["SIUnitId"]),
+                                        SIUnitDisplayName = reader["SIUnitDisplayName"].ToString(),
+                                        SIUnitDisplayUnit = reader["SIUnitDisplayUnit"].ToString()
                                     });
                                 }
                             }
@@ -74,6 +89,20 @@ namespace Weather.Repository.Repositories
                 _log.Error("", ex);
                 throw;
             }
+
+            var siUnits = mappedReader
+    .GroupBy(x => new { x.SIUnitUnitId, x.SensorTypeId, x.SIUnitDisplayName, x.SIUnitDisplayUnit }, x => x, (key, g) =>
+          new
+          {
+              key.SensorTypeId,
+              Unit =
+                  new Unit
+                  {
+                      UnitId = (int)key.SIUnitUnitId,
+                      DisplayName = key.SIUnitDisplayName,
+                      DisplayUnit = key.SIUnitDisplayUnit
+                  }
+          }).ToList();
 
             var units = mappedReader.Where(x => x.UnitId != null)
                 .GroupBy(x => new { x.UnitId, x.SensorTypeId, x.DisplayName, x.DisplayUnit }, x => x, (key, g) =>
@@ -89,8 +118,6 @@ namespace Weather.Repository.Repositories
                               }
                       }).ToList();
 
-            var tt = units.First(x => x.Unit.UnitId == 31).Unit;
-
             var sensorTypes = mappedReader
                 .GroupBy(x => new { x.SensorTypeId, x.Name, x.SIUnitId }, x => x,
                     (key, g) =>
@@ -99,13 +126,11 @@ namespace Weather.Repository.Repositories
                             SensorTypeId = key.SensorTypeId,
                             Name = key.Name,
                             Units = units.Where(x => x.SensorTypeId == key.SensorTypeId).Select(x => x.Unit).ToList(),
-                            SIUnit = units.First(x => x.Unit.UnitId == key.SIUnitId).Unit
+                            SIUnit = siUnits.First(x => x.Unit.UnitId == key.SIUnitId).Unit
                         }).ToList();
 
             return sensorTypes.Cast<ISensorType>().ToList();
         }
-
-
 
         //TODO
         public ISensorType GetById(int id)
@@ -161,7 +186,14 @@ namespace Weather.Repository.Repositories
                         using (var command = new SQLiteCommand(sql, connection))
                         {
                             command.Parameters.AddWithValue("@Name", sensorType.Name);
-                            command.Parameters.AddWithValue("@SIUnitId", sensorType.SIUnit.UnitId);
+                            if (sensorType.SIUnit == null)
+                            {
+                                command.Parameters.AddWithValue("@SIUnitId",DBNull.Value);
+                            }
+                            else
+                            {
+                                command.Parameters.AddWithValue("@SIUnitId", sensorType.SIUnit.UnitId);
+                            }
                             command.ExecuteNonQuery();
 
                             var command2 = new SQLiteCommand(sql2, connection);

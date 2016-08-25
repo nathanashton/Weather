@@ -79,7 +79,6 @@ namespace Weather.ViewModels
             Unit = null;
             CheckDirty();
             GetAll();
-
         }
 
         private void Cancel(object obj)

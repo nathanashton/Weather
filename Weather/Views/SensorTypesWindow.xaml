@@ -219,7 +219,6 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60" />
@@ -247,13 +246,52 @@
                            Content="SI Unit" />
 
                     <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Margin="0,5,0,5" Height="22" Name="SIUnit"
-                              VerticalContentAlignment="Center" ItemsSource="{Binding Units}"
+                              VerticalContentAlignment="Center" ItemsSource="{Binding SelectedSensorType.Units}"
                               SelectedItem="{Binding SelectedSensorType.SIUnit}"
                               Grid.Row="1"
                               Grid.Column="1" />
 
+                    <Label VerticalAlignment="Top" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="0"
+                           Content="Units" />
+                    
+                    <ListBox Grid.Column="1" Grid.Row="2" Height="100" ItemsSource="{Binding SelectedSensorType.Units}" SelectedItem="{Binding SelectedUnit}"/>
+                    <StackPanel Height="35" HorizontalAlignment="Right" Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                     <Button Command="{Binding AddUnitCommand}" Background="Transparent" BorderThickness="0" DockPanel.Dock="Left"
+                    Width="45" Margin="10,7,0,7" HorizontalAlignment="Right">
+                        <DockPanel Background="Transparent">
+                            <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/plus_48px.png">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Opacity" Value="0.3" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <Label Background="Transparent" VerticalContentAlignment="Center" FontSize="11" Padding="0" Content="Add" />
+                        </DockPanel>
+                        </Button>
+                        <Button Command="{Binding DeleteUnitCommand}" Background="Transparent" BorderThickness="0"
+                    DockPanel.Dock="Left" Width="65" Margin="2,7,7,7" HorizontalAlignment="Right">
+                            <DockPanel Background="Transparent">
+                                <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/minus_48px.png">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Opacity" Value="0.3" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
 
-
+                                <Label Background="Transparent" FontSize="11" VerticalContentAlignment="Center" Padding="0" Content="Delete" />
+                            </DockPanel>
+                        </Button>
+                    </StackPanel>
 
                 </Grid>
             </DockPanel>

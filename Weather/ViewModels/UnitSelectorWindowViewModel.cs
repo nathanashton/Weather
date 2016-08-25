@@ -45,7 +45,6 @@ namespace Weather.ViewModels
         private void Add(object obj)
         {
             SensorType.Units.Add(SelectedUnit);
-           // _sensorTypeCore.AddUnitToSensorType(SelectedUnit, SensorType);
             Window.Close();
         }
     }
