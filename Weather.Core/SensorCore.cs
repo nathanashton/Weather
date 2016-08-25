@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
@@ -15,35 +14,30 @@ namespace Weather.Core
             _sensorRepository = sensorRepository;
         }
 
-        public void UpdateSensorForWeatherStation(Sensor sensor)
+        public List<ISensor> GetAllSensors()
         {
-           // _sensorRepository.Update(sensor);
+            return _sensorRepository.GetAllSensors();
         }
 
-        public void DeleteSensor(Sensor sensor)
+        public ISensor AddOrUpdate(ISensor sensor)
         {
-          //  _sensorRepository.DeleteSensor(sensor);
-        }
-
-        public Sensor AddSensor(Sensor sensor)
-        {
-           // sensor.Id = _sensorRepository.AddSensor(sensor);
+            if (sensor.SensorId == 0)
+            {
+                sensor.SensorId = _sensorRepository.Add(sensor);
+                return sensor;
+            }
+            Update(sensor);
             return sensor;
         }
 
-        public void AddSensorValue(ISensorValue value)
+        public void Update(ISensor sensor)
         {
-          //  value.Id = _sensorRepository.InsertSensorValue(value);
+            _sensorRepository.Update(sensor);
         }
 
-        public void AddSensorValues(IEnumerable<ISensorValue> values)
+        public void Delete(ISensor sensor)
         {
-          //  _sensorRepository.InsertSensorValues(values);
-        }
-
-        public void AddWeatherRecords(IEnumerable<IWeatherRecord> records)
-        {
-          //  _sensorRepository.InsertWeatherRecords(records);
+            _sensorRepository.Delete(sensor.SensorId);
         }
     }
 }

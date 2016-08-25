@@ -69,7 +69,7 @@ namespace Weather.Core
 
         private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _sensorCore.AddSensorValues(listSensorValues);
+            //_sensorCore.AddSensorValues(listSensorValues);
          //   _stationCore.AddWeatherRecords(listWeatherRecords);
             ImportComplete?.Invoke(this,null);
         }

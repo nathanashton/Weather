@@ -1,234 +1,198 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
+using Weather.Common.Units;
 using Weather.Repository.Interfaces;
 
 namespace Weather.Repository.Repositories
 {
     public class SensorRepository : ISensorRepository
     {
-        public int Count { get; set; }
+        private const string DbConnectionString = @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
+        private readonly ILog _log;
 
-        public void Update(Sensor sensor)
+        public SensorRepository(ILog log)
         {
-            //using (
-            //    var connection = new SQLiteConnection
-            //    {
-            //        ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;"
-            //    })
-            //{
-            //    connection.Open();
-
-            //    var sql =
-            //        "UPDATE sensors SET name=@name, unittype_id=@unittypeid, weatherstation_id=@weatherstationid, correction=@correction WHERE Id = @id";
-            //    using (var command = new SQLiteCommand(sql, connection))
-            //    {
-            //        command.Parameters.AddWithValue("@name", sensor.Name);
-            //        command.Parameters.AddWithValue("@unittypeid", (int) sensor.Type + 1);
-            //        command.Parameters.AddWithValue("@weatherstationid", sensor.Station.Id);
-            //        command.Parameters.AddWithValue("@correction", sensor.Correction);
-            //        command.Parameters.AddWithValue("@id", sensor.Id);
-            //        command.ExecuteNonQuery();
-            //    }
-            //}
+            _log = log;
         }
 
-        public void UpdateSensor(Sensor sensor)
+        public List<ISensor> GetAllSensors()
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteSensor(Sensor sensor)
-        {
-            //using (
-            //    var connection = new SQLiteConnection
-            //    {
-            //        ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;"
-            //    })
-            //{
-            //    connection.Open();
-
-            //    var sql = "DELETE FROM sensors WHERE Id = @id";
-            //    using (var command = new SQLiteCommand(sql, connection))
-            //    {
-            //        command.Parameters.AddWithValue("@id", sensor.Id);
-            //        command.ExecuteNonQuery();
-            //    }
-            //}
-        }
-
-        public void GetAllSensors()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void GetSensorsForWeatherStation(WeatherStation station)
-        {
-            throw new NotImplementedException();
-        }
-
-        public long AddSensor(Sensor sensor)
-        {
-            //using (
-            //    var connection = new SQLiteConnection
-            //    {
-            //        ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;"
-            //    })
-            //{
-            //    connection.Open();
-
-            //    var sql =
-            //        "INSERT INTO sensors (name,unittype_id, weatherstation_id, correction) VALUES (@name, @unittypeid, @weatherstationid, @correction)";
-            //    using (var command = new SQLiteCommand(sql, connection))
-            //    {
-            //        command.Parameters.AddWithValue("@name", sensor.Name);
-            //        command.Parameters.AddWithValue("@unittypeid", (int) sensor.Type + 1);
-            //        command.Parameters.AddWithValue("@weatherstationid", sensor.Station.Id);
-            //        command.Parameters.AddWithValue("@correction", sensor.Correction);
-            //        command.ExecuteNonQuery();
-
-            //        var sql2 = "SELECT last_insert_rowid();";
-            //        var command2 = new SQLiteCommand(sql2, connection);
-            //        var id = command2.ExecuteScalar();
-            //        return (long) id;
-            //    }
-            //}
-            return 1;
-        }
-
-        public long InsertWeatherRecord(DateTime timestamp, long sensorValueId, long stationId)
-        {
-            using (
-                var connection = new SQLiteConnection
-                {
-                    ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;"
-                })
+            var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                connection.Open();
+                SensorId = 0,
+                Manufacturer = string.Empty,
+                Model = string.Empty,
+                Description = string.Empty,
+                SensorTypeId = 0,
+                SensorTypeSensorTypeId =0,
+                Name = string.Empty
+            }).ToList();
 
-                var sql =
-                    "INSERT INTO WeatherRecords (timestamp, sensorvalue_id, station_id) VALUES (@timestamp, @sensorvalueid, @stationid)";
-                using (var command = new SQLiteCommand(sql, connection))
+            var sql = @"SELECT
+                        s.[SensorId] as SensorId,
+                        s.[Manufacturer] as Manufacturer,
+                        s.[Model] as Model,
+                        s.[Description] as Description,
+                        s.[SensorTypeId] as SensorTypeId,
+st.[SensorTypeId] as SensorTypeSensorTypeId,
+                        st.[Name] as Name
+                        FROM [Sensors] s
+                        LEFT JOIN SensorTypes st ON s.SensorTypeId = st.SensorTypeId";
+
+            try
+            {
+                using (var connection = new SQLiteConnection(DbConnectionString))
                 {
-                    command.Parameters.AddWithValue("@timestamp", timestamp);
-                    command.Parameters.AddWithValue("@sensorvalueid", sensorValueId);
-                    command.Parameters.AddWithValue("@stationid", stationId);
-                    command.ExecuteNonQuery();
-
-                    var sql2 = "SELECT last_insert_rowid();";
-                    var command2 = new SQLiteCommand(sql2, connection);
-                    var id2 = command2.ExecuteScalar();
-                    return (long)id2;
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    mappedReader.Add(new
+                                    {
+                                        SensorId = Convert.ToInt32(reader["SensorId"]),
+                                        Manufacturer = reader["Manufacturer"].ToString(),
+                                        Model = reader["Model"].ToString(),
+                                        Description = reader["Description"].ToString(),
+                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
+                                        SensorTypeSensorTypeId = Convert.ToInt32(reader["SensorTypeSensorTypeId"]),
+                                        Name = reader["Name"].ToString()
+                                    });
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+
+
+
+
+
+            var sensorTypes = mappedReader
+    .GroupBy(x => new { x.SensorTypeSensorTypeId, x.Name, }, x => x, (key, g) =>
+          new
+          {
+              key.SensorTypeSensorTypeId,
+              SensorType =
+                  new SensorType
+                  {
+                      SensorTypeId = (int)key.SensorTypeSensorTypeId,
+                      Name = key.Name,
+                  }
+          }).ToList();
+
+
+            var sensors = mappedReader
+                .GroupBy(x => new { x.SensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId }, x => x,
+                    (key, g) =>
+                        new Sensor
+                        {
+                            SensorId = key.SensorId,
+                            Manufacturer = key.Manufacturer,
+                            Model = key.Model,
+                            Description = key.Description,
+                            SensorType = sensorTypes.First(x=> x.SensorTypeSensorTypeId == key.SensorTypeId).SensorType
+                        }).ToList();
+
+            return sensors.Cast<ISensor>().ToList();
+        }
+
+        public int Add(ISensor sensor)
+        {
+            var sql = @"INSERT INTO Sensors (Manufacturer, Model, Description, SensorTypeId) VALUES (@Manufacturer, @Model, @Description, @SensorTypeId)";
+            var sql2 = "SELECT last_insert_rowid();";
+            try
+            {
+                using (var connection = new SQLiteConnection(DbConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Manufacturer", sensor.Manufacturer);
+                            command.Parameters.AddWithValue("@Model", sensor.Model);
+                            command.Parameters.AddWithValue("@Description", sensor.Description);
+                            command.Parameters.AddWithValue("@SensorTypeId", sensor.SensorType.SensorTypeId);
+                            command.ExecuteNonQuery();
+
+                            var command2 = new SQLiteCommand(sql2, connection);
+                            var id = command2.ExecuteScalar();
+                            return Convert.ToInt32(id);
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
             }
         }
 
-        public void InsertSensorValues(IEnumerable<ISensorValue> sensorvalues)
+        public void Update(ISensor sensor)
         {
-            //var sql = "INSERT INTO SensorValues (value, sensor_id) VALUES (@value, @sensor_id)";
+            var sql = @"UPDATE Sensors SET Manufacturer = @Manufacturer, Model = @Model, Description = @Description, SensorTypeId = @SensorTypeId WHERE SensorId = @Id";
+            try
+            {
+                using (var connection = new SQLiteConnection(DbConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Manufacturer", sensor.Manufacturer);
+                            command.Parameters.AddWithValue("@Model", sensor.Model);
+                            command.Parameters.AddWithValue("@Description", sensor.Description);
+                            command.Parameters.AddWithValue("@SensorTypeId", sensor.SensorType.SensorTypeId);
+                            command.Parameters.AddWithValue("@Id", sensor.SensorId);
 
-            //using (
-            //    var connection = new SQLiteConnection
-            //    {
-            //        ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;"
-            //    })
-            //{
-            //    connection.Open();
-            //    using (var command = new SQLiteCommand(connection))
-            //    {
-            //        command.CommandText = "PRAGMA synchronous=OFF";
-            //        command.ExecuteNonQuery();
-            //        command.CommandText = "PRAGMA journal_mode=MEMORY";
-            //        command.ExecuteNonQuery();
-            //        command.CommandText = "PRAGMA count_changes=OFF";
-            //        command.ExecuteNonQuery();
-            //        command.CommandText = "PRAGMA temp_store=MEMORY";
-            //        command.ExecuteNonQuery();
-
-            //        using (var transaction = connection.BeginTransaction())
-            //        {
-            //            foreach (var value in sensorvalues)
-            //            {
-            //                command.CommandText =
-            //                    $"INSERT INTO SensorValues (value, sensor_id) VALUES ('{value.RawValue}', {value.Sensor.Id})";
-            //                command.ExecuteNonQuery();
-
-            //                var sql2 = "SELECT last_insert_rowid();";
-            //                var command2 = new SQLiteCommand(sql2, connection);
-            //                var id2 = command2.ExecuteScalar();
-            //                value.Id = (long) id2;
-            //            }
-            //            transaction.Commit();
-            //            Count++;
-            //        }
-            //    }
-            //}
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
         }
 
-        public void InsertWeatherRecords(IEnumerable<IWeatherRecord> records)
+        public void Delete(int id)
         {
-            //using (
-            //    var connection = new SQLiteConnection
-            //    {
-            //        ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;"
-            //    })
-            //{
-            //    connection.Open();
-            //    using (var command = new SQLiteCommand(connection))
-            //    {
-            //        command.CommandText = "PRAGMA synchronous=OFF";
-            //        command.ExecuteNonQuery();
-            //        command.CommandText = "PRAGMA journal_mode=MEMORY";
-            //        command.ExecuteNonQuery();
-            //        command.CommandText = "PRAGMA count_changes=OFF";
-            //        command.ExecuteNonQuery();
-            //        command.CommandText = "PRAGMA temp_store=MEMORY";
-            //        command.ExecuteNonQuery();
-
-            //        using (var transaction = connection.BeginTransaction())
-            //        {
-            //            foreach (var value in records)
-            //            {
-            //                foreach (var t in value.SensorValues)
-            //                {
-            //                    command.CommandText =
-            //                        $"INSERT INTO WeatherRecords (timestamp, sensorvalue_id, station_id) VALUES ('{value.TimeStamp}', {t.Id}, {t.Sensor.Station.Id})";
-            //                    command.ExecuteNonQuery();
-            //                }
-            //            }
-            //            transaction.Commit();
-            //            Count++;
-            //        }
-            //    }
-            //}
-        }
-
-        public long InsertSensorValue(ISensorValue sensorvalue)
-        {
-            //using (
-            //    var connection = new SQLiteConnection
-            //    {
-            //        ConnectionString = "Data Source=weather.sqlite;Version=3;foreign keys=true;"
-            //    })
-            //{
-            //    connection.Open();
-
-            //    var sql = "INSERT INTO SensorValues (value, sensor_id) VALUES (@value, @sensor_id)";
-            //    using (var command = new SQLiteCommand(sql, connection))
-            //    {
-            //        command.Parameters.AddWithValue("@value", sensorvalue.RawValue);
-            //        command.Parameters.AddWithValue("@sensor_id", sensorvalue.Sensor.Id);
-            //        command.ExecuteNonQuery();
-
-            //        var sql2 = "SELECT last_insert_rowid();";
-            //        var command2 = new SQLiteCommand(sql2, connection);
-            //        var id = command2.ExecuteScalar();
-            //        return (long) id;
-            //    }
-            //}
-            return 1;
+            var sql = @"DELETE FROM Sensors WHERE SensorId = @Id";
+            try
+            {
+                using (var connection = new SQLiteConnection(DbConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Id", id);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
         }
     }
 }

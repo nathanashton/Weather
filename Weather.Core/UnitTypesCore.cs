@@ -1,15 +1,8 @@
-﻿using System.Collections.Generic;
-using Weather.Common.Entities;
-using Weather.Core.Interfaces;
-using Weather.Repository.Interfaces;
+﻿using Weather.Core.Interfaces;
 
 namespace Weather.Core
 {
     public class UnitTypesCore : IUnitTypesCore
     {
-
-
-
-
     }
 }

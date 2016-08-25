@@ -6,11 +6,11 @@ namespace Weather.Core.Interfaces
 {
     public interface ISensorCore
     {
-        void UpdateSensorForWeatherStation(Sensor sensor);
-        void DeleteSensor(Sensor sensor);
-        Sensor AddSensor(Sensor sensor);
-        void AddSensorValue(ISensorValue value);
-        void AddWeatherRecords(IEnumerable<IWeatherRecord> records);
-        void AddSensorValues(IEnumerable<ISensorValue> values);
+
+        List<ISensor> GetAllSensors();
+        ISensor AddOrUpdate(ISensor sensor);
+        void Update(ISensor sensor);
+        void Delete(ISensor sensor);
+
     }
 }

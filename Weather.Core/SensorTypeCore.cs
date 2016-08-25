@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using Weather.Core.Interfaces;
@@ -64,7 +63,8 @@ namespace Weather.Core
 
         public void RemoveUnitFromSensorType(Unit unit, ISensorType sensorType)
         {
-            _repository.RemoveUnitFromSensorType(unit, sensorType);       }
+            _repository.RemoveUnitFromSensorType(unit, sensorType);
+        }
 
         public bool AnySensorTypesUseUnit(Unit unit)
         {

@@ -11,7 +11,7 @@ namespace Weather.Repository.Repositories
 {
     public class SensorTypeRepository : ISensorTypeRepository
     {
-        private const string DbConnectionString = @"Data Source=weather.sqlite;Version=3;foreign keys=true;";
+        private const string DbConnectionString = @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
         private readonly ILog _log;
 
         public SensorTypeRepository(ILog log)
@@ -58,12 +58,7 @@ namespace Weather.Repository.Repositories
                         using (var command = new SQLiteCommand(sql, connection))
                         {
                             using (var reader = command.ExecuteReader())
-                            {
-                                //if (reader.HasRows)
-                                //{
-                                //    var f = Mapper.Map<IDataReader, List<Unit>>(reader);
-                                //}
-
+                            { 
                                 while (reader.Read())
                                 {
                                     mappedReader.Add(new
@@ -186,14 +181,7 @@ namespace Weather.Repository.Repositories
                         using (var command = new SQLiteCommand(sql, connection))
                         {
                             command.Parameters.AddWithValue("@Name", sensorType.Name);
-                            if (sensorType.SIUnit == null)
-                            {
-                                command.Parameters.AddWithValue("@SIUnitId",DBNull.Value);
-                            }
-                            else
-                            {
-                                command.Parameters.AddWithValue("@SIUnitId", sensorType.SIUnit.UnitId);
-                            }
+                            command.Parameters.AddWithValue("@SIUnitId", sensorType.SIUnit.UnitId);
                             command.ExecuteNonQuery();
 
                             var command2 = new SQLiteCommand(sql2, connection);

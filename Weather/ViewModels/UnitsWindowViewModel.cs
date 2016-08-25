@@ -26,12 +26,13 @@ namespace Weather.ViewModels
         public Unit SelectedUnit { get; set; }
         public Unit Unit { get; set; }
         public bool IsDirty { get; set; }
+        private ISensorTypeCore _sensorTypeCore;
 
 
-
-        public UnitsWindowViewModel(IUnitCore unitCore, ILog log)
+        public UnitsWindowViewModel(IUnitCore unitCore, ILog log, ISensorTypeCore sensorTypeCore)
         {
             _log = log;
+            _sensorTypeCore = sensorTypeCore;
             _unitCore = unitCore;
             UnitTypes = new ObservableCollection<UnitType>(Common.Units.UnitTypes.UnitsList);
         }
@@ -70,6 +71,15 @@ namespace Weather.ViewModels
 
         private void Delete(object obj)
         {
+            if (_sensorTypeCore.AnySensorTypesUseUnit(SelectedUnit))
+            {
+                MessageBox.Show(
+                    "Cannot delete " + SelectedUnit.DisplayName + " as it is currently being used by a Sensor Type",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+
             var result = MessageBox.Show("Delete " + SelectedUnit.DisplayName + "?", "Confirm", MessageBoxButton.YesNo,
                 MessageBoxImage.Stop);
             if (result != MessageBoxResult.Yes) return;

@@ -133,9 +133,8 @@ namespace Weather.ViewModels
                 }
             }
 
-            if (unit == null) return;
+            if (unit == null) return; // No unit was added
             var id = SelectedSensorType.SensorTypeId;
-
             _sensorTypeCore.AddUnitToSensorType(unit, SelectedSensorType);
             CheckDirty();
             GetSensorTypes();

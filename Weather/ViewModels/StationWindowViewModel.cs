@@ -186,8 +186,8 @@ namespace Weather.ViewModels
                     " sensor?. This will delete ALL sensor recordings as well.", "Delete?", MessageBoxButton.YesNo,
                     MessageBoxImage.Exclamation);
             if (result != MessageBoxResult.Yes) return;
-            _sensorCore.DeleteSensor((Sensor) SelectedSensor);
-            _sensorCore.DeleteSensor((Sensor) SelectedSensor);
+            //_sensorCore.DeleteSensor((Sensor) SelectedSensor);
+            //_sensorCore.DeleteSensor((Sensor) SelectedSensor);
             SelectedStation.Sensors.Remove(SelectedSensor);
         }
 

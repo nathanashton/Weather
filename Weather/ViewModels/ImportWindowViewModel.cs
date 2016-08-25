@@ -344,7 +344,7 @@ namespace Weather.ViewModels
 
         public override string ToString()
         {
-            return Sensor.Name + " => " + Record.Value + " (" + Record.Index + ")";
+            return Sensor.Manufacturer + " => " + Record.Value + " (" + Record.Index + ")";
         }
     }
 

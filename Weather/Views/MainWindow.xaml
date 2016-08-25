@@ -31,7 +31,7 @@
             <MenuItem Header="_File">
                 <MenuItem Header="Units" Command="{Binding UnitsWindowCommand}" />
                 <MenuItem Header="Sensor Types" Command="{Binding SensorTypesWindowCommand}" />
-                <MenuItem Header="Sensors"  />
+                <MenuItem Header="Sensors"  Command="{Binding SensorsWindowCommand}"   />
                 <MenuItem Header="Weather Stations" />
                 <Separator />
                 <MenuItem Header="_Exit" />

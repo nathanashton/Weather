@@ -122,40 +122,23 @@
     <Compile Include="Converters\NullEnabledConverter.cs" />
     <Compile Include="Converters\TestConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
-    <Compile Include="UserControls\SensorsPage.xaml.cs">
-      <DependentUpon>SensorsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UnitsPage.xaml.cs">
-      <DependentUpon>UnitsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
-    <Compile Include="ViewModels\SensorsViewModel.cs" />
-    <Compile Include="ViewModels\SensorWindowViewModel.cs" />
-    <Compile Include="ViewModels\SetupStationsSensorsWindowViewModel.cs" />
-    <Compile Include="ViewModels\SetupWindowViewModel.cs" />
+    <Compile Include="ViewModels\SensorsWindowViewModel.cs" />
     <Compile Include="ViewModels\StationWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorTypesViewModel.cs" />
     <Compile Include="ViewModels\UnitSelectorWindowViewModel.cs" />
-    <Compile Include="ViewModels\UnitsViewModel.cs" />
     <Compile Include="ViewModels\UnitsWindowViewModel.cs" />
     <Compile Include="Views\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\SensorTypesPage.xaml.cs">
-      <DependentUpon>SensorTypesPage.xaml</DependentUpon>
+    <Compile Include="Views\SensorsWindow.xaml.cs">
+      <DependentUpon>SensorsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RegexValidationRule.cs" />
     <Compile Include="Views\SensorTypesWindow.xaml.cs">
       <DependentUpon>SensorTypesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SensorWindow.xaml.cs">
       <DependentUpon>SensorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SetupStationsSensorsWindow.xaml.cs">
-      <DependentUpon>SetupStationsSensorsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SetupWindow.xaml.cs">
-      <DependentUpon>SetupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StationMapWindow.xaml.cs">
       <DependentUpon>StationMapWindow.xaml</DependentUpon>
@@ -169,19 +152,11 @@
     <Compile Include="Views\UnitsWindow.xaml.cs">
       <DependentUpon>UnitsWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="UserControls\SensorsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UnitsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ImportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\SensorTypesPage.xaml">
+    <Page Include="Views\SensorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,14 +183,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\SetupStationsSensorsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SetupWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\StationMapWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -288,6 +255,7 @@
   <ItemGroup>
     <Resource Include="weather.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -10,7 +10,7 @@ namespace Weather.Repository.Repositories
 {
     public class UnitRepository : IUnitRepository
     {
-        private const string DbConnectionString = @"Data Source=weather.sqlite;Version=3;foreign keys=true;";
+        private const string DbConnectionString = @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
         private readonly ILog _log;
 
         public UnitRepository(ILog log)

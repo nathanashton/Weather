@@ -15,16 +15,16 @@ namespace Weather.Views
     {
         private bool _save;
 
-        public SensorWindow(SensorWindowViewModel viewModel)
+        public SensorWindow()
         {
             InitializeComponent();
-            ViewModel = viewModel;
-            DataContext = viewModel;
+          //  ViewModel = viewModel;
+           // DataContext = viewModel;
             Closing += AddSensorWindow_Closing;
             Loaded += SensorWindow_Loaded;
         }
 
-        public SensorWindowViewModel ViewModel { get; set; }
+       // public SensorWindowViewModel ViewModel { get; set; }
 
         private void SensorWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -46,14 +46,14 @@ namespace Weather.Views
         {
             if (!_save)
             {
-                ViewModel.Sensor = null;
+              //  ViewModel.Sensor = null;
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _save = false;
-            ViewModel.Sensor = null;
+           // ViewModel.Sensor = null;
             Close();
         }
 
