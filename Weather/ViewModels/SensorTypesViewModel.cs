@@ -44,6 +44,25 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && SelectedSensorType != null); }
         }
 
+
+        public ICommand UnitsWindowCommand
+        {
+            get { return new RelayCommand(OpenUnitsWindow, x => true); }
+        }
+
+        private void OpenUnitsWindow(object obj)
+        {
+            var id2 = SelectedSensorType.SensorTypeId;
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<UnitsWindow>();
+            window.ShowDialog();
+
+            GetSensorTypes();
+
+            SelectedSensorType = SensorTypes.First(x => x.SensorTypeId == id2);
+            Window.SelectUnitInListBox(SelectedSensorType);
+        }
+
         public ICommand SaveCommand
         {
             get

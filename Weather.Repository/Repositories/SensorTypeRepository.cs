@@ -131,7 +131,7 @@ namespace Weather.Repository.Repositories
         public ISensorType GetById(int id)
         {
             ISensorType sensorType = null;
-            var sql = @"SELECT * FROM SensorTypes WHERE SensorId = @Id";
+            var sql = @"SELECT * FROM SensorTypes WHERE SensorTypeId = @Id";
             try
             {
                 using (var connection = new SQLiteConnection(DbConnectionString))

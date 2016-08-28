@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
+
 using System.Windows;
 using System.Windows.Input;
 using PropertyChanged;
@@ -13,6 +15,7 @@ using Weather.Common.Units;
 using Weather.Core.Interfaces;
 using Weather.Helpers;
 using Weather.Views;
+using Weather.DependencyResolver;
 
 namespace Weather.ViewModels
 {
@@ -56,6 +59,26 @@ namespace Weather.ViewModels
         public ICommand SaveCommand
         {
             get { return new RelayCommand(Save, x=> IsDirty && SelectedSensor != null && SelectedSensor.IsValid); }
+        }
+
+        public ICommand SensorTypesCommand
+        {
+            get { return new RelayCommand(SensorTypesWindowOpen, x =>SelectedSensor != null); }
+        }
+
+        private void SensorTypesWindowOpen(object obj)
+        {
+            var id = SelectedSensor.SensorType.SensorTypeId;
+            var id2 = SelectedSensor.SensorId;
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<SensorTypesWindow>();
+            window.ShowDialog();
+
+            GetAllSensors();
+            GetAllSensorTypes();
+
+            SelectedSensor = Sensors.First(x => x.SensorId == id2);
+            Window.SelectSensorInListBox(SelectedSensor);
         }
 
         public ICommand AddCommand
@@ -156,6 +179,7 @@ namespace Weather.ViewModels
 
         public void CheckDirty()
         {
+            if (SelectedSensor.SensorType == null) return;
             if (Adding)
             {
                 IsDirty = true;

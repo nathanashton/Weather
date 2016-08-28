@@ -213,7 +213,7 @@
             </DockPanel>
 
             <DockPanel Margin="10,0,0,0">
-                <Grid IsEnabled="{Binding Unit, Converter={StaticResource NullBoolConverter}}">
+                <Grid IsEnabled="{Binding TempSelectedSensorType, Converter={StaticResource NullBoolConverter}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -244,13 +244,14 @@
 
                     <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="0"
                            Content="SI Unit" />
-
+                    <DockPanel Grid.Row="1"
+                              Grid.Column="1">
+                    <Button Background="Transparent" BorderBrush="#A0A0A0" Command="{Binding UnitsWindowCommand}" DockPanel.Dock="Right" Content="..." Margin="5,5,0,5" Height="22"/>
                     <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Margin="0,5,0,5" Height="22" Name="SIUnit"
                               VerticalContentAlignment="Center" ItemsSource="{Binding SelectedSensorType.Units}"
                               SelectedItem="{Binding SelectedSensorType.SIUnit}"
-                              Grid.Row="1"
-                              Grid.Column="1" />
-
+                               />
+                    </DockPanel>
                     <Label VerticalAlignment="Top" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="0"
                            Content="Units" />
                     

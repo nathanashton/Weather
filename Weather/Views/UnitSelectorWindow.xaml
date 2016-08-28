@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Weather.Views" ResizeMode="NoResize" Background="#F8F8F8"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" SizeToContent="Height"
+                xmlns:converters="clr-namespace:Weather.Converters"
+
         Title="Select Unit" Height="124.432" Width="238.636">
     <Window.Resources>
+        <converters:NullCountConverter x:Key="NullCountConverter" />
+
         <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#B3ADAB" />
         <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#fff" />
         <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#888" />
@@ -156,6 +160,6 @@
                 </DockPanel>
             </Button>
         </DockPanel>
-        <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Margin="15" Height="23" ItemsSource="{Binding Units}" SelectedItem="{Binding SelectedUnit}" />
+        <ComboBox IsEnabled="{Binding Units, Converter={StaticResource NullCountConverter}}" Style="{StaticResource ComboBoxFlatStyle}" Margin="15" Height="23" ItemsSource="{Binding Units}" SelectedItem="{Binding SelectedUnit}" />
     </DockPanel>
 </Window>

@@ -119,6 +119,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\NullBoolConverter.cs" />
+    <Compile Include="Converters\NullCountConverter.cs" />
     <Compile Include="Converters\NullEnabledConverter.cs" />
     <Compile Include="Converters\TestConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
