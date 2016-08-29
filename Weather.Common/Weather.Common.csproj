@@ -43,8 +43,10 @@
   <ItemGroup>
     <Compile Include="Entities\SensorType.cs" />
     <Compile Include="Entities\SensorValue.cs" />
+    <Compile Include="Entities\StationSensor.cs" />
     <Compile Include="EventArgs\DebugMessageArgs.cs" />
     <Compile Include="Interfaces\ISensorType.cs" />
+    <Compile Include="Interfaces\IStationSensor.cs" />
     <Compile Include="Units\Unit.cs" />
     <Compile Include="Units\UnitType.cs" />
     <Compile Include="Units\UnitTypes.cs" />

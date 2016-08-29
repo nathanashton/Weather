@@ -10,12 +10,11 @@ namespace Weather.Common.Interfaces
         string Model { get; set; }
         double? Latitude { get; set; }
         double? Longitude { get; set; }
+        string Description { get; set; }
+        bool IsValid { get; }
 
-        IList<IWeatherRecord> WeatherRecords { get; set; }
-        IList<ISensor> Sensors { get; set; }
+        IList<IStationSensor> Sensors { get; set; }
 
-        void AddSensor(Sensor sensor);
 
-        void AddRecord(WeatherRecord record);
     }
 }

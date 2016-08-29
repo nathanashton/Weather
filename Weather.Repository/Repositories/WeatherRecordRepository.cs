@@ -12,10 +12,12 @@ namespace Weather.Repository.Repositories
     {
         private const string DbConnectionString = @"Data Source=weather.sqlite;Version=3;foreign keys=true;";
         private readonly ILog _log;
+        private ISensorRepository _sensorRepository;
 
-        public WeatherRecordRepository(ILog log)
+        public WeatherRecordRepository(ILog log, ISensorRepository sensorRepository)
         {
             _log = log;
+            _sensorRepository = sensorRepository;
         }
 
         public async Task<IEnumerable<IWeatherRecord>> GetAllWeatherRecordsAsync()

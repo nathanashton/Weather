@@ -124,13 +124,17 @@
     <Compile Include="Converters\TestConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
+    <Compile Include="ViewModels\SensorSelectWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorsWindowViewModel.cs" />
-    <Compile Include="ViewModels\StationWindowViewModel.cs" />
+    <Compile Include="ViewModels\StationsWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorTypesViewModel.cs" />
     <Compile Include="ViewModels\UnitSelectorWindowViewModel.cs" />
     <Compile Include="ViewModels\UnitsWindowViewModel.cs" />
     <Compile Include="Views\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SensorSelectWindow.xaml.cs">
+      <DependentUpon>SensorSelectWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SensorsWindow.xaml.cs">
       <DependentUpon>SensorsWindow.xaml</DependentUpon>
@@ -144,8 +148,8 @@
     <Compile Include="Views\StationMapWindow.xaml.cs">
       <DependentUpon>StationMapWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StationWindow.xaml.cs">
-      <DependentUpon>StationWindow.xaml</DependentUpon>
+    <Compile Include="Views\StationsWindow.xaml.cs">
+      <DependentUpon>StationsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UnitSelectorWindow.xaml.cs">
       <DependentUpon>UnitSelectorWindow.xaml</DependentUpon>
@@ -154,6 +158,10 @@
       <DependentUpon>UnitsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ImportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SensorSelectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -188,7 +196,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StationWindow.xaml">
+    <Page Include="Views\StationsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,7 +264,12 @@
   <ItemGroup>
     <Resource Include="weather.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons\globe_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\edit_48px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

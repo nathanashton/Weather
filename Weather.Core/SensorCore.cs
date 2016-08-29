@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
@@ -38,6 +39,11 @@ namespace Weather.Core
         public void Delete(ISensor sensor)
         {
             _sensorRepository.Delete(sensor.SensorId);
+        }
+
+        public bool AnySensorUsesSensorType(ISensorType sensorType)
+        {
+            return _sensorRepository.AnySensorUsesSensorType(sensorType);
         }
     }
 }

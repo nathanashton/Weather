@@ -9,5 +9,7 @@ namespace Weather.Repository.Interfaces
         int Add(ISensor sensor);
         void Update(ISensor sensor);
         void Delete(int id);
+        ISensor GetById(int id);
+        bool AnySensorUsesSensorType(ISensorType sensorType);
     }
 }

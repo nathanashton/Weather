@@ -31,11 +31,13 @@ namespace Weather.ViewModels
         public ObservableCollection<ISensorType> SensorTypes { get; set; }
         public bool Adding { get; set; }
         public bool IsDirty { get; set; }
+        private IStationCore _stationCore;
 
-        public SensorsWindowViewModel(ISensorCore sensorCore, ISensorTypeCore sensorTypeCore)
+        public SensorsWindowViewModel(ISensorCore sensorCore, ISensorTypeCore sensorTypeCore, IStationCore stationCore)
         {
             _sensorCore = sensorCore;
             _sensorTypeCore = sensorTypeCore;
+            _stationCore = stationCore;
             Sensors = new ObservableCollection<ISensor>();
             SensorTypes = new ObservableCollection<ISensorType>();
         }
@@ -127,13 +129,12 @@ namespace Weather.ViewModels
 
         private void Delete(object obj)
         {
-            //if (_sensorTypeCore.AnySensorTypesUseUnit(SelectedUnit))
-            //{
-            //    MessageBox.Show(
-            //        "Cannot delete " + SelectedUnit.DisplayName + " as it is currently being used by a Sensor Type",
-            //        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return;
-            //}
+            var used = _stationCore.AnyStationUsesSensor(SelectedSensor);
+            if (used)
+            {
+                MessageBox.Show("Cannot delete " + SelectedSensor + " as it is used in a Weather Station", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
 
             var result = MessageBox.Show("Delete " + SelectedSensor.ToString() + "?", "Confirm", MessageBoxButton.YesNo,
@@ -179,7 +180,7 @@ namespace Weather.ViewModels
 
         public void CheckDirty()
         {
-            if (SelectedSensor.SensorType == null) return;
+            if (SelectedSensor==null || SelectedSensor.SensorType == null) return;
             if (Adding)
             {
                 IsDirty = true;

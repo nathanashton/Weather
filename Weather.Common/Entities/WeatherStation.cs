@@ -1,34 +1,67 @@
-﻿using System.Collections.Generic;
-using PropertyChanged;
+﻿using PropertyChanged;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Weather.Common.Interfaces;
+using static System.String;
 
 namespace Weather.Common.Entities
 {
     [ImplementPropertyChanged]
-    public class WeatherStation : IWeatherStation
+    public class WeatherStation : IWeatherStation, IDataErrorInfo
     {
-        public int WeatherStationId { get; set; }
-        public string Name => Manufacturer + " " + Model;
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
+        public string Description { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
-        public IList<IWeatherRecord> WeatherRecords { get; set; } = new List<IWeatherRecord>();
-        public IList<ISensor> Sensors { get; set; } = new List<ISensor>();
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public IList<IStationSensor> Sensors { get; set; }
+        public int WeatherStationId { get; set; }
+        public bool IsValid => Validate();
 
-        public void AddSensor(Sensor sensor)
+ 
+
+        public string this[string columnName]
         {
-            Sensors.Add(sensor);
+            get
+            {
+                if (columnName == "Manufacturer")
+                {
+                    if (IsNullOrEmpty(Manufacturer))
+                    {
+                        return "Manufacturer is required";
+                    }
+                }
+                if (columnName == "Model")
+                {
+                    if (IsNullOrEmpty(Model))
+                    {
+                        return "Model is required";
+                    }
+                }
+                return null;
+            }
         }
 
-        public void AddRecord(WeatherRecord record)
+        public string Error
         {
-            WeatherRecords.Add(record);
+            get { throw new NotImplementedException(); }
         }
 
         public override string ToString()
         {
             return Manufacturer + " " + Model;
+        }
+
+        private bool Validate()
+        {
+            var f = !IsNullOrEmpty(Manufacturer) && !IsNullOrEmpty(Model);
+            return f;
+        }
+
+        public WeatherStation()
+        {
+            Sensors = new List<IStationSensor>();
         }
     }
 }

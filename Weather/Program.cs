@@ -17,11 +17,12 @@ namespace Weather
             container.RegisterType<MainWindow>();
             container.RegisterType<MainWindowViewModel>();
 
-            container.RegisterType<StationWindow>();
-            container.RegisterType<StationWindowViewModel>();
 
             container.RegisterType<SensorWindow>();
             container.RegisterType<SensorsWindowViewModel>();
+
+            container.RegisterType<SensorSelectWindowViewModel>();
+            container.RegisterType<SensorSelectWindow>();
 
 
             container.RegisterType<ImportWindow>();
@@ -39,8 +40,8 @@ namespace Weather
             container.RegisterType<SensorTypesWindow>();
             container.RegisterType<SensorTypesViewModel>();
 
-
-  
+            container.RegisterType<StationsWindow>();
+            container.RegisterType<StationsWindowViewModel>();
 
             container.RegisterType<StationMapWindow>();
 

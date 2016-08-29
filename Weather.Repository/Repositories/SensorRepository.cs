@@ -19,6 +19,97 @@ namespace Weather.Repository.Repositories
             _log = log;
         }
 
+
+        public ISensor GetById(int id)
+        {
+            var mappedReader = Enumerable.Empty<object>().Select(r => new
+            {
+                SensorId = 0,
+                Manufacturer = string.Empty,
+                Model = string.Empty,
+                Description = string.Empty,
+                SensorTypeId = 0,
+                SensorTypeSensorTypeId = 0,
+                Name = string.Empty
+            }).ToList();
+
+            var sql = @"SELECT
+                        s.[SensorId] as SensorId,
+                        s.[Manufacturer] as Manufacturer,
+                        s.[Model] as Model,
+                        s.[Description] as Description,
+                        s.[SensorTypeId] as SensorTypeId,
+                        st.[SensorTypeId] as SensorTypeSensorTypeId,
+                        st.[Name] as Name
+                        FROM [Sensors] s
+                        LEFT JOIN SensorTypes st ON s.SensorTypeId = st.SensorTypeId WHERE s.SensorId = @Id";
+
+            try
+            {
+                using (var connection = new SQLiteConnection(DbConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Id", id);
+
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    mappedReader.Add(new
+                                    {
+                                        SensorId = Convert.ToInt32(reader["SensorId"]),
+                                        Manufacturer = reader["Manufacturer"].ToString(),
+                                        Model = reader["Model"].ToString(),
+                                        Description = reader["Description"].ToString(),
+                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
+                                        SensorTypeSensorTypeId = Convert.ToInt32(reader["SensorTypeSensorTypeId"]),
+                                        Name = reader["Name"].ToString()
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+
+            var sensorTypes = mappedReader
+                .GroupBy(x => new { x.SensorTypeSensorTypeId, x.Name, }, x => x, (key, g) =>
+                  new
+                  {
+                      key.SensorTypeSensorTypeId,
+                      SensorType =
+                          new SensorType
+                          {
+                              SensorTypeId = (int)key.SensorTypeSensorTypeId,
+                              Name = key.Name,
+                          }
+                  }).ToList();
+
+
+            var sensors = mappedReader
+                .GroupBy(x => new { x.SensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId }, x => x,
+                    (key, g) =>
+                        new Sensor
+                        {
+                            SensorId = key.SensorId,
+                            Manufacturer = key.Manufacturer,
+                            Model = key.Model,
+                            Description = key.Description,
+                            SensorType = sensorTypes.First(x => x.SensorTypeSensorTypeId == key.SensorTypeId).SensorType
+                        }).ToList();
+
+            return sensors.Cast<ISensor>().First();
+        }
+
+
         public List<ISensor> GetAllSensors()
         {
             var mappedReader = Enumerable.Empty<object>().Select(r => new
@@ -38,7 +129,7 @@ namespace Weather.Repository.Repositories
                         s.[Model] as Model,
                         s.[Description] as Description,
                         s.[SensorTypeId] as SensorTypeId,
-st.[SensorTypeId] as SensorTypeSensorTypeId,
+                        st.[SensorTypeId] as SensorTypeSensorTypeId,
                         st.[Name] as Name
                         FROM [Sensors] s
                         LEFT JOIN SensorTypes st ON s.SensorTypeId = st.SensorTypeId";
@@ -82,17 +173,17 @@ st.[SensorTypeId] as SensorTypeSensorTypeId,
 
 
             var sensorTypes = mappedReader
-    .GroupBy(x => new { x.SensorTypeSensorTypeId, x.Name, }, x => x, (key, g) =>
-          new
-          {
-              key.SensorTypeSensorTypeId,
-              SensorType =
-                  new SensorType
+                .GroupBy(x => new { x.SensorTypeSensorTypeId, x.Name, }, x => x, (key, g) =>
+                  new
                   {
-                      SensorTypeId = (int)key.SensorTypeSensorTypeId,
-                      Name = key.Name,
-                  }
-          }).ToList();
+                      key.SensorTypeSensorTypeId,
+                      SensorType =
+                          new SensorType
+                          {
+                              SensorTypeId = (int)key.SensorTypeSensorTypeId,
+                              Name = key.Name,
+                          }
+                  }).ToList();
 
 
             var sensors = mappedReader
@@ -184,6 +275,34 @@ st.[SensorTypeId] as SensorTypeSensorTypeId,
                         {
                             command.Parameters.AddWithValue("@Id", id);
                             command.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+        }
+
+        public bool AnySensorUsesSensorType(ISensorType sensorType)
+        {
+            var sql = @"SELECT * FROM Sensors WHERE SensorTypeId = @Id";
+            try
+            {
+                using (var connection = new SQLiteConnection(DbConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Id", sensorType.SensorTypeId);
+                            using (var reader = command.ExecuteReader())
+                            {
+                                if (reader.HasRows) return true;
+                                return false;
+                            }
                         }
                     }
                 }

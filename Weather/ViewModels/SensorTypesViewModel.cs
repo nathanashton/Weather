@@ -21,10 +21,12 @@ namespace Weather.ViewModels
         private readonly ILog _log;
         private readonly ISensorTypeCore _sensorTypeCore;
         private readonly IUnitCore _unitCore;
+        private ISensorCore _sensorCore;
 
-        public SensorTypesViewModel(ISensorTypeCore sensorTypeCore, ILog log, IUnitCore unitCore)
+        public SensorTypesViewModel(ISensorTypeCore sensorTypeCore, ILog log, IUnitCore unitCore, ISensorCore sensorCore)
         {
             _log = log;
+            _sensorCore = sensorCore;
             _unitCore = unitCore;
             _sensorTypeCore = sensorTypeCore;
             SensorTypes = new ObservableCollection<ISensorType>();
@@ -185,6 +187,13 @@ namespace Weather.ViewModels
 
         private void Delete(object obj)
         {
+            var used = _sensorCore.AnySensorUsesSensorType(SelectedSensorType);
+            if (used)
+            {
+                MessageBox.Show("Cannot delete " + SelectedSensorType + " as it is used by one or more Sensors", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             var result = MessageBox.Show("Delete " + SelectedSensorType.Name + "?", "Confirm", MessageBoxButton.YesNo,
                 MessageBoxImage.Stop);
             if (result != MessageBoxResult.Yes) return;

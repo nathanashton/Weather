@@ -18,7 +18,7 @@ namespace Weather.Common.Entities
         public string Description { get; set; }
         public ISensorType SensorType { get; set; }
         public IList<ISensorValue> SensorValues { get; set; } = new List<ISensorValue>();
-
+        public string FullName { get { return ToString() + " (" + SensorType.Name + ")"; } }
         public bool IsValid => Validate();
 
 

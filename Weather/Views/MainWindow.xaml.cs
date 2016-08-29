@@ -38,28 +38,28 @@ namespace Weather.Views
 
         private void CreateDataGrid()
         {
-            cmb.SelectedItem = _viewModel.SelectedStation;
-            dg.Columns.Clear();
-            if (_viewModel.SelectedStation == null) return;
-            var columns = _viewModel.SelectedStation
-                .Sensors.Select((x, i) => new {x.Model, Index = i}).ToArray();
-            dg.Columns.Add(new DataGridTextColumn {Header = "Time", Binding = new Binding("TimeStamp")});
+          //  cmb.SelectedItem = _viewModel.SelectedStation;
+          //  dg.Columns.Clear();
+          //  if (_viewModel.SelectedStation == null) return;
+          //  var columns = _viewModel.SelectedStation
+          //      .Sensors.Select((x, i) => new {x.Model, Index = i}).ToArray();
+          //  dg.Columns.Add(new DataGridTextColumn {Header = "Time", Binding = new Binding("TimeStamp")});
 
-            foreach (var column in columns)
-            {
-                var binding = new Binding($"SensorValues[{column.Index}].");
-                string sort = $"SensorValues[{column.Index}].RawValue";
-                dg.Columns.Add(new DataGridTextColumn {Header = column.Model, Binding = binding, SortMemberPath = sort});
-            }
+          //  foreach (var column in columns)
+          //  {
+          //      var binding = new Binding($"SensorValues[{column.Index}].");
+          //      string sort = $"SensorValues[{column.Index}].RawValue";
+          //      dg.Columns.Add(new DataGridTextColumn {Header = column.Model, Binding = binding, SortMemberPath = sort});
+          //  }
 
-            dg.ItemsSource = _viewModel.SelectedStation.WeatherRecords;
+          ////  dg.ItemsSource = _viewModel.SelectedStation.WeatherRecords;
 
-            //Resize
-            foreach (var column in dg.Columns)
-            {
-                column.MinWidth = column.ActualWidth;
-                column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
-            }
+          //  //Resize
+          //  foreach (var column in dg.Columns)
+          //  {
+          //      column.MinWidth = column.ActualWidth;
+          //      column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+          //  }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

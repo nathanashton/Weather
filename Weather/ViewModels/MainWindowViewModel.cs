@@ -87,6 +87,11 @@ namespace Weather.ViewModels
             get { return new RelayCommand(SensorsWindowOpen, x => true); }
         }
 
+        public ICommand WeatherStationsCommand
+        {
+            get { return new RelayCommand(StationsWindowOpen, x => true); }
+        }
+
         public ICommand SensorTypesCommand
         {
             get { return new RelayCommand(SensorTypes, x => true); }
@@ -111,17 +116,20 @@ namespace Weather.ViewModels
 
         private void OpenStations(object obj)
         {
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<StationWindow>();
-            window.ShowDialog();
-
-            GetAllStations();
+          
         }
 
         private void UnitsWindowOpen(object obj)
         {
             var container = new Resolver().Bootstrap();
             var window = container.Resolve<UnitsWindow>();
+            window.ShowDialog();
+        }
+
+        private void StationsWindowOpen(object obj)
+        {
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<StationsWindow>();
             window.ShowDialog();
         }
 
@@ -134,9 +142,9 @@ namespace Weather.ViewModels
 
         private async void GetAllStations()
         {
-            Stations.Clear();
-            var allstations = await _stationCore.GetAllStationsAsync();
-            Stations = new ObservableCollection<IWeatherStation>(allstations);
+            //Stations.Clear();
+            //var allstations = await _stationCore.GetAllStationsAsync();
+            //Stations = new ObservableCollection<IWeatherStation>(allstations);
         }
 
         private void Import(object obj)

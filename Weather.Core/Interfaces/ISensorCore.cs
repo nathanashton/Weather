@@ -11,6 +11,6 @@ namespace Weather.Core.Interfaces
         ISensor AddOrUpdate(ISensor sensor);
         void Update(ISensor sensor);
         void Delete(ISensor sensor);
-
+        bool AnySensorUsesSensorType(ISensorType sensorType);
     }
 }

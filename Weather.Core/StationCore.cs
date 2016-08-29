@@ -1,104 +1,68 @@
-﻿using System;
+﻿using PropertyChanged;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using PropertyChanged;
-using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
+using System;
 
 namespace Weather.Core
 {
     [ImplementPropertyChanged]
     public class StationCore : IStationCore
     {
-
-     
-    
         private readonly IWeatherStationRepository _weatherStationRepository;
 
         public StationCore(IWeatherStationRepository weatherStationRepository)
         {
             _weatherStationRepository = weatherStationRepository;
- }
+        }
 
-        public async Task<IWeatherStation> UpdateStationAsync(IWeatherStation station)
+        public List<IWeatherStation> GetAllStations()
         {
-          //  await _weatherStationRepository.UpdateStationAsync(station);
+            return _weatherStationRepository.GetAllWeatherStations();
+        }
+
+        public IWeatherStation AddOrUpdate(IWeatherStation station)
+        {
+            if (station.WeatherStationId == 0)
+            {
+                station.WeatherStationId = _weatherStationRepository.Add(station);
+                return station;
+            }
+            Update(station);
             return station;
         }
 
-        public async Task<List<IWeatherStation>> GetAllStationsAsync()
+        public void Update(IWeatherStation station)
         {
-          //  var allStations = await _weatherStationRepository.GetAllWeatherStationsWithSensorsAndRecordsAsync();
-            return null;
+          _weatherStationRepository.Update(station);
         }
 
-
-
-        public async Task<IWeatherStation> AddStationAsync(IWeatherStation station)
+        public void Delete(IWeatherStation station)
         {
-           // station.WeatherStationId = await _weatherStationRepository.AddStationAsync(station);
-            return station;
-        }
-        
-        public void DeleteStationAsync(IWeatherStation station)
-        {
-           // _weatherStationRepository.DeleteStationAsync(station);
+         _weatherStationRepository.Delete(station.WeatherStationId);
         }
 
-      
-
-   
-        public WeatherStation Update(WeatherStation station)
+        public IWeatherStation Add(IWeatherStation station)
         {
-            //if (station.Id == 0)
-            //{
-            //    station.Id = _weatherStationRepository.AddStationAsync(station);
-            //    return station;
-            //}
-            //station.Id = _weatherStationRepository.UpdateStationAsync(station);
-            //GetAllStations();
-            //OnStationsChanged();
+            station.WeatherStationId = _weatherStationRepository.Add(station);
             return station;
         }
 
-        public void CreateTables()
+        public IWeatherStation AddSensorToStation(IStationSensor sensor, IWeatherStation station)
         {
-           // _weatherStationRepository.CreateTables();
+            _weatherStationRepository.AddSensorToStation(sensor, station);
+            return station;
         }
 
-
-
-
-
-
-
-
-        public Task<List<IWeatherRecord>> GetRecordsForStationAsync(IWeatherStation station)
+        public void RemoveSensorFromStation(IStationSensor sensor, IWeatherStation station)
         {
-            throw new NotImplementedException();
+            _weatherStationRepository.RemoveSensorFromStation(sensor, station);
         }
 
-
-
-
-
-
-        public List<WeatherRecord> GetRecordsForStation(WeatherStation station)
+        public bool AnyStationUsesSensor(ISensor sensor)
         {
-           // List<WeatherRecord> records = _weatherStationRepository.GetWeatherRecordsForStation(station);
-
-
-
-
-            //foreach (var record in records)
-            //{
-            //    record.SensorValues = _weatherStationRepository.GetSensorValuesForRecordId(record.Id);
-            //}
-
-            return null;
+            return _weatherStationRepository.AnyStationUsesSensor(sensor);
         }
     }
 }
