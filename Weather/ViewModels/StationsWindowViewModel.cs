@@ -1,27 +1,22 @@
-﻿using PropertyChanged;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.Practices.Unity;
+using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using Microsoft.Practices.Unity;
-
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
 using Weather.Views;
-using Weather.Common.Entities;
-using System.Windows;
 
 namespace Weather.ViewModels
 {
     [ImplementPropertyChanged]
     public class StationsWindowViewModel
     {
-        public StationsWindow Window {get; set;}
+        public StationsWindow Window { get; set; }
         private IStationCore _stationCore;
         public ObservableCollection<IWeatherStation> WeatherStations { get; set; }
         public IWeatherStation SelectedWeatherStation { get; set; }
@@ -53,23 +48,28 @@ namespace Weather.ViewModels
             get { return new RelayCommand(EditSensor, x => SelectedSensor != null); }
         }
 
-
-
-
         private void EditSensor(object obj)
         {
             var container = new Resolver().Bootstrap();
             var window = container.Resolve<SensorSelectWindow>();
+
+            window._viewModel.Editing = true;
 
             window._viewModel.WeatherStation = SelectedWeatherStation;
             window._viewModel.StationSensor = SelectedSensor;
             window._viewModel.SelectedSensor = SelectedSensor.Sensor;
 
             window.ShowDialog();
+
+            var s = window._viewModel.StationSensor;
+            _stationCore.UpdateStationSensor(s);
+
+            var id = SelectedWeatherStation.WeatherStationId;
+            CheckDirty();
+            GetAllStations();
+            SelectedWeatherStation = WeatherStations.First(x => x.WeatherStationId == id);
+            Window.SelectStationInListBox(SelectedWeatherStation);
         }
-
-
-
 
         public ICommand DeleteSensorCommand
         {
@@ -81,7 +81,7 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && SelectedWeatherStation != null); }
         }
 
-        private void Save (object obj)
+        private void Save(object obj)
         {
             if (Adding)
             {
@@ -93,12 +93,11 @@ namespace Weather.ViewModels
                         _stationCore.AddSensorToStation(sensor, SelectedWeatherStation);
                     }
                 }
-            
             }
 
             if (!SelectedWeatherStation.IsValid) return;
             _stationCore.AddOrUpdate(SelectedWeatherStation);
-           // _log.Debug("Saved Sensor Type");
+            // _log.Debug("Saved Sensor Type");
             Adding = false;
             GetAllStations();
             IsDirty = false;
@@ -119,7 +118,6 @@ namespace Weather.ViewModels
             Window.SelectStationInListBox(SelectedWeatherStation);
         }
 
-
         private void AddSensor(object obj)
         {
             var tempUnitCount = SelectedWeatherStation.Sensors.Count;
@@ -131,11 +129,10 @@ namespace Weather.ViewModels
             //// Get Unit that was added from the above dialog.
             var unit = SelectedWeatherStation.Sensors.Count;
             if (tempUnitCount == unit) return;
-   
+
             var id = SelectedWeatherStation.WeatherStationId;
 
             _stationCore.AddSensorToStation(SelectedWeatherStation.Sensors.Last(), SelectedWeatherStation);
-
 
             CheckDirty();
             GetAllStations();
@@ -150,15 +147,12 @@ namespace Weather.ViewModels
             {
                 GetAllStations();
             }
-   
 
             Window.Manufacturer.Text = TempSelectedWeatherStation.Manufacturer;
             Window.Model.Text = TempSelectedWeatherStation.Model;
             Window.Description.Text = TempSelectedWeatherStation.Description;
             Window.Latitude.Text = TempSelectedWeatherStation.Latitude.ToString();
             Window.Longitude.Text = TempSelectedWeatherStation.Longitude.ToString();
-
-
 
             Adding = false;
             SelectedWeatherStation = null;
@@ -210,8 +204,6 @@ namespace Weather.ViewModels
             Window.Longitude.TextChanged += Manufacturer_TextChanged;
         }
 
-
-
         private void Manufacturer_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             CheckDirty();
@@ -228,8 +220,6 @@ namespace Weather.ViewModels
 
         private void Delete(object obj)
         {
-          
-
             var result = MessageBox.Show("Delete " + SelectedWeatherStation.ToString() + "?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result != MessageBoxResult.Yes) return;
 
@@ -249,10 +239,10 @@ namespace Weather.ViewModels
                 return;
             }
             if (SelectedWeatherStation == null || TempSelectedWeatherStation == null) return;
-            if (SelectedWeatherStation.Manufacturer != TempSelectedWeatherStation.Manufacturer 
+            if (SelectedWeatherStation.Manufacturer != TempSelectedWeatherStation.Manufacturer
                 || SelectedWeatherStation.Model != TempSelectedWeatherStation.Model
-                || SelectedWeatherStation.Description != TempSelectedWeatherStation.Description 
-                || SelectedWeatherStation.Latitude != TempSelectedWeatherStation.Latitude 
+                || SelectedWeatherStation.Description != TempSelectedWeatherStation.Description
+                || SelectedWeatherStation.Latitude != TempSelectedWeatherStation.Latitude
                 || SelectedWeatherStation.Longitude != TempSelectedWeatherStation.Longitude)
             {
                 IsDirty = true;

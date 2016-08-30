@@ -20,5 +20,7 @@ namespace Weather.Common
 
         public string DatabasePath => Path.Combine(ApplicationPath, "weather.sqlite");
         public int RoundingFactor => 1;
+
+        public string ErrorPath { get { return Path.Combine(ApplicationPath, "ErrorReports"); } }
     }
 }

@@ -11,10 +11,12 @@ namespace Weather.Core
     public class StationCore : IStationCore
     {
         private readonly IWeatherStationRepository _weatherStationRepository;
+        private readonly IStationSensorRepository _stationSensorRepository;
 
-        public StationCore(IWeatherStationRepository weatherStationRepository)
+        public StationCore(IWeatherStationRepository weatherStationRepository, IStationSensorRepository stationSensorRepository)
         {
             _weatherStationRepository = weatherStationRepository;
+            _stationSensorRepository = stationSensorRepository;
         }
 
         public List<IWeatherStation> GetAllStations()
@@ -63,6 +65,11 @@ namespace Weather.Core
         public bool AnyStationUsesSensor(ISensor sensor)
         {
             return _weatherStationRepository.AnyStationUsesSensor(sensor);
+        }
+
+        public void UpdateStationSensor(IStationSensor stationSensor)
+        {
+            _stationSensorRepository.Update(stationSensor);
         }
     }
 }

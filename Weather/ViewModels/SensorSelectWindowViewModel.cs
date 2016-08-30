@@ -21,6 +21,7 @@ namespace Weather.ViewModels
             StationSensor = new StationSensor();
         }
 
+        public bool Editing { get; set; }
         public Window Window { get; set; }
         public ObservableCollection<ISensor> Sensors { get; set; }
         public ISensor SelectedSensor { get; set; }
@@ -30,7 +31,7 @@ namespace Weather.ViewModels
 
         public ICommand AddCommand
         {
-            get { return new RelayCommand(Add, x => SelectedSensor != null); }
+            get { return new RelayCommand(Save, x => SelectedSensor != null); }
         }
 
         public void GetAllSensors()
@@ -41,10 +42,16 @@ namespace Weather.ViewModels
             SelectedSensor = Sensors.Count == 0 ? null : Sensors.First();
         }
 
-        private void Add(object obj)
+        private void Save(object obj)
         {
-            var s = new StationSensor { Sensor = SelectedSensor, Correction = StationSensor.Correction, Notes = StationSensor.Notes };
-            WeatherStation.Sensors.Add(s);
+            var sensor = new StationSensor { StationSensorId = StationSensor.StationSensorId, Sensor = SelectedSensor, Correction = StationSensor.Correction, Notes = StationSensor.Notes };
+            if (!Editing)
+            {
+                WeatherStation.Sensors.Add(sensor);
+            } else
+            {
+                StationSensor = sensor;
+            }
             Window.Close();
         }
     }

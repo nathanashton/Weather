@@ -150,7 +150,7 @@ namespace Weather.Repository.Repositories
                 StationSensorId = 0
             }).ToList();
 
-            var sql = @"SELECT
+            var sql = @"SELECTA
                         ws.[WeatherStationId] as WeatherStationId,
 						ws.[Description] as Description,
 						ws.[Latitude] as Latitude,
@@ -194,7 +194,7 @@ wss.[Id] as StationSensorId
                     }
                 }
             }
-            catch (SQLiteException ex)
+            catch (NullReferenceException ex)
             {
                 _log.Error("", ex);
                 throw;

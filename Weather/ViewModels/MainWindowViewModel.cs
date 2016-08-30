@@ -82,7 +82,7 @@ namespace Weather.ViewModels
         }
 
 
-        public ICommand SensorsWindowCommand    
+        public ICommand SensorsWindowCommand
         {
             get { return new RelayCommand(SensorsWindowOpen, x => true); }
         }
@@ -96,8 +96,15 @@ namespace Weather.ViewModels
         {
             get { return new RelayCommand(SensorTypes, x => true); }
         }
+        public ICommand ThrowException
+        {
+            get { return new RelayCommand(Throw, x => true); }
+        }
 
-    
+        private void Throw(object obj)
+        {
+            throw new NullReferenceException("Unahnded");
+        }
 
         public ICommand StationsCommand
         {

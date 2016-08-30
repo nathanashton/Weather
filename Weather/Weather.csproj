@@ -79,7 +79,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -118,16 +120,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolStringConverter.cs" />
     <Compile Include="Converters\NullBoolConverter.cs" />
     <Compile Include="Converters\NullCountConverter.cs" />
     <Compile Include="Converters\NullEnabledConverter.cs" />
     <Compile Include="Converters\TestConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="ScreenCapture.cs" />
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorSelectWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorsWindowViewModel.cs" />
     <Compile Include="ViewModels\StationsWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorTypesViewModel.cs" />
+    <Compile Include="ViewModels\UnhandledExceptionWindowViewModel.cs" />
     <Compile Include="ViewModels\UnitSelectorWindowViewModel.cs" />
     <Compile Include="ViewModels\UnitsWindowViewModel.cs" />
     <Compile Include="Views\ImportWindow.xaml.cs">
@@ -150,6 +155,9 @@
     </Compile>
     <Compile Include="Views\StationsWindow.xaml.cs">
       <DependentUpon>StationsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UnhandledExceptionWindow.xaml.cs">
+      <DependentUpon>UnhandledExceptionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UnitSelectorWindow.xaml.cs">
       <DependentUpon>UnitSelectorWindow.xaml</DependentUpon>
@@ -197,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StationsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UnhandledExceptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

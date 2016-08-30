@@ -5,6 +5,9 @@ using Weather.Common.Interfaces;
 using Weather.DependencyResolver;
 using Weather.ViewModels;
 using Weather.Views;
+using System.Windows;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Weather
 {
@@ -43,6 +46,10 @@ namespace Weather
             container.RegisterType<StationsWindow>();
             container.RegisterType<StationsWindowViewModel>();
 
+            container.RegisterType<UnhandledExceptionWindow>();
+            container.RegisterType<UnhandledExceptionWindowViewModel>();
+
+
             container.RegisterType<StationMapWindow>();
 
             var log = container.Resolve<ILog>();
@@ -53,24 +60,48 @@ namespace Weather
 
         private static void RunApplication(UnityContainer container, ILog log, ISettings settings)
         {
-            //try
-            //{
             if (!Directory.Exists(settings.ApplicationPath))
             {
                 Directory.CreateDirectory(settings.ApplicationPath);
+            }
+            if (!Directory.Exists(settings.ErrorPath))
+            {
+                Directory.CreateDirectory(settings.ErrorPath);
             }
 
             log.SetDebugLevel();
 
             var application = new App();
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             var mainWindow = container.Resolve<MainWindow>();
             application.Run(mainWindow);
-            // }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    log.Error("Unhandled exception", ex);
-            //}
+  
         }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var container = new Resolver().Bootstrap();
+            var settings = container.Resolve<ISettings>();
+
+            var image = ScreenCapture.CaptureActiveWindow();
+            image.Save(Path.Combine(settings.ErrorPath,"unhandledexception.jpg"), ImageFormat.Jpeg);
+
+            Exception ex = e.ExceptionObject as Exception;
+        
+            var window = container.Resolve<UnhandledExceptionWindow>();
+
+            window._viewModel.Message = "\"" + ex.Message + "\"";
+            window._viewModel.StackTrace = ex.StackTrace;
+            window._viewModel.Source = ex.Source;
+
+            window.ShowDialog();
+
+            Environment.Exit(1);
+        }
+
+
+
+  
     }
 }

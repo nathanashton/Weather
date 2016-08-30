@@ -9,6 +9,7 @@
 
         Title="Select Sensor" Height="203.045" Width="250.197">
     <Window.Resources>
+        <converters:BoolStringConverter x:Key="BoolStringConverter"/>
         <converters:NullCountConverter x:Key="NullCountConverter" />
 
         <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#B3ADAB" />
@@ -156,7 +157,7 @@
                             </Style>
                         </Image.Style>
                     </Image>
-                    <Label Background="Transparent" VerticalContentAlignment="Center" Padding="0" Content="Add" />
+                    <Label Background="Transparent" VerticalContentAlignment="Center" Padding="0" Content="{Binding Editing, Converter={StaticResource BoolStringConverter}}" />
                 </DockPanel>
             </Button>
         </DockPanel>
@@ -176,7 +177,7 @@
             <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"
                            Content="Sensor" />
 
-            <ComboBox Name="cb" Grid.Row="0" Margin="0,5,0,5" Grid.Column="1" IsEnabled="{Binding Sensors, Converter={StaticResource NullCountConverter}}" Style="{StaticResource ComboBoxFlatStyle}" Height="23" ItemsSource="{Binding Sensors}" SelectedItem="{Binding SelectedSensor}" />
+            <ComboBox Name="cb" Grid.Row="0" Margin="0,5,0,5" Grid.Column="1" IsEnabled="{Binding Sensors, Converter={StaticResource NullCountConverter}}" Style="{StaticResource ComboBoxFlatStyle}" Height="23" ItemsSource="{Binding Sensors}" SelectedItem="{Binding SelectedSensor, Mode=TwoWay}" />
 
 
             <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="0"

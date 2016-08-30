@@ -28,17 +28,16 @@
       </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+            <MenuItem Header="_Setup">
                 <MenuItem Header="Units" Command="{Binding UnitsWindowCommand}" />
                 <MenuItem Header="Sensor Types" Command="{Binding SensorTypesWindowCommand}" />
                 <MenuItem Header="Sensors"  Command="{Binding SensorsWindowCommand}"   />
                 <MenuItem Header="Weather Stations" Command="{Binding WeatherStationsCommand}" />
                 <Separator />
-                <MenuItem Header="_Exit" />
+                <MenuItem Header="_Options" />
             </MenuItem>
-            <MenuItem Header="_Setup">
-                <MenuItem Header="Sensor Types &amp; Units" Command="{Binding SetupSensorsUnitsCommand}" />
-                <MenuItem Header="Stations &amp; Sensors" Command="{Binding SetupStationsSensorsCommand}" />
+            <MenuItem Header="_Test">
+                <MenuItem Header="Throw Unhandled Exception" Command="{Binding ThrowException}" />
                 <MenuItem IsCheckable="True" IsChecked="{Binding DebugPanelVisible, Mode=TwoWay}" Header="Debug Panel" Command="{Binding DebugPanel}" />
             </MenuItem>
         </Menu>

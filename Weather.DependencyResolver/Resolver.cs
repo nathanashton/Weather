@@ -38,6 +38,8 @@ namespace Weather.DependencyResolver
             container.RegisterType<IUnitRepository, UnitRepository>();
             container.RegisterType<IUnitCore, UnitCore>();
 
+            container.RegisterType<IStationSensorRepository, StationSensorRepository>();
+
 
             return container;
         }

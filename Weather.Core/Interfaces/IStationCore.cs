@@ -15,6 +15,6 @@ namespace Weather.Core.Interfaces
         IWeatherStation AddSensorToStation(IStationSensor sensor,IWeatherStation station);
         void RemoveSensorFromStation(IStationSensor sensor, IWeatherStation station);
         bool AnyStationUsesSensor(ISensor sensor);
-
+        void UpdateStationSensor(IStationSensor stationSensor);
     }
 }
