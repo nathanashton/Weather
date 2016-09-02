@@ -150,7 +150,7 @@ namespace Weather.Repository.Repositories
                 StationSensorId = 0
             }).ToList();
 
-            var sql = @"SELECTA
+            var sql = @"SELECT
                         ws.[WeatherStationId] as WeatherStationId,
 						ws.[Description] as Description,
 						ws.[Latitude] as Latitude,
@@ -200,8 +200,7 @@ wss.[Id] as StationSensorId
                 throw;
             }
 
-            var sensors = mappedReader.Where(x => x.SensorId != null).Select(x=> new {x.WeatherStationId, x.SensorId, x.Correction, x.Notes, x.StationSensorId });
-
+            var sensors = mappedReader.Where(x => x.SensorId != null).Select(x => new { x.WeatherStationId, x.SensorId, x.Correction, x.Notes, x.StationSensorId });
 
             var stations = mappedReader
                 .GroupBy(x => new { x.WeatherStationId, x.Manufacturer, x.Model, x.Latitude, x.Longitude, x.Description, x.SensorId }, x => x,
@@ -236,10 +235,9 @@ wss.[Id] as StationSensorId
                         station.Sensors.Add(n);
                     }
                 }
-
             }
 
-            return distinct.Cast<IWeatherStation>().ToList(); 
+            return distinct.Cast<IWeatherStation>().ToList();
         }
 
         public void RemoveSensorFromStation(IStationSensor sensor, IWeatherStation station)
@@ -286,7 +284,6 @@ wss.[Id] as StationSensorId
                             command.Parameters.AddWithValue("@Longitude", station.Longitude);
                             command.Parameters.AddWithValue("@Id", station.WeatherStationId);
                             command.ExecuteNonQuery();
-
                         }
                     }
                 }

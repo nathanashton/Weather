@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LumenWorks.Framework.IO.Csv;
+using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -6,8 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using LumenWorks.Framework.IO.Csv;
-using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Entities;
 using Weather.Common.EventArgs;
@@ -24,7 +24,6 @@ namespace Weather.ViewModels
         private readonly IImporter _importer;
         private bool _multipleChecked;
         private bool _singleChecked;
-
 
         private readonly Stopwatch s =
             new Stopwatch();
@@ -136,7 +135,6 @@ namespace Weather.ViewModels
         public ObservableCollection<ObservableCollection<Record>> FilteredRecords { get; set; }
         public ObservableCollection<ObservableCollection<Record>> FilteredDateRecords { get; set; }
 
-
         public Match SelectedMatch { get; set; }
         public Record SelectedRecordDate { get; set; }
         public Record SelectedRecordTime { get; set; }
@@ -233,7 +231,7 @@ namespace Weather.ViewModels
 
         private void Importer_ImportChanged(object sender, ImportEventArgs e)
         {
-            if (e.Progress != null) Progress = (int) e.Progress;
+            if (e.Progress != null) Progress = (int)e.Progress;
         }
 
         public void ReadFile(string filePath)

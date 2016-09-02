@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SQLite;
 using Weather.Common.Interfaces;
 using Weather.Repository.Interfaces;
 
@@ -11,7 +6,6 @@ namespace Weather.Repository.Repositories
 {
     public class StationSensorRepository : IStationSensorRepository
     {
-
         private const string DbConnectionString = @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
         private ILog _log;
 
@@ -42,7 +36,6 @@ namespace Weather.Repository.Repositories
                             command.Parameters.AddWithValue("@Notes", stationSensor.Notes);
                             command.Parameters.AddWithValue("@StationSensorId", stationSensor.StationSensorId);
                             command.ExecuteNonQuery();
-
                         }
                     }
                 }

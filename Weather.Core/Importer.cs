@@ -1,10 +1,9 @@
-﻿using System;
+﻿using LumenWorks.Framework.IO.Csv;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-
-using LumenWorks.Framework.IO.Csv;
 using Weather.Common.Entities;
 using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
@@ -23,15 +22,8 @@ namespace Weather.Core
         private int[] _timestamp;
         private readonly BackgroundWorker _worker;
 
-
-
-
-
-        List<SensorValue> listSensorValues = new List<SensorValue>();
-        List<WeatherRecord>listWeatherRecords = new List<WeatherRecord>();
-
-
-
+        private List<SensorValue> listSensorValues = new List<SensorValue>();
+        private List<WeatherRecord> listWeatherRecords = new List<WeatherRecord>();
 
         public Importer(ISensorCore sensorCore, IStationCore stationCore)
         {
@@ -50,11 +42,12 @@ namespace Weather.Core
         }
 
         public event EventHandler<ImportEventArgs> ImportChanged;
+
         public event EventHandler ImportComplete;
 
         private void OnChanged(int p)
         {
-            ImportChanged?.Invoke(this, new ImportEventArgs {Progress = p});
+            ImportChanged?.Invoke(this, new ImportEventArgs { Progress = p });
         }
 
         public void Import(string filePath, WeatherStation station, List<Tuple<ISensor, int>> data, int excludeLines,
@@ -70,8 +63,8 @@ namespace Weather.Core
         private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //_sensorCore.AddSensorValues(listSensorValues);
-         //   _stationCore.AddWeatherRecords(listWeatherRecords);
-            ImportComplete?.Invoke(this,null);
+            //   _stationCore.AddWeatherRecords(listWeatherRecords);
+            ImportComplete?.Invoke(this, null);
         }
 
         private void _worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -81,11 +74,8 @@ namespace Weather.Core
 
         private void _worker_DoWork(object sender, DoWorkEventArgs e)
         {
-
-
-         //   var listSensorValues = new List<SensorValue>();
-           // var listWeatherRecords = new List<WeatherRecord>();
-
+            //   var listSensorValues = new List<SensorValue>();
+            // var listWeatherRecords = new List<WeatherRecord>();
 
             var lineCount = File.ReadLines(_filePath).Count();
             using (var csv = new CachedCsvReader(new StreamReader(_filePath), false))
@@ -94,7 +84,6 @@ namespace Weather.Core
                 {
                     if (csv.CurrentRecordIndex >= _excludeLines)
                     {
-
                         var dt = DateTime.Now;
                         if (_timestamp.Length == 1)
                         {
@@ -105,8 +94,7 @@ namespace Weather.Core
                             dt = DateTime.Parse(csv[_timestamp[0]] + " " + csv[_timestamp[1]]);
                         }
                         //    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
-                     var weatherrecord = new WeatherRecord {TimeStamp = dt};
-
+                        var weatherrecord = new WeatherRecord { TimeStamp = dt };
 
                         foreach (var d in _data)
                         {
@@ -133,11 +121,11 @@ namespace Weather.Core
                                 //    s.DisplayUnit = Units.Kmh;
                                 //}
                             }
-                         //   _sensorCore.AddSensorValue(s);
+                            //   _sensorCore.AddSensorValue(s);
                             listSensorValues.Add(s); // Bulk insert
                             weatherrecord.SensorValues.Add(s);
                         }
-                      //  _stationCore.AddWeatherRecord(weatherrecord);
+                        //  _stationCore.AddWeatherRecord(weatherrecord);
                         listWeatherRecords.Add(weatherrecord); // Bulk insert
 
                         var pr = Utils.CalculatePercentage(csv.CurrentRecordIndex + 1, 0, lineCount);

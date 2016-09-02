@@ -39,7 +39,7 @@ namespace Weather.Logging
 
         public void Debug(string message, Exception exception)
         {
-            var level = ((log4net.Repository.Hierarchy.Hierarchy) LogManager.GetRepository()).Root.Level;
+            var level = ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root.Level;
             if (level == Level.Debug)
             {
                 DebugPanelMessage?.Invoke(null, new DebugMessageArgs { Message = message });

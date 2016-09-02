@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Practices.Unity;
+using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
-
 using System.Windows;
 using System.Windows.Input;
-using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
-using Weather.Common.Units;
 using Weather.Core.Interfaces;
+using Weather.DependencyResolver;
 using Weather.Helpers;
 using Weather.Views;
-using Weather.DependencyResolver;
 
 namespace Weather.ViewModels
 {
@@ -60,12 +54,12 @@ namespace Weather.ViewModels
 
         public ICommand SaveCommand
         {
-            get { return new RelayCommand(Save, x=> IsDirty && SelectedSensor != null && SelectedSensor.IsValid); }
+            get { return new RelayCommand(Save, x => IsDirty && SelectedSensor != null && SelectedSensor.IsValid); }
         }
 
         public ICommand SensorTypesCommand
         {
-            get { return new RelayCommand(SensorTypesWindowOpen, x =>SelectedSensor != null); }
+            get { return new RelayCommand(SensorTypesWindowOpen, x => SelectedSensor != null); }
         }
 
         private void SensorTypesWindowOpen(object obj)
@@ -136,7 +130,6 @@ namespace Weather.ViewModels
                 return;
             }
 
-
             var result = MessageBox.Show("Delete " + SelectedSensor.ToString() + "?", "Confirm", MessageBoxButton.YesNo,
                 MessageBoxImage.Stop);
             if (result != MessageBoxResult.Yes) return;
@@ -180,14 +173,14 @@ namespace Weather.ViewModels
 
         public void CheckDirty()
         {
-            if (SelectedSensor==null || SelectedSensor.SensorType == null) return;
+            if (SelectedSensor == null || SelectedSensor.SensorType == null) return;
             if (Adding)
             {
                 IsDirty = true;
                 return;
             }
             if (SelectedSensor == null || TempSelectedSensor == null) return;
-            if (SelectedSensor.Manufacturer != TempSelectedSensor.Manufacturer || SelectedSensor.Model != TempSelectedSensor.Model || SelectedSensor.Description != TempSelectedSensor.Description ||SelectedSensor.SensorType.SensorTypeId != TempSelectedSensor.SensorType.SensorTypeId)
+            if (SelectedSensor.Manufacturer != TempSelectedSensor.Manufacturer || SelectedSensor.Model != TempSelectedSensor.Model || SelectedSensor.Description != TempSelectedSensor.Description || SelectedSensor.SensorType.SensorTypeId != TempSelectedSensor.SensorType.SensorTypeId)
             {
                 IsDirty = true;
             }

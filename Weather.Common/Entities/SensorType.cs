@@ -1,12 +1,11 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using PropertyChanged;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using static System.String;
-
 
 namespace Weather.Common.Entities
 {
@@ -18,7 +17,6 @@ namespace Weather.Common.Entities
         public Unit SIUnit { get; set; }
         public IList<Unit> Units { get; set; } = new ObservableCollection<Unit>();
         public bool IsValid => Validate();
-
 
         public override string ToString()
         {

@@ -1,11 +1,9 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using PropertyChanged;
 using Weather.Common.Interfaces;
-using Weather.Common.Units;
 using static System.String;
-
 
 namespace Weather.Common.Entities
 {
@@ -20,7 +18,6 @@ namespace Weather.Common.Entities
         public IList<ISensorValue> SensorValues { get; set; } = new List<ISensorValue>();
         public string FullName { get { return ToString() + " (" + SensorType.Name + ")"; } }
         public bool IsValid => Validate();
-
 
         public override string ToString()
         {
@@ -47,7 +44,7 @@ namespace Weather.Common.Entities
                 }
                 if (columnName == "SensorType")
                 {
-                    if (SensorType ==null)
+                    if (SensorType == null)
                     {
                         return "SensorType is required";
                     }

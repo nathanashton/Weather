@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
@@ -50,6 +49,18 @@ namespace Weather.Views
         public void SelectStationInListBox(IWeatherStation station)
         {
             lb.SelectedItem = station;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+
+        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
         }
     }
 }

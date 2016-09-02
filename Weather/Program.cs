@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using System;
+using System.Drawing.Imaging;
 using System.IO;
-using Microsoft.Practices.Unity;
+using System.Windows;
 using Weather.Common.Interfaces;
 using Weather.DependencyResolver;
+using Weather.UserControls;
 using Weather.ViewModels;
 using Weather.Views;
-using System.Windows;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace Weather
 {
     internal static class Program
     {
+
         [STAThread]
         private static void Main()
         {
@@ -20,25 +21,19 @@ namespace Weather
             container.RegisterType<MainWindow>();
             container.RegisterType<MainWindowViewModel>();
 
-
-            container.RegisterType<SensorWindow>();
             container.RegisterType<SensorsWindowViewModel>();
 
             container.RegisterType<SensorSelectWindowViewModel>();
             container.RegisterType<SensorSelectWindow>();
 
-
             container.RegisterType<ImportWindow>();
             container.RegisterType<ImportWindowViewModel>();
-
 
             container.RegisterType<UnitsWindow>();
             container.RegisterType<UnitsWindowViewModel>();
 
-
             container.RegisterType<UnitSelectorWindow>();
             container.RegisterType<UnitSelectorWindowViewModel>();
-
 
             container.RegisterType<SensorTypesWindow>();
             container.RegisterType<SensorTypesViewModel>();
@@ -49,13 +44,19 @@ namespace Weather
             container.RegisterType<UnhandledExceptionWindow>();
             container.RegisterType<UnhandledExceptionWindowViewModel>();
 
+            container.RegisterType<OptionsWindow>();
+            container.RegisterType<OptionsWindowViewModel>();
+
+            container.RegisterType<StationPanelViewModel>();
+            container.RegisterType<StationSidePanel>();
+
 
             container.RegisterType<StationMapWindow>();
 
             var log = container.Resolve<ILog>();
             var settings = container.Resolve<ISettings>();
             log.Info("Application Started");
-            RunApplication((UnityContainer) container, log, settings);
+            RunApplication((UnityContainer)container, log, settings);
         }
 
         private static void RunApplication(UnityContainer container, ILog log, ISettings settings)
@@ -69,14 +70,26 @@ namespace Weather
                 Directory.CreateDirectory(settings.ErrorPath);
             }
 
+
             log.SetDebugLevel();
 
             var application = new App();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             var mainWindow = container.Resolve<MainWindow>();
+            application.InitializeComponent();
+
+            settings.Load();
+            if (settings.Skin == "Dark")
+            {
+                Program.ChangeTheme(new Uri("/Skins/Dark.xaml", UriKind.Relative));
+            }
+            else if (settings.Skin == "Light")
+            {
+                Program.ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
+            }
+
             application.Run(mainWindow);
-  
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -85,10 +98,10 @@ namespace Weather
             var settings = container.Resolve<ISettings>();
 
             var image = ScreenCapture.CaptureActiveWindow();
-            image.Save(Path.Combine(settings.ErrorPath,"unhandledexception.jpg"), ImageFormat.Jpeg);
+            image.Save(Path.Combine(settings.ErrorPath, "unhandledexception.jpg"), ImageFormat.Jpeg);
 
             Exception ex = e.ExceptionObject as Exception;
-        
+
             var window = container.Resolve<UnhandledExceptionWindow>();
 
             window._viewModel.Message = "\"" + ex.Message + "\"";
@@ -97,11 +110,16 @@ namespace Weather
 
             window.ShowDialog();
 
-            Environment.Exit(1);
+           // Environment.Exit(1);
+        }
+
+        public static void ChangeTheme(Uri uri)
+        {
+            ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(resourceDict);
         }
 
 
-
-  
     }
 }

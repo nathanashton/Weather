@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System.Windows;
 using System.Windows.Input;
-using Microsoft.Maps.MapControl.WPF;
 
 namespace Weather.Views
 {
@@ -23,7 +23,7 @@ namespace Weather.Views
             if (Latitude != 0 && Longitude != 0 && Latitude != null && Longitude != null)
             {
                 var pushpin = new Pushpin();
-                pushpin.Location = new Location {Latitude = (double) Latitude, Longitude = (double) Longitude};
+                pushpin.Location = new Location { Latitude = (double)Latitude, Longitude = (double)Longitude };
                 myMap.Children.Add(pushpin);
                 myMap.Center = pushpin.Location;
             }
@@ -41,7 +41,7 @@ namespace Weather.Views
             e.Handled = true;
             var mousePosition = e.GetPosition(this);
             var pinLocation = myMap.ViewportPointToLocation(mousePosition);
-            var pin = new Pushpin {Location = pinLocation};
+            var pin = new Pushpin { Location = pinLocation };
             myMap.Children.Add(pin);
             Latitude = pinLocation.Latitude;
             Longitude = pinLocation.Longitude;

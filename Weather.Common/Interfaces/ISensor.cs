@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Weather.Common.Entities;
-using Weather.Common.Units;
 
 namespace Weather.Common.Interfaces
 {
@@ -14,6 +12,5 @@ namespace Weather.Common.Interfaces
         IList<ISensorValue> SensorValues { get; set; }
         bool IsValid { get; }
         string FullName { get; }
-
     }
 }

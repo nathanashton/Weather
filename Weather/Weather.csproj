@@ -76,6 +76,9 @@
       <HintPath>..\packages\PropertyChanged.Fody.1.50.4\lib\dotnet\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Syncfusion.SfChart.WPF, Version=14.1451.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Shared.WPF, Version=14.1451.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Tools.WPF, Version=14.1451.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -126,10 +129,19 @@
     <Compile Include="Converters\NullEnabledConverter.cs" />
     <Compile Include="Converters\TestConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\SunTimes.cs" />
     <Compile Include="ScreenCapture.cs" />
+    <Compile Include="UserControls\ChartPanel.xaml.cs">
+      <DependentUpon>ChartPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\StationSidePanel.xaml.cs">
+      <DependentUpon>StationSidePanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
+    <Compile Include="ViewModels\OptionsWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorSelectWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorsWindowViewModel.cs" />
+    <Compile Include="ViewModels\StationPanelViewModel.cs" />
     <Compile Include="ViewModels\StationsWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorTypesViewModel.cs" />
     <Compile Include="ViewModels\UnhandledExceptionWindowViewModel.cs" />
@@ -137,6 +149,9 @@
     <Compile Include="ViewModels\UnitsWindowViewModel.cs" />
     <Compile Include="Views\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionsWindow.xaml.cs">
+      <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SensorSelectWindow.xaml.cs">
       <DependentUpon>SensorSelectWindow.xaml</DependentUpon>
@@ -146,9 +161,6 @@
     </Compile>
     <Compile Include="Views\SensorTypesWindow.xaml.cs">
       <DependentUpon>SensorTypesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SensorWindow.xaml.cs">
-      <DependentUpon>SensorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StationMapWindow.xaml.cs">
       <DependentUpon>StationMapWindow.xaml</DependentUpon>
@@ -165,7 +177,27 @@
     <Compile Include="Views\UnitsWindow.xaml.cs">
       <DependentUpon>UnitsWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Skins\Dark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Skins\Light.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Page Include="UserControls\ChartPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\StationSidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ImportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,10 +210,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SensorTypesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SensorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -281,6 +309,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\edit_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\cross_52px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\weather.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\cross_white_52px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />

@@ -1,8 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using PropertyChanged;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PropertyChanged;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using Weather.Core.Interfaces;
@@ -28,7 +28,6 @@ namespace Weather.ViewModels
         public bool IsDirty { get; set; }
         private ISensorTypeCore _sensorTypeCore;
 
-
         public UnitsWindowViewModel(IUnitCore unitCore, ILog log, ISensorTypeCore sensorTypeCore)
         {
             _log = log;
@@ -36,7 +35,7 @@ namespace Weather.ViewModels
             _unitCore = unitCore;
             UnitTypes = new ObservableCollection<UnitType>(Common.Units.UnitTypes.UnitsList);
         }
-        
+
         public ICommand SaveCommand
         {
             // Only allow save is something has changed, A unit is selected and is Valid
@@ -78,7 +77,6 @@ namespace Weather.ViewModels
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
 
             var result = MessageBox.Show("Delete " + SelectedUnit.DisplayName + "?", "Confirm", MessageBoxButton.YesNo,
                 MessageBoxImage.Stop);

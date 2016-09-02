@@ -1,6 +1,7 @@
 ﻿using PropertyChanged;
 using System.Windows;
 using System.Windows.Controls;
+using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using Weather.ViewModels;
 
@@ -14,7 +15,7 @@ namespace Weather.Views
     {
         private readonly UnitsWindowViewModel _viewModel;
 
-        public UnitsWindow(UnitsWindowViewModel viewModel)
+        public UnitsWindow(UnitsWindowViewModel viewModel, ISettings settings)
         {
             InitializeComponent();
             _viewModel = viewModel;
@@ -46,6 +47,17 @@ namespace Weather.Views
         public void SelectUnitInListBox(Unit unit)
         {
             lb.SelectedItem = unit;
+        }
+
+        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

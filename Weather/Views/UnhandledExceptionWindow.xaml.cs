@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -20,7 +9,6 @@ namespace Weather.Views
     /// </summary>
     public partial class UnhandledExceptionWindow : Window
     {
-
         public UnhandledExceptionWindowViewModel _viewModel;
 
         public UnhandledExceptionWindow(UnhandledExceptionWindowViewModel viewModel)
@@ -33,7 +21,18 @@ namespace Weather.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(1);
+            Close();
+        }
+
+        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;

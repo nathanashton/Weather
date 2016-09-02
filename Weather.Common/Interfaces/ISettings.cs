@@ -6,6 +6,10 @@
         string ApplicationPath { get; }
         string ErrorPath { get; }
         string DatabasePath { get; }
-        int RoundingFactor { get; }
+        string Skin { get; set; }
+        string SettingsFile { get; }
+
+        void Save();
+        void Load();
     }
 }

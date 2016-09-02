@@ -25,7 +25,7 @@ namespace Weather.Views
             _viewModel.GetAllSensors();
             if (_viewModel.StationSensor != null && _viewModel.StationSensor.Sensor != null)
             {
-                foreach(var item in cb.Items)
+                foreach (var item in cb.Items)
                 {
                     var t = (ISensor)item;
                     if (t.SensorId == _viewModel.StationSensor.Sensor.SensorId)
@@ -37,6 +37,17 @@ namespace Weather.Views
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Close();
         }

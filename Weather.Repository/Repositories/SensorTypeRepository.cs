@@ -58,7 +58,7 @@ namespace Weather.Repository.Repositories
                         using (var command = new SQLiteCommand(sql, connection))
                         {
                             using (var reader = command.ExecuteReader())
-                            { 
+                            {
                                 while (reader.Read())
                                 {
                                     mappedReader.Add(new

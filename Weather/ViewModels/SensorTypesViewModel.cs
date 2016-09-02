@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.Practices.Unity;
+using PropertyChanged;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
-using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
@@ -45,7 +45,6 @@ namespace Weather.ViewModels
         {
             get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && SelectedSensorType != null); }
         }
-
 
         public ICommand UnitsWindowCommand
         {

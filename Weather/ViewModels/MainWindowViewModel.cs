@@ -81,7 +81,6 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Import, x => SelectedStation != null); }
         }
 
-
         public ICommand SensorsWindowCommand
         {
             get { return new RelayCommand(SensorsWindowOpen, x => true); }
@@ -96,14 +95,27 @@ namespace Weather.ViewModels
         {
             get { return new RelayCommand(SensorTypes, x => true); }
         }
+
         public ICommand ThrowException
         {
             get { return new RelayCommand(Throw, x => true); }
         }
 
+        public ICommand OptionsWindowCommand
+        {
+            get { return new RelayCommand(ShowOptions, x => true); }
+        }
+
         private void Throw(object obj)
         {
             throw new NullReferenceException("Unahnded");
+        }
+
+        private void ShowOptions(object obj)
+        {
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<OptionsWindow>();
+            window.ShowDialog();
         }
 
         public ICommand StationsCommand
@@ -123,7 +135,6 @@ namespace Weather.ViewModels
 
         private void OpenStations(object obj)
         {
-          
         }
 
         private void UnitsWindowOpen(object obj)
@@ -176,9 +187,6 @@ namespace Weather.ViewModels
             var window = container.Resolve<SensorTypesWindow>();
             window.ShowDialog();
         }
-
-      
-
 
         public void ClearAll()
         {

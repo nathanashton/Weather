@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
-using System;
 
 namespace Weather.Core
 {
@@ -37,12 +36,12 @@ namespace Weather.Core
 
         public void Update(IWeatherStation station)
         {
-          _weatherStationRepository.Update(station);
+            _weatherStationRepository.Update(station);
         }
 
         public void Delete(IWeatherStation station)
         {
-         _weatherStationRepository.Delete(station.WeatherStationId);
+            _weatherStationRepository.Delete(station.WeatherStationId);
         }
 
         public IWeatherStation Add(IWeatherStation station)

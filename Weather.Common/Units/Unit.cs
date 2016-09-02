@@ -47,7 +47,7 @@ namespace Weather.Common.Units
 
         private bool Validate()
         {
-            var f= !IsNullOrEmpty(DisplayName) && !IsNullOrEmpty(DisplayUnit) && UnitType != null;
+            var f = !IsNullOrEmpty(DisplayName) && !IsNullOrEmpty(DisplayUnit) && UnitType != null;
             return f;
         }
     }

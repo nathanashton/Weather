@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Weather.Common.Units;
 
 namespace Weather.Common.Interfaces
@@ -11,6 +10,5 @@ namespace Weather.Common.Interfaces
         IList<Unit> Units { get; set; }
         Unit SIUnit { get; set; }
         bool IsValid { get; }
-
     }
 }

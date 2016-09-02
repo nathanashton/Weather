@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.ViewModels;
@@ -42,7 +31,7 @@ namespace Weather.Views
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = ((ListBox) e.Source).SelectedItem;
+            var selection = ((ListBox)e.Source).SelectedItem;
             if (selection == null) return;
 
             _viewModel.TempSelectedSensor = selection as ISensor;
@@ -56,11 +45,8 @@ namespace Weather.Views
             };
             if (_viewModel.SelectedSensor.SensorType != null)
             {
-
                 SelectSiUnitInComboBox(_viewModel.SelectedSensor.SensorType);
             }
-
-
         }
 
         public void SelectSensorInListBox(ISensor sensor)
@@ -78,6 +64,17 @@ namespace Weather.Views
                     SensorType.SelectedItem = item;
                 }
             }
+        }
+
+        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.Win32;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Microsoft.Win32;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -43,7 +43,7 @@ namespace Weather.Views
             {
                 _viewModel.Record = _viewModel.FilteredRecords[_viewModel.CurrentRecord - 1];
                 _viewModel.DateRecord = _viewModel.FilteredDateRecords[_viewModel.CurrentRecord - 1];
-                    // fails if file has headers
+                // fails if file has headers
 
                 try
                 {

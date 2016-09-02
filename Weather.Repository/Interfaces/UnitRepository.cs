@@ -14,7 +14,5 @@ namespace Weather.Repository.Interfaces
         void Delete(int id);
 
         void Update(Unit unit);
-
-
     }
 }

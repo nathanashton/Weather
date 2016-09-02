@@ -48,7 +48,8 @@ namespace Weather.ViewModels
             if (!Editing)
             {
                 WeatherStation.Sensors.Add(sensor);
-            } else
+            }
+            else
             {
                 StationSensor = sensor;
             }

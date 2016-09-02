@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Weather.Common.Entities;
 
 namespace Weather.Common.Interfaces
 {
@@ -14,7 +13,5 @@ namespace Weather.Common.Interfaces
         bool IsValid { get; }
 
         IList<IStationSensor> Sensors { get; set; }
-
-
     }
 }

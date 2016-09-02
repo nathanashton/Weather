@@ -19,8 +19,6 @@ namespace Weather.Common.Entities
         public int WeatherStationId { get; set; }
         public bool IsValid => Validate();
 
- 
-
         public string this[string columnName]
         {
             get

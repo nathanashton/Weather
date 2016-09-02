@@ -73,7 +73,6 @@
                 <Label HorizontalContentAlignment="Right" Content="{Binding CurrentRecordDisplay}" />
             </StackPanel>
 
-
             <GroupBox IsEnabled="{Binding FileSelected}" Padding="5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                       Header="Timestamp">
                 <Grid>

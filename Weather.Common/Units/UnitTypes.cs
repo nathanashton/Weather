@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using PropertyChanged;
+﻿using PropertyChanged;
+using System.Collections.Generic;
 
 namespace Weather.Common.Units
 {

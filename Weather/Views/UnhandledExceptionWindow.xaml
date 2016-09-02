@@ -7,31 +7,40 @@
         mc:Ignorable="d" Background="#F8F8F8" WindowStartupLocation="CenterScreen" WindowStyle="None" SizeToContent="Height"
         Title="" Height="231" Width="309">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolVisConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolVisConverter" />
     </Window.Resources>
-    <Border BorderBrush="Gray" BorderThickness="1">
-    <DockPanel Background="#F8F8F8">
-        <DockPanel Background="#F0F0F0" DockPanel.Dock="Bottom">
-            <Rectangle Height="1" Fill="White" DockPanel.Dock="Top" />
-            <Rectangle Height="1" Fill="#A0A0A0" DockPanel.Dock="Top" />
+    <Border BorderBrush="White" BorderThickness="1">
 
-            <Button BorderBrush="#A0A0A0" Background="Transparent" Margin="5" HorizontalAlignment="Right"
+        <Border Style="{DynamicResource WindowBorder}">
+            <DockPanel Background="#F8F8F8">
+                <DockPanel MouseLeftButtonDown="DockPanel_MouseLeftButtonDown" Style="{DynamicResource Header}" DockPanel.Dock="Top" Height="20">
+                    <Image Margin="5,2,0,2" DockPanel.Dock="Left" HorizontalAlignment="Left" Source="pack://application:,,,/Resources/Icons/weather.ico"/>
+
+                    <Button Click="Button_Click_1" Margin="0,2,5,2" DockPanel.Dock="Right" Width="20" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0">
+                        <Image DockPanel.Dock="Left" Style="{DynamicResource CloseButton}"/>
+                    </Button>
+                </DockPanel>
+                <DockPanel Background="#F0F0F0" DockPanel.Dock="Bottom">
+                    <Rectangle Height="1" Fill="White" DockPanel.Dock="Top" />
+                    <Rectangle Height="1" Fill="#A0A0A0" DockPanel.Dock="Top" />
+
+                    <Button BorderBrush="#A0A0A0" Background="Transparent" Margin="5" HorizontalAlignment="Right"
                     DockPanel.Dock="Right" Height="25" Width="60"
                     Content="Close" Click="Button_Click" />
-            <Button BorderBrush="#A0A0A0" Background="Transparent" Margin="5" Height="25" Width="60"
+                    <Button BorderBrush="#A0A0A0" Background="Transparent" Margin="5" Height="25" Width="60"
                     HorizontalAlignment="Right" Command="{Binding DetailsCommand}" Content="Details">
-            </Button>
-                <Button BorderBrush="#A0A0A0" Background="Transparent" Margin="5" Height="25" Width="110"
+                    </Button>
+                    <Button BorderBrush="#A0A0A0" Background="Transparent" Margin="5" Height="25" Width="110"
                     HorizontalAlignment="Right" Command="{Binding SendErrorReportCommand}" Content="Send Error Report">
-                </Button>
+                    </Button>
+                </DockPanel>
+
+                <TextBlock Background="Transparent" TextWrapping="Wrap" DockPanel.Dock="Top" Text="An unknown error occurred. We are sorry for the inconvenience." FontWeight="Bold" Margin="10,20,5,10" TextAlignment="Center" />
+
+                <TextBox BorderThickness="0" Background="Transparent" DockPanel.Dock="Top" TextWrapping="Wrap" TextAlignment="Center" Margin="10,0,10,10" Text="{Binding Message}" />
+
+                <TextBox Height="120" Visibility="{Binding ShowDetails, Converter={StaticResource BoolVisConverter}}" VerticalScrollBarVisibility="Auto" BorderThickness="0" Background="Transparent" DockPanel.Dock="Top" TextWrapping="Wrap" TextAlignment="Left" FontSize="11" Margin="10,0,10,20" Text="{Binding StackTrace}" />
             </DockPanel>
-
-        <TextBlock Background="Transparent" TextWrapping="Wrap" DockPanel.Dock="Top" Text="An unknown error occurred. We are sorry for the inconvenience. The program will now close." FontWeight="Bold" Margin="10,20,5,10" TextAlignment="Center" />
-
-        <TextBox BorderThickness="0" Background="Transparent" DockPanel.Dock="Top" Height="40" TextWrapping="Wrap" TextAlignment="Center" Margin="10,0,10,10" Text="{Binding Message}" />
-
-        <TextBox Height="120" Visibility="{Binding ShowDetails, Converter={StaticResource BoolVisConverter}}" VerticalScrollBarVisibility="Auto" BorderThickness="0" Background="Transparent" DockPanel.Dock="Top" TextWrapping="Wrap" TextAlignment="Left" FontSize="11" Margin="10,0,10,20" Text="{Binding StackTrace}" />
-
-    </DockPanel>
+        </Border>
     </Border>
 </Window>
