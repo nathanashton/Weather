@@ -1,136 +1,243 @@
 ﻿<Window x:Class="Weather.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Sys="clr-namespace:System;assembly=mscorlib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-          xmlns:userControls="clr-namespace:Weather.UserControls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        Title="Weather" Height="600" Width="800" MinHeight="350" MinWidth="500">
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:userControls="clr-namespace:Weather.UserControls"
+        Title="Weather"
+        Width="800"
+        Height="600"
+        MinWidth="500"
+        MinHeight="350"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        mc:Ignorable="d">
     <Window.Resources>
         <Storyboard x:Key="ShowDebugPanel">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="dpanel">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(FrameworkElement.Height)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="150" />
             </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="dpanel">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseDebugPanel">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="dpanel">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(FrameworkElement.Height)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="150" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0" />
             </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="dpanel">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="{x:Static Visibility.Collapsed}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <BooleanToVisibilityConverter x:Key="BoolVisConverter" />
+        <RadioButton x:Key="RadioButtonResource"
+                     HorizontalAlignment="Center"
+                     x:Shared="false"
+                     GroupName="MenuItemRadio"
+                     IsHitTestVisible="False" />
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Setup">
-                <MenuItem Header="Units" Command="{Binding UnitsWindowCommand}" />
-                <MenuItem Header="Sensor Types" Command="{Binding SensorTypesWindowCommand}" />
-                <MenuItem Header="Sensors"  Command="{Binding SensorsWindowCommand}" />
-                <MenuItem Header="Weather Stations" Command="{Binding WeatherStationsCommand}" />
+                <MenuItem Command="{Binding UnitsWindowCommand}" Header="Units" />
+                <MenuItem Command="{Binding SensorTypesWindowCommand}" Header="Sensor Types" />
+                <MenuItem Command="{Binding SensorsWindowCommand}" Header="Sensors" />
+                <MenuItem Command="{Binding WeatherStationsCommand}" Header="Weather Stations" />
                 <Separator />
-                <MenuItem Header="_Options" Command="{Binding OptionsWindowCommand}" />
+                <MenuItem Command="{Binding OptionsWindowCommand}" Header="_Options" />
             </MenuItem>
             <MenuItem Header="_Test">
-                <MenuItem Header="Throw Unhandled Exception" Command="{Binding ThrowException}" />
-                <MenuItem IsCheckable="True" IsChecked="{Binding DebugPanelVisible, Mode=TwoWay}" Header="Debug Panel" Command="{Binding DebugPanel}" />
+                <MenuItem Command="{Binding ThrowException}" Header="Throw Unhandled Exception" />
+                <MenuItem Command="{Binding DebugPanel}"
+                          Header="Debug Panel"
+                          IsCheckable="True"
+                          IsChecked="{Binding DebugPanelVisible,
+                                              Mode=TwoWay}" />
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="Chart 1"
+                          IsCheckable="True"
+                          IsChecked="{Binding WeatherChartOneVisible,
+                                              Mode=TwoWay}" />
+
+                <MenuItem Header="Chart 2"
+                          IsCheckable="True"
+                          IsChecked="{Binding WeatherChartTwoVisible,
+                                              Mode=TwoWay}" />
+
+                <MenuItem Header="Sidebar"
+                          IsCheckable="True"
+                          IsChecked="{Binding SideBarVisible,
+                                              Mode=TwoWay}" />
+
+
+
+                <MenuItem Header="Info 1"
+                          IsCheckable="True"
+                          IsChecked="{Binding InfoPanelOneVisible,
+                                              Mode=TwoWay}" />
+
+                <MenuItem Header="Info 2"
+                          IsCheckable="True"
+                          IsChecked="{Binding InfoPanelTwoVisible,
+                                              Mode=TwoWay}" />
+                <MenuItem Header="Info 3"
+                          IsCheckable="True"
+                          IsChecked="{Binding InfoPanelThreeVisible,
+                                              Mode=TwoWay}" />
+
+                <MenuItem Header="Info 4"
+                          IsCheckable="True"
+                          IsChecked="{Binding InfoPanelFourVisible,
+                                              Mode=TwoWay}" />
+
             </MenuItem>
         </Menu>
 
-        <DockPanel DockPanel.Dock="Top" Height="30" Style="{DynamicResource Header}" />
+        <DockPanel Height="30"
+                   DockPanel.Dock="Top"
+                   Style="{DynamicResource Header}">
+            <Label Content="{Binding WeatherChartOneVisible}" />
+        </DockPanel>
 
-        <Border Height="25" DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="DarkGray">
-            <StatusBar Height="25" Margin="0" Padding="0" Style="{DynamicResource HeaderStatus}">
-                <DockPanel Height="25" Margin="0" Style="{DynamicResource Header}"
-                Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StatusBar}}}"
-                LastChildFill="True" VerticalAlignment="Stretch">
-                    <Label Style="{DynamicResource HeaderLabel}" HorizontalContentAlignment="Right" HorizontalAlignment="Right"  Padding="0" Margin="0,0,10,0" Content="{Binding Clock}" />
+        <Border Height="25"
+                BorderBrush="DarkGray"
+                BorderThickness="0,1,0,0"
+                DockPanel.Dock="Bottom">
+            <StatusBar Height="25"
+                       Margin="0"
+                       Padding="0"
+                       Style="{DynamicResource HeaderStatus}">
+                <DockPanel Width="{Binding ActualWidth,
+                                           RelativeSource={RelativeSource FindAncestor,
+                                                                          AncestorType={x:Type StatusBar}}}"
+                           Height="25"
+                           Margin="0"
+                           VerticalAlignment="Stretch"
+                           LastChildFill="True"
+                           Style="{DynamicResource Header}">
+                    <Label Margin="0,0,10,0"
+                           HorizontalAlignment="Right"
+                           HorizontalContentAlignment="Right"
+                           Content="{Binding Clock}"
+                           Padding="0"
+                           Style="{DynamicResource HeaderLabel}" />
                 </DockPanel>
             </StatusBar>
         </Border>
 
-        <Grid Style="{DynamicResource MainGrid }">
+        <Grid Style="{DynamicResource MainGrid}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <userControls:StationSidePanel Grid.Column="1" Margin="5" />
-
-            <Grid Background="Transparent" Margin="5,5,0,5">
+            <Grid Margin="5" Background="Transparent">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.3*" />
-                    <RowDefinition Height="0.3*" />
-                    <RowDefinition Height="0.3*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="0,0,0,5">
+                <DockPanel Grid.Row="0" LastChildFill="True">
+
+                    <!--<Grid Grid.Row="0" Margin="0,0,0,5" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*" />
                         <ColumnDefinition Width="0.25*" />
                         <ColumnDefinition Width="0.25*" />
                         <ColumnDefinition Width="0.25*" />
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" BorderBrush="DarkGray" BorderThickness="1" Margin="0,0,5,0">
-                        <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Header}">
-                            <DockPanel  Style="{DynamicResource HeaderBG}"  Height="25" DockPanel.Dock="Top">
-                                <Label Content="Min / Max Day"  Style="{DynamicResource HeaderLabel}" />
-                            </DockPanel>
-                            <Grid />
-                        </DockPanel>
-                    </Border>
+                    </Grid.ColumnDefinitions>-->
 
-                    <Border Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1" Margin="0,0,5,0">
-                        <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Header}">
-                            <DockPanel  Style="{DynamicResource HeaderBG}"  Height="25" DockPanel.Dock="Top">
-                                <Label Content="Min / Max Month"  Style="{DynamicResource HeaderLabel}" />
-                            </DockPanel>
-                            <Grid />
-                        </DockPanel>
-                    </Border>
 
-                    <Border Grid.Column="2" BorderBrush="DarkGray" BorderThickness="1" Margin="0,0,5,0">
-                        <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Header}">
-                            <DockPanel  Style="{DynamicResource HeaderBG}"  Height="25" DockPanel.Dock="Top">
-                                <Label Content="Min / Max Year"  Style="{DynamicResource HeaderLabel}" />
-                            </DockPanel>
-                            <Grid />
-                        </DockPanel>
-                    </Border>
+                    <Grid Grid.Column="0"
+                          Height="300"
+                          HorizontalAlignment="Stretch"
+                          Visibility="{Binding InfoPanelOneVisible,
+                                               Converter={StaticResource BoolVisConverter}}">
+                        <userControls:InfoPanel />
+                    </Grid>
 
-                    <Border Grid.Column="3" BorderBrush="DarkGray" BorderThickness="1">
-                        <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Header}">
-                            <DockPanel  Style="{DynamicResource HeaderBG}"  Height="25" DockPanel.Dock="Top">
-                                <Label Content="Timeline"  Style="{DynamicResource HeaderLabel}" />
-                            </DockPanel>
-                            <Grid />
-                        </DockPanel>
-                    </Border>
+                    <Grid Grid.Column="1"
+                          Height="300"
+                          HorizontalAlignment="Stretch"
+                          Visibility="{Binding InfoPanelTwoVisible,
+                                               Converter={StaticResource BoolVisConverter}}">
+                        <userControls:InfoPanel />
+                    </Grid>
+
+                    <Grid Grid.Column="2"
+                          Height="300"
+                          HorizontalAlignment="Stretch"
+                          Visibility="{Binding InfoPanelThreeVisible,
+                                               Converter={StaticResource BoolVisConverter}}">
+                        <userControls:InfoPanel />
+                    </Grid>
+                    <Grid Grid.Column="3"
+                          Height="300"
+                          HorizontalAlignment="Stretch"
+                          Visibility="{Binding InfoPanelFourVisible,
+                                               Converter={StaticResource BoolVisConverter}}">
+                        <userControls:InfoPanel />
+                    </Grid>
+
+                    <!--</Grid>-->
+                </DockPanel>
+
+                <Grid Grid.Row="1" Visibility="{Binding Path=WeatherChartOneVisible, Converter={StaticResource BoolVisConverter}}">
+                    <userControls:ChartPanel />
                 </Grid>
 
-                <userControls:ChartPanel Grid.Row="1" Margin="0,5,0,0" />
 
-                <userControls:ChartPanel Grid.Row="2" Margin="0,5,0,0" />
+                <Grid Grid.Row="2" Visibility="{Binding Path=WeatherChartTwoVisible, Converter={StaticResource BoolVisConverter}}">
+                    <userControls:ChartPanel />
+                </Grid>
+
+            </Grid>
+
+            <Grid Grid.Column="1"
+                  Width="200"
+                  Margin="5"
+                  Visibility="{Binding Path=SideBarVisible,
+                                       Converter={StaticResource BoolVisConverter}}">
+                <userControls:StationSidePanel />
+
             </Grid>
 
             <!--<DataGrid Grid.Row="0" VerticalAlignment="Stretch" EnableColumnVirtualization="True" EnableRowVirtualization="True" Name="dg" CanUserAddRows="False"
                   RowHeaderWidth="0" IsReadOnly="True" AutoGenerateColumns="False" />-->
 
-            <DockPanel  Name="dpanel"  Height="150" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="Black" Visibility="{Binding DebugPanelVisible, Converter={StaticResource BoolVisConverter}}">
-                <Label DockPanel.Dock="Top" Background="Black" Foreground="Yellow" Content="DEBUG" />
-                <ScrollViewer Margin="10,0,0,0" Name="scroll" Background="Black" VerticalAlignment="Stretch"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <TextBlock Padding="5" FontSize="11" Text="{Binding DebugPanel}" Background="Black" Foreground="Yellow" />
+            <DockPanel Name="dpanel"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Height="150"
+                       Background="Black"
+                       Visibility="{Binding DebugPanelVisible,
+                                            Converter={StaticResource BoolVisConverter}}">
+                <Label Background="Black"
+                       Content="DEBUG"
+                       DockPanel.Dock="Top"
+                       Foreground="Yellow" />
+                <ScrollViewer Name="scroll"
+                              Margin="10,0,0,0"
+                              VerticalAlignment="Stretch"
+                              Background="Black"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <TextBlock Background="Black"
+                               FontSize="11"
+                               Foreground="Yellow"
+                               Padding="5"
+                               Text="{Binding DebugPanel}" />
                 </ScrollViewer>
             </DockPanel>
         </Grid>

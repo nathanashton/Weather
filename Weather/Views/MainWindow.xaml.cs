@@ -53,12 +53,25 @@ namespace Weather.Views
             CreateDataGrid();
         }
 
+        private void MenuItemWithRadioButtons_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MenuItem mi = sender as MenuItem;
+            if (mi != null)
+            {
+                RadioButton rb = mi.Icon as RadioButton;
+                if (rb != null)
+                {
+                    rb.IsChecked = true;
+                }
+            }
+        }
+
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var weatherStation = ((ComboBox)e.Source).SelectedItem as WeatherStation;
-            if (weatherStation == null) return;
-            _viewModel.SelectedStation = weatherStation;
-            CreateDataGrid();
+            //var weatherStation = ((ComboBox)e.Source).SelectedItem as WeatherStation;
+            //if (weatherStation == null) return;
+            //_viewModel.SelectedStation = weatherStation;
+            //CreateDataGrid();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

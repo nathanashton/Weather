@@ -24,15 +24,24 @@ namespace Weather.UserControls
     /// </summary>
     public partial class StationSidePanel : UserControl
     {
-
+        private StationPanelViewModel _viewModel;
 
 
         public StationSidePanel()
         {
             InitializeComponent();
             var container = new Resolver().Bootstrap();
-            var vm = container.Resolve<StationPanelViewModel>();
-            DataContext = vm;
+            _viewModel = container.Resolve<StationPanelViewModel>();
+            DataContext = _viewModel;
+            Loaded += StationSidePanel_Loaded;
         }
+
+        private void StationSidePanel_Loaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.GetAllStations();
+        }
+
+
+
     }
 }

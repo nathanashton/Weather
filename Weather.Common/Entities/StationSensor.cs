@@ -8,5 +8,10 @@ namespace Weather.Common.Entities
         public double? Correction { get; set; }
         public string Notes { get; set; }
         public ISensor Sensor { get; set; }
+
+        public override string ToString()
+        {
+            return Sensor.ToString();
+        }
     }
 }

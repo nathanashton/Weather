@@ -4,12 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow"
-        Title="Station Map" Height="445.906" Width="548.635">
+        Title="Station Map"
+        Width="548.635"
+        Height="445.906"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow"
+        mc:Ignorable="d">
     <DockPanel Margin="5">
-        <Label DockPanel.Dock="Bottom" Content="Right click to set position" Background="White"
-               HorizontalContentAlignment="Center" />
-        <wpf:Map x:Name="myMap" CredentialsProvider="Au5zesLgPujoeeh3yHbAUF6cTGlDqCbJmOrvfiYzyP1WIhWl-D_tsQblTmt1FsUN"
-                 ZoomLevel="12" MouseRightButtonUp="Map_MouseRightButtonUp" />
+        <Label HorizontalContentAlignment="Center"
+               Background="White"
+               Content="Right click to set position"
+               DockPanel.Dock="Bottom" />
+        <wpf:Map x:Name="myMap"
+                 CredentialsProvider="Au5zesLgPujoeeh3yHbAUF6cTGlDqCbJmOrvfiYzyP1WIhWl-D_tsQblTmt1FsUN"
+                 MouseRightButtonUp="Map_MouseRightButtonUp"
+                 ZoomLevel="12" />
     </DockPanel>
 </Window>

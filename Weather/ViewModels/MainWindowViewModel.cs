@@ -19,6 +19,22 @@ namespace Weather.ViewModels
     {
         private bool _debugPanelVisible;
 
+
+        public bool InfoPanelOneVisible { get; set; }
+        public bool InfoPanelTwoVisible { get; set; }
+        public bool InfoPanelThreeVisible { get; set; }
+        public bool InfoPanelFourVisible { get; set; }
+
+
+        public bool SideBarVisible { get; set; }
+        public bool WeatherChartOneVisible { get; set; }
+        public bool WeatherChartTwoVisible { get; set; }
+
+
+
+
+
+
         public bool DebugPanelVisible
         {
             get { return _debugPanelVisible; }
@@ -39,6 +55,7 @@ namespace Weather.ViewModels
                 OnPropertyChanged(() => DebugPanelVisible);
             }
         }
+        public ISelectedStation SelectedStation { get; set; }
 
         public string Clock { get; set; }
         public MainWindow MainWindow { get; set; }
@@ -47,13 +64,16 @@ namespace Weather.ViewModels
         private WeatherStation _selectedStation;
         private readonly ILog _log;
 
-        public MainWindowViewModel(IStationCore stationCore, IImporter importer, ILog log)
+
+
+
+
+        public MainWindowViewModel(IStationCore stationCore, IImporter importer, ILog log, ISelectedStation selectedStation)
         {
+            SelectedStation = selectedStation;
             _log = log;
             _log.DebugPanelMessage += _log_DebugPanelMessage;
             _stationCore = stationCore;
-            Stations = new ObservableCollection<IWeatherStation>();
-            //   GetAllStations();
         }
 
         private void _log_DebugPanelMessage(object sender, Common.EventArgs.DebugMessageArgs e)
@@ -63,23 +83,8 @@ namespace Weather.ViewModels
             MainWindow.scroll.ScrollToBottom();
         }
 
-        public ObservableCollection<IWeatherStation> Stations { get; set; }
 
-        public WeatherStation SelectedStation
-        {
-            get { return _selectedStation; }
-            set
-            {
-                _selectedStation = value;
-                OnPropertyChanged(() => SelectedStation);
-                //  _stationCore.SelectedStation = value;
-            }
-        }
-
-        public ICommand ImportCommand
-        {
-            get { return new RelayCommand(Import, x => SelectedStation != null); }
-        }
+      
 
         public ICommand SensorsWindowCommand
         {

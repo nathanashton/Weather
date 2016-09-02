@@ -134,9 +134,16 @@
     <Compile Include="UserControls\ChartPanel.xaml.cs">
       <DependentUpon>ChartPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\InfoPanel.xaml.cs">
+      <DependentUpon>InfoPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MenuItemWithRadioButton.xaml.cs">
+      <DependentUpon>MenuItemWithRadioButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\StationSidePanel.xaml.cs">
       <DependentUpon>StationSidePanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ChartPanelViewModel.cs" />
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
     <Compile Include="ViewModels\OptionsWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorSelectWindowViewModel.cs" />
@@ -188,6 +195,14 @@
     <Page Include="UserControls\ChartPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\InfoPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MenuItemWithRadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\StationSidePanel.xaml">
       <SubType>Designer</SubType>

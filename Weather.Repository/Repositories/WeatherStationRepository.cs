@@ -147,7 +147,7 @@ namespace Weather.Repository.Repositories
                 SensorId = (int?)0,
                 Correction = (double?)0,
                 Notes = string.Empty,
-                StationSensorId = 0
+                StationSensorId = (int?)0
             }).ToList();
 
             var sql = @"SELECT
@@ -186,7 +186,7 @@ wss.[Id] as StationSensorId
                                         SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
                                         Correction = DbUtils.ParseDoubleNull(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
-                                        StationSensorId = Convert.ToInt32(reader["StationSensorId"])
+                                        StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
                                     });
                                 }
                             }
@@ -216,28 +216,31 @@ wss.[Id] as StationSensorId
                             Sensors = new List<IStationSensor>()
                         }).ToList();
 
-            var distinct = stations.GroupBy(x => x.WeatherStationId, (key, group) => group.First()).ToList();
+            var distinctStations = stations.GroupBy(x => x.WeatherStationId, (key, group) => group.First()).ToList();
 
-            foreach (var station in distinct)
+            foreach (var station in distinctStations)
             {
                 var stationSensors = sensors.Where(x => x.WeatherStationId == station.WeatherStationId).ToList();
                 if (stationSensors != null)
                 {
                     foreach (var sensor in stationSensors)
-                    {
-                        var n = new StationSensor
+                    { if (sensor.StationSensorId != null)
                         {
-                            Sensor = _sensorRepository.GetById((int)sensor.SensorId),
-                            Correction = sensor.Correction,
-                            Notes = sensor.Notes,
-                            StationSensorId = sensor.StationSensorId
-                        };
-                        station.Sensors.Add(n);
+                            var n = new StationSensor
+                            {
+                                Sensor = _sensorRepository.GetById((int)sensor.SensorId),
+                                Correction = sensor.Correction,
+                                Notes = sensor.Notes,
+                                StationSensorId = (int)sensor.StationSensorId
+                            };
+                            station.Sensors.Add(n);
+                        }
+                      
                     }
                 }
             }
 
-            return distinct.Cast<IWeatherStation>().ToList();
+            return distinctStations.Cast<IWeatherStation>().ToList();
         }
 
         public void RemoveSensorFromStation(IStationSensor sensor, IWeatherStation station)

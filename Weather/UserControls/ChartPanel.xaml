@@ -1,31 +1,97 @@
 ﻿<UserControl x:Class="Weather.UserControls.ChartPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:chart="http://schemas.syncfusion.com/wpf"
+             xmlns:converters="clr-namespace:Weather.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Weather.UserControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:NullCountConverter x:Key="NullCountConverter" />
+    </UserControl.Resources>
     <Border BorderBrush="DarkGray" BorderThickness="1">
-        <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Header}">
-            <DockPanel  Style="{DynamicResource HeaderBG}"  Height="25" DockPanel.Dock="Top">
-                <Label Content="Station Details"  Style="{DynamicResource HeaderLabel}"  />
-                <ComboBox VerticalContentAlignment="Center" FontSize="11" Foreground="White" Style="{DynamicResource ComboBoxTransparent}" DockPanel.Dock="Right" Width="100" HorizontalAlignment="Right" Margin="1">
-                    <ComboBox.Items>
-                        <ComboBoxItem Content="Temperature"/>
-                        <ComboBoxItem Content="Pressure"/>
-                        <ComboBoxItem Content="Humidity"/>
-                    </ComboBox.Items>
-                </ComboBox>
-                <ComboBox VerticalContentAlignment="Center" FontSize="11" Foreground="White" Style="{DynamicResource ComboBoxTransparent}" DockPanel.Dock="Right" Width="100" HorizontalAlignment="Right" Margin="1">
-                    <ComboBox.Items>
-                        <ComboBoxItem Content="Temperature"/>
-                        <ComboBoxItem Content="Pressure"/>
-                        <ComboBoxItem Content="Humidity"/>
-                    </ComboBox.Items>
-                </ComboBox>
+        <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Panel}">
+            <DockPanel Height="25"
+                       DockPanel.Dock="Top"
+                       Style="{DynamicResource Header}">
+                <Label Content="Station Details" Style="{DynamicResource HeaderLabel}" />
+                <ComboBox Name="cb2"
+                          Width="100"
+                          Margin="1"
+                          HorizontalAlignment="Right"
+                          VerticalContentAlignment="Center"
+                          DockPanel.Dock="Right"
+                          FontSize="11"
+                          IsEnabled="{Binding Station.WeatherStation,
+                                              Converter={StaticResource NullCountConverter}}"
+                          ItemsSource="{Binding Station.WeatherStation.Sensors.}"
+                          SelectedItem="{Binding SelectedStationSensorTwo,
+                                                 Mode=TwoWay}"
+                          Style="{DynamicResource ComboBoxTransparent}" />
+                <ComboBox Name="cb1"
+                          Width="100"
+                          Margin="1"
+                          HorizontalAlignment="Right"
+                          VerticalContentAlignment="Center"
+                          DockPanel.Dock="Right"
+                          FontSize="11"
+                          IsEnabled="{Binding Station.WeatherStation,
+                                              Converter={StaticResource NullCountConverter}}"
+                          ItemsSource="{Binding Station.WeatherStation.Sensors.}"
+                          SelectedItem="{Binding SelectedStationSensorOne,
+                                                 Mode=TwoWay}"
+                          Style="{DynamicResource ComboBoxTransparent}" />
             </DockPanel>
-            <Grid/>
+
+            <chart:SfChart Name="t"
+                           Margin="10"
+                           HorizontalAlignment="Stretch"
+                           FontSize="11">
+
+                <chart:SfChart.Legend>
+                    <chart:ChartLegend />
+                </chart:SfChart.Legend>
+
+                <chart:SfChart.PrimaryAxis>
+                    <chart:DateTimeCategoryAxis Name="r"
+                                                EnableAutoIntervalOnZooming="True"
+                                                FontSize="11"
+                                                Interval="1"
+                                                IntervalType="Days"
+                                                TickLineSize="5" />
+                </chart:SfChart.PrimaryAxis>
+
+                <chart:SfChart.SecondaryAxis>
+                    <chart:NumericalAxis FontSize="11" Header="{Binding SelectedStationSensorOne.Sensor.SensorType.}" />
+                </chart:SfChart.SecondaryAxis>
+
+                <chart:FastLineBitmapSeries Name="Temperature"
+                                            FontSize="11"
+                                            Interior="Blue"
+                                            Label="{Binding SelectedStationSensorOne.Sensor.SensorType.Name}"
+                                            StrokeThickness="1" />
+
+                <chart:FastLineBitmapSeries FontSize="11"
+                                            Interior="Green"
+                                            Label="{Binding SelectedStationSensorTwo.Sensor.SensorType.Name}"
+                                            StrokeThickness="1">
+                    <chart:FastLineBitmapSeries.YAxis>
+                        <chart:NumericalAxis FontSize="11"
+                                             Header="{Binding SelectedStationSensorTwo.Sensor.SensorType.}"
+                                             OpposedPosition="True" />
+                    </chart:FastLineBitmapSeries.YAxis>
+                </chart:FastLineBitmapSeries>
+
+                <chart:SfChart.Behaviors>
+                    <chart:ChartZoomPanBehavior />
+                </chart:SfChart.Behaviors>
+            </chart:SfChart>
+
+
+
         </DockPanel>
     </Border>
 </UserControl>

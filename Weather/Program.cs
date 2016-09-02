@@ -49,6 +49,7 @@ namespace Weather
 
             container.RegisterType<StationPanelViewModel>();
             container.RegisterType<StationSidePanel>();
+            container.RegisterType<ChartPanelViewModel>();
 
 
             container.RegisterType<StationMapWindow>();

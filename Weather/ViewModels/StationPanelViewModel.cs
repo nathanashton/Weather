@@ -1,9 +1,7 @@
 ﻿using PropertyChanged;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 
@@ -12,26 +10,36 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class StationPanelViewModel
     {
-        public IWeatherStation Station { get; set;}
-        public string Sensors
+        public ObservableCollection<IWeatherStation> Stations { get; set; }
+        public ISelectedStation SelectedStation { get; set; }
+
+        private IStationCore _stationCore;
+
+        public StationPanelViewModel(IStationCore stationCore, ISelectedStation selectedStation)
         {
-            get { return GetSensors(); }
+            SelectedStation = selectedStation;
+            _stationCore = stationCore;
+            SelectedStation.StationsChanged += SelectedStation_StationsChanged;
         }
 
-        public StationPanelViewModel(IStationCore stationCore)
+        private void SelectedStation_StationsChanged(object sender, EventArgs e)
         {
-            Station = stationCore.GetAllStations().First();
-        }
-
-        private string GetSensors()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var stationsensor in Station.Sensors)
+            var id = SelectedStation.WeatherStation.WeatherStationId;
+            GetAllStations();
+            var s = Stations.FirstOrDefault(x => x.WeatherStationId == id);
+            if (s != null)
             {
-                sb.Append(stationsensor.ToString());
-                sb.Append(Environment.NewLine);
+                SelectedStation.WeatherStation = s;
             }
-            return sb.ToString();
+            else
+            {
+                SelectedStation.WeatherStation = null;
+            }
+        }
+
+        public void GetAllStations()
+        {
+            Stations = new ObservableCollection<IWeatherStation>(_stationCore.GetAllStations());
         }
     }
 }

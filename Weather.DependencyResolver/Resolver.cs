@@ -12,7 +12,8 @@ namespace Weather.DependencyResolver
     public class Resolver
     {
         public static ILog log = new Log();
-       public static ISettings settings = new Settings(log);
+        public static ISettings settings = new Settings(log);
+        public static ISelectedStation test = new SelectedStation();
 
         public IUnityContainer Bootstrap()
         {
@@ -20,8 +21,8 @@ namespace Weather.DependencyResolver
 
            //container.RegisterType<ISettings, Settings>(new ContainerControlledLifetimeManager());
             container.RegisterInstance<ISettings>(settings);
-
             container.RegisterInstance<ILog>(log);
+            container.RegisterInstance<ISelectedStation>(test);
 
             container.RegisterType<IStationCore, StationCore>();
             container.RegisterType<ISensorCore, SensorCore>();
