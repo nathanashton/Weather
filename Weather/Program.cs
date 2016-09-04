@@ -6,6 +6,7 @@ using System.Windows;
 using Weather.Common.Interfaces;
 using Weather.DependencyResolver;
 using Weather.UserControls;
+using Weather.UserControls.Charts;
 using Weather.ViewModels;
 using Weather.Views;
 
@@ -49,8 +50,13 @@ namespace Weather
 
             container.RegisterType<StationPanelViewModel>();
             container.RegisterType<StationSidePanel>();
-            container.RegisterType<ChartPanelViewModel>();
+           container.RegisterType<Container>();
+            container.RegisterType<ContainerViewModel>();
 
+
+            container.RegisterType<Test>();
+
+            container.RegisterType<TestViewModel>();
 
             container.RegisterType<StationMapWindow>();
 

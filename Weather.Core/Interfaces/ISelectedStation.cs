@@ -12,6 +12,9 @@ namespace Weather.Core.Interfaces
         IWeatherStation WeatherStation { get; set; }
 
         event EventHandler StationsChanged;
+        event EventHandler SelectedStationsChanged;
+
         void OnStationsChanged();
+       void OnSelectedStationChanged();
     }
 }

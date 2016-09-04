@@ -12,17 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Weather.ViewModels;
+using Weather.DependencyResolver;
+using Microsoft.Practices.Unity;
 
 namespace Weather.UserControls
 {
     /// <summary>
     /// Interaction logic for InfoPanel.xaml
     /// </summary>
-    public partial class InfoPanel : UserControl
+    public partial class Container : UserControl
     {
-        public InfoPanel()
+
+        private ContainerViewModel _viewModel;
+
+        public Container()
         {
             InitializeComponent();
+            var container = new Resolver().Bootstrap();
+            _viewModel = container.Resolve<ContainerViewModel>();
+            DataContext = _viewModel;
         }
     }
 }

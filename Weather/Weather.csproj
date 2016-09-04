@@ -76,9 +76,9 @@
       <HintPath>..\packages\PropertyChanged.Fody.1.50.4\lib\dotnet\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Syncfusion.SfChart.WPF, Version=14.1451.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
-    <Reference Include="Syncfusion.Shared.WPF, Version=14.1451.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
-    <Reference Include="Syncfusion.Tools.WPF, Version=14.1451.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfChart.WPF, Version=14.2451.0.32, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Shared.WPF, Version=14.2451.0.32, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Tools.WPF, Version=14.2451.0.32, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -131,11 +131,13 @@
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\SunTimes.cs" />
     <Compile Include="ScreenCapture.cs" />
-    <Compile Include="UserControls\ChartPanel.xaml.cs">
-      <DependentUpon>ChartPanel.xaml</DependentUpon>
+    <Compile Include="UserControls\Charts\GoldDeman.cs" />
+    <Compile Include="UserControls\Charts\Test.xaml.cs">
+      <DependentUpon>Test.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\InfoPanel.xaml.cs">
-      <DependentUpon>InfoPanel.xaml</DependentUpon>
+    <Compile Include="UserControls\Charts\TestViewModel.cs" />
+    <Compile Include="UserControls\Container.xaml.cs">
+      <DependentUpon>Container.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MenuItemWithRadioButton.xaml.cs">
       <DependentUpon>MenuItemWithRadioButton.xaml</DependentUpon>
@@ -143,7 +145,7 @@
     <Compile Include="UserControls\StationSidePanel.xaml.cs">
       <DependentUpon>StationSidePanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ChartPanelViewModel.cs" />
+    <Compile Include="ViewModels\ContainerViewModel.cs" />
     <Compile Include="ViewModels\ImportWindowViewModel.cs" />
     <Compile Include="ViewModels\OptionsWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorSelectWindowViewModel.cs" />
@@ -192,11 +194,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Page Include="UserControls\ChartPanel.xaml">
+    <Page Include="UserControls\Charts\Test.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\InfoPanel.xaml">
+    <Page Include="UserControls\Container.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

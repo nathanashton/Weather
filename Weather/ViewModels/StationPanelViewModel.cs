@@ -20,6 +20,7 @@ namespace Weather.ViewModels
             SelectedStation = selectedStation;
             _stationCore = stationCore;
             SelectedStation.StationsChanged += SelectedStation_StationsChanged;
+            SelectedStation.SelectedStationsChanged += SelectedStation_SelectedStationsChanged;
         }
 
         private void SelectedStation_StationsChanged(object sender, EventArgs e)
@@ -36,6 +37,32 @@ namespace Weather.ViewModels
                 SelectedStation.WeatherStation = null;
             }
         }
+
+        private void SelectedStation_SelectedStationsChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void T()
+        {
+            SelectedStation.OnSelectedStationChanged();
+        }
+
+
+        //private void SelectedStation_StationsChanged(object sender, EventArgs e)
+        //{
+        //    var id = SelectedStation.WeatherStation.WeatherStationId;
+        //    GetAllStations();
+        //    var s = Stations.FirstOrDefault(x => x.WeatherStationId == id);
+        //    if (s != null)
+        //    {
+        //        SelectedStation.WeatherStation = s;
+        //    }
+        //    else
+        //    {
+        //        SelectedStation.WeatherStation = null;
+        //    }
+        //}
 
         public void GetAllStations()
         {

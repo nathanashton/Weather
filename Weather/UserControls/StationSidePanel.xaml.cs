@@ -41,7 +41,8 @@ namespace Weather.UserControls
             _viewModel.GetAllStations();
         }
 
-
-
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
     }
 }

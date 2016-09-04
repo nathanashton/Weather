@@ -101,7 +101,6 @@
         <DockPanel Height="30"
                    DockPanel.Dock="Top"
                    Style="{DynamicResource Header}">
-            <Label Content="{Binding WeatherChartOneVisible}" />
         </DockPanel>
 
         <Border Height="25"
@@ -143,77 +142,46 @@
             <Grid Margin="5" Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition Height="0.5*" />
                 </Grid.RowDefinitions>
 
-                <DockPanel Grid.Row="0" LastChildFill="True">
 
-                    <!--<Grid Grid.Row="0" Margin="0,0,0,5" >
+                <Grid Grid.Row="0" Margin="0,0,0,5" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*" />
                         <ColumnDefinition Width="0.25*" />
                         <ColumnDefinition Width="0.25*" />
                         <ColumnDefinition Width="0.25*" />
-                    </Grid.ColumnDefinitions>-->
+                    </Grid.ColumnDefinitions>
 
 
-                    <Grid Grid.Column="0"
-                          Height="300"
-                          HorizontalAlignment="Stretch"
-                          Visibility="{Binding InfoPanelOneVisible,
-                                               Converter={StaticResource BoolVisConverter}}">
-                        <userControls:InfoPanel />
-                    </Grid>
+                    <userControls:Container Grid.Column="0" Height="300" Margin="0,0,5,0"/>
 
-                    <Grid Grid.Column="1"
-                          Height="300"
-                          HorizontalAlignment="Stretch"
-                          Visibility="{Binding InfoPanelTwoVisible,
-                                               Converter={StaticResource BoolVisConverter}}">
-                        <userControls:InfoPanel />
-                    </Grid>
+                    <userControls:Container Grid.Column="1" Height="300" Margin="0,0,5,0" />
 
-                    <Grid Grid.Column="2"
-                          Height="300"
-                          HorizontalAlignment="Stretch"
-                          Visibility="{Binding InfoPanelThreeVisible,
-                                               Converter={StaticResource BoolVisConverter}}">
-                        <userControls:InfoPanel />
-                    </Grid>
-                    <Grid Grid.Column="3"
-                          Height="300"
-                          HorizontalAlignment="Stretch"
-                          Visibility="{Binding InfoPanelFourVisible,
-                                               Converter={StaticResource BoolVisConverter}}">
-                        <userControls:InfoPanel />
-                    </Grid>
+                    <userControls:Container Grid.Column="2" Height="300"  Margin="0,0,5,0"  />
 
-                    <!--</Grid>-->
-                </DockPanel>
+                    <userControls:Container Grid.Column="3" Height="300" />
 
-                <Grid Grid.Row="1" Visibility="{Binding Path=WeatherChartOneVisible, Converter={StaticResource BoolVisConverter}}">
-                    <userControls:ChartPanel />
                 </Grid>
+                <!--</Grid>-->
 
+                <userControls:Container Grid.Row="1" Margin="0,0,0,5"/>
 
-                <Grid Grid.Row="2" Visibility="{Binding Path=WeatherChartTwoVisible, Converter={StaticResource BoolVisConverter}}">
-                    <userControls:ChartPanel />
-                </Grid>
+                <userControls:Container Grid.Row="2"/>
+
 
             </Grid>
 
             <Grid Grid.Column="1"
                   Width="200"
-                  Margin="5"
+                  Margin="0,5,5,5"
                   Visibility="{Binding Path=SideBarVisible,
                                        Converter={StaticResource BoolVisConverter}}">
                 <userControls:StationSidePanel />
 
             </Grid>
-
-            <!--<DataGrid Grid.Row="0" VerticalAlignment="Stretch" EnableColumnVirtualization="True" EnableRowVirtualization="True" Name="dg" CanUserAddRows="False"
-                  RowHeaderWidth="0" IsReadOnly="True" AutoGenerateColumns="False" />-->
 
             <DockPanel Name="dpanel"
                        Grid.Row="1"

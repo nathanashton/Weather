@@ -19,20 +19,21 @@ namespace Weather.Common.Entities
         public int WeatherStationId { get; set; }
         public bool IsValid => Validate();
 
+
         public string this[string columnName]
         {
             get
             {
                 if (columnName == "Manufacturer")
                 {
-                    if (IsNullOrEmpty(Manufacturer))
+                    if (string.IsNullOrEmpty(Manufacturer))
                     {
                         return "Manufacturer is required";
                     }
                 }
                 if (columnName == "Model")
                 {
-                    if (IsNullOrEmpty(Model))
+                    if (string.IsNullOrEmpty(Model))
                     {
                         return "Model is required";
                     }
@@ -53,7 +54,7 @@ namespace Weather.Common.Entities
 
         private bool Validate()
         {
-            var f = !IsNullOrEmpty(Manufacturer) && !IsNullOrEmpty(Model);
+            var f = !string.IsNullOrEmpty(Manufacturer) && !string.IsNullOrEmpty(Model);
             return f;
         }
 

@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Weather.UserControls.Container"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:chart="http://schemas.syncfusion.com/wpf"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Weather.UserControls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Border BorderBrush="DarkGray" BorderThickness="1">
+        <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Panel}">
+            <DockPanel Height="25"
+                       DockPanel.Dock="Top"
+                       Style="{DynamicResource Header}">
+                <Label Content="{Binding Content.ViewModel.Header}" Style="{DynamicResource HeaderLabel}" />
+                <ComboBox DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{DynamicResource ComboBoxTransparent}" Margin="3" Width="180" SelectedItem="{Binding Selected}">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="Average Wind Direction" Tag="Average Wind Direction"/>
+                        <ComboBoxItem Content="Wind" Tag="Wind"/>
+                    </ComboBox.Items>
+                </ComboBox>
+            </DockPanel>
+            <ContentControl BorderThickness="0" Content="{Binding Content}"/>
+        </DockPanel>
+    </Border>
+</UserControl>

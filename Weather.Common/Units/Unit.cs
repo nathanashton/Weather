@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using static System.String;
 
 namespace Weather.Common.Units
 {
@@ -24,14 +23,14 @@ namespace Weather.Common.Units
             {
                 if (columnName == "DisplayName")
                 {
-                    if (IsNullOrEmpty(DisplayName))
+                    if (string.IsNullOrEmpty(DisplayName))
                     {
                         return "Name is required";
                     }
                 }
                 if (columnName == "DisplayUnit")
                 {
-                    if (IsNullOrEmpty(DisplayUnit))
+                    if (string.IsNullOrEmpty(DisplayUnit))
                     {
                         return "Unit is required";
                     }
@@ -47,7 +46,7 @@ namespace Weather.Common.Units
 
         private bool Validate()
         {
-            var f = !IsNullOrEmpty(DisplayName) && !IsNullOrEmpty(DisplayUnit) && UnitType != null;
+            var f = !string.IsNullOrEmpty(DisplayName) && !string.IsNullOrEmpty(DisplayUnit) && UnitType != null;
             return f;
         }
     }

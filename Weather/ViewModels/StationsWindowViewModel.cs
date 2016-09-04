@@ -24,7 +24,7 @@ namespace Weather.ViewModels
         public bool IsDirty { get; set; }
         public bool Adding { get; set; }
         public IStationSensor SelectedSensor { get; set; }
-        private ISelectedStation _selectedStation { get; set; }
+        public ISelectedStation _selectedStation { get; set; }
 
         public StationsWindowViewModel(IStationCore stationCore, ISelectedStation selectedStation)
         {
@@ -103,7 +103,6 @@ namespace Weather.ViewModels
             Adding = false;
             GetAllStations();
             IsDirty = false;
-            _selectedStation.OnStationsChanged();
         }
 
         private void DeleteSensor(object obj)
@@ -232,8 +231,6 @@ namespace Weather.ViewModels
             TempSelectedWeatherStation = null;
             CheckDirty();
             GetAllStations();
-            _selectedStation.OnStationsChanged();
-
         }
 
         public void CheckDirty()
