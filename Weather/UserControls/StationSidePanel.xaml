@@ -26,7 +26,8 @@
                       FontSize="14"
                       FontWeight="Bold"
                       ItemsSource="{Binding Stations}"
-                      SelectedItem="{Binding SelectedStation.WeatherStation, Mode=TwoWay}" 
+                      SelectedItem="{Binding SelectedStation.WeatherStation,
+                                             Mode=TwoWay}"
                       Style="{DynamicResource ComboBoxTransparent}" />
 
             <Label Content="{Binding SelectedStation.WeatherStation.Latitude}"

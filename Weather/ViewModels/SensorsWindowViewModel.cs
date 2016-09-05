@@ -26,9 +26,11 @@ namespace Weather.ViewModels
         public bool Adding { get; set; }
         public bool IsDirty { get; set; }
         private IStationCore _stationCore;
+        public ISelectedStation SelectedStation;
 
-        public SensorsWindowViewModel(ISensorCore sensorCore, ISensorTypeCore sensorTypeCore, IStationCore stationCore)
+        public SensorsWindowViewModel(ISensorCore sensorCore, ISensorTypeCore sensorTypeCore, IStationCore stationCore, ISelectedStation selectedStation)
         {
+            SelectedStation = selectedStation;
             _sensorCore = sensorCore;
             _sensorTypeCore = sensorTypeCore;
             _stationCore = stationCore;

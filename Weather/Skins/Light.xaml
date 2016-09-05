@@ -74,7 +74,7 @@
 
                         <ContentPresenter Name="ContentSite"
                                           Margin="5, 3, 23, 3"
-                                          HorizontalAlignment="Left"
+                                          HorizontalAlignment="Right"
                                           VerticalAlignment="Center"
                                           Content="{TemplateBinding ComboBox.SelectionBoxItem}"
                                           ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
@@ -82,7 +82,7 @@
                                           IsHitTestVisible="False" />
                         <TextBox Name="PART_EditableTextBox"
                                  Margin="3, 3, 23, 3"
-                                 HorizontalAlignment="Left"
+                                 HorizontalAlignment="Right"
                                  VerticalAlignment="Center"
                                  Background="Transparent"
                                  Focusable="True"
@@ -226,5 +226,18 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+
+    <Style x:Key="radio"
+           BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="RadioButton">
+        <Setter Property="Background" Value="Transparent" />
+
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

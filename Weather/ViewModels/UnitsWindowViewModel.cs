@@ -27,10 +27,12 @@ namespace Weather.ViewModels
         public Unit Unit { get; set; }
         public bool IsDirty { get; set; }
         private ISensorTypeCore _sensorTypeCore;
+        public ISelectedStation SelectedStation;
 
-        public UnitsWindowViewModel(IUnitCore unitCore, ILog log, ISensorTypeCore sensorTypeCore)
+        public UnitsWindowViewModel(IUnitCore unitCore, ILog log, ISensorTypeCore sensorTypeCore, ISelectedStation selectedStation)
         {
             _log = log;
+            SelectedStation = selectedStation;
             _sensorTypeCore = sensorTypeCore;
             _unitCore = unitCore;
             UnitTypes = new ObservableCollection<UnitType>(Common.Units.UnitTypes.UnitsList);

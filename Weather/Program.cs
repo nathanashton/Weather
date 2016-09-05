@@ -50,13 +50,16 @@ namespace Weather
 
             container.RegisterType<StationPanelViewModel>();
             container.RegisterType<StationSidePanel>();
-           container.RegisterType<Container>();
+            container.RegisterType<Container>();
             container.RegisterType<ContainerViewModel>();
 
 
-            container.RegisterType<Test>();
+            // Charts
+            container.RegisterType<AverageWindDirection>();
+            container.RegisterType<AverageWindDirectionViewModel>();
 
-            container.RegisterType<TestViewModel>();
+            container.RegisterType<MinMax>();
+            container.RegisterType<MinMaxViewModel>();
 
             container.RegisterType<StationMapWindow>();
 

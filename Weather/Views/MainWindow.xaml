@@ -76,24 +76,7 @@
 
 
 
-                <MenuItem Header="Info 1"
-                          IsCheckable="True"
-                          IsChecked="{Binding InfoPanelOneVisible,
-                                              Mode=TwoWay}" />
 
-                <MenuItem Header="Info 2"
-                          IsCheckable="True"
-                          IsChecked="{Binding InfoPanelTwoVisible,
-                                              Mode=TwoWay}" />
-                <MenuItem Header="Info 3"
-                          IsCheckable="True"
-                          IsChecked="{Binding InfoPanelThreeVisible,
-                                              Mode=TwoWay}" />
-
-                <MenuItem Header="Info 4"
-                          IsCheckable="True"
-                          IsChecked="{Binding InfoPanelFourVisible,
-                                              Mode=TwoWay}" />
 
             </MenuItem>
         </Menu>
@@ -101,6 +84,153 @@
         <DockPanel Height="30"
                    DockPanel.Dock="Top"
                    Style="{DynamicResource Header}">
+            <StackPanel Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+
+                <Label Margin="0,0,10,0"
+                       VerticalAlignment="Center"
+                       Content="{Binding Path=SelectedStation.StartDate}"
+                       ContentStringFormat="{}{0:dd MMM yyyy}"
+                       Style="{DynamicResource HeaderLabel}" />
+                <Label Margin="0,0,10,0"
+                       VerticalAlignment="Center"
+                       Content="{Binding Path=SelectedStation.EndDate}"
+                       ContentStringFormat="{}{0:dd MMM yyyy}"
+                       Style="{DynamicResource HeaderLabel}" />
+
+                <RadioButton Margin="0,0,5,0"
+                             VerticalAlignment="Center"
+                             BorderThickness="0"
+                             Command="{Binding TimeSpanCommandDay}"
+                             GroupName="TimeSpan"
+                             Style="{DynamicResource radio}">
+                    <Image Margin="5"
+                           DockPanel.Dock="Left"
+                           Source="pack://application:,,,/Resources/Icons/d_52px.png">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+
+                </RadioButton>
+                <RadioButton Margin="0,0,5,0"
+                             VerticalAlignment="Center"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Command="{Binding TimeSpanCommandWeek}"
+                             GroupName="TimeSpan"
+                             IsChecked="True"
+                             Style="{StaticResource {x:Type ToggleButton}}">
+                    <DockPanel>
+                        <Image Margin="5"
+                               DockPanel.Dock="Left"
+                               Source="pack://application:,,,/Resources/Icons/w_52px.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.3" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </DockPanel>
+                </RadioButton>
+                <RadioButton Margin="0,0,5,0"
+                             VerticalAlignment="Center"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Command="{Binding TimeSpanCommandMonth}"
+                             GroupName="TimeSpan"
+                             Style="{StaticResource {x:Type ToggleButton}}">
+                    <DockPanel>
+                        <Image Margin="5"
+                               DockPanel.Dock="Left"
+                               Source="pack://application:,,,/Resources/Icons/m_52px.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.3" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </DockPanel>
+                </RadioButton>
+                <RadioButton VerticalAlignment="Center"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Command="{Binding TimeSpanCommandYear}"
+                             GroupName="TimeSpan"
+                             Style="{StaticResource {x:Type ToggleButton}}">
+                    <DockPanel>
+                        <Image Margin="5"
+                               DockPanel.Dock="Left"
+                               Source="pack://application:,,,/Resources/Icons/y_52px.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.3" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </DockPanel>
+                </RadioButton>
+
+
+
+
+                <Button Margin="5,0,5,0"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="Button_Click_8">
+                    <Image Margin="5"
+                           DockPanel.Dock="Left"
+                           Source="pack://application:,,,/Resources/Icons/rewind_48px.png">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Click="Button_Click_9">
+                    <Image Margin="5"
+                           DockPanel.Dock="Left"
+                           Source="pack://application:,,,/Resources/Icons/fast_forward_48px.png">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+
+            </StackPanel>
         </DockPanel>
 
         <Border Height="25"
@@ -147,7 +277,7 @@
                 </Grid.RowDefinitions>
 
 
-                <Grid Grid.Row="0" Margin="0,0,0,5" >
+                <Grid Grid.Row="0" Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*" />
                         <ColumnDefinition Width="0.25*" />
@@ -156,20 +286,26 @@
                     </Grid.ColumnDefinitions>
 
 
-                    <userControls:Container Grid.Column="0" Height="300" Margin="0,0,5,0"/>
+                    <userControls:Container Grid.Column="0"
+                                            Height="300"
+                                            Margin="0,0,5,0" />
 
-                    <userControls:Container Grid.Column="1" Height="300" Margin="0,0,5,0" />
+                    <userControls:Container Grid.Column="1"
+                                            Height="300"
+                                            Margin="0,0,5,0" />
 
-                    <userControls:Container Grid.Column="2" Height="300"  Margin="0,0,5,0"  />
+                    <userControls:Container Grid.Column="2"
+                                            Height="300"
+                                            Margin="0,0,5,0" />
 
                     <userControls:Container Grid.Column="3" Height="300" />
 
                 </Grid>
                 <!--</Grid>-->
 
-                <userControls:Container Grid.Row="1" Margin="0,0,0,5"/>
+                <userControls:Container Grid.Row="1" Margin="0,0,0,5" />
 
-                <userControls:Container Grid.Row="2"/>
+                <userControls:Container Grid.Row="2" />
 
 
             </Grid>

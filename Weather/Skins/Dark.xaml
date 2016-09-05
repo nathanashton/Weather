@@ -7,6 +7,7 @@
 
 
 
+
     <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#B3ADAB" />
     <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#fff" />
     <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#888" />
@@ -236,4 +237,21 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+
+    <Style x:Key="radio"
+           BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="RadioButton">
+        <Setter Property="Background" Value="Transparent" />
+
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+
 </ResourceDictionary>

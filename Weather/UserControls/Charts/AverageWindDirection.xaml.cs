@@ -12,18 +12,23 @@ namespace Weather.UserControls.Charts
     /// Interaction logic for Test.xaml
     /// </summary>
     [ImplementPropertyChanged]
-    public partial class Test : UserControl
+    public partial class AverageWindDirection : UserControl
     {
 
-        public TestViewModel ViewModel { get; set; }
+        public AverageWindDirectionViewModel ViewModel { get; set; }
 
-        public Test()
+        public AverageWindDirection()
         {
             InitializeComponent();
             var container = new Resolver().Bootstrap();
-            ViewModel = container.Resolve<TestViewModel>();
+            ViewModel = container.Resolve<AverageWindDirectionViewModel>();
             DataContext = ViewModel;
+            Loaded += Test_Loaded;
+        }
 
+        private void Test_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GetCompatibleUnits();
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

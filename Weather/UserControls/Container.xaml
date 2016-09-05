@@ -2,26 +2,43 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:chart="http://schemas.syncfusion.com/wpf"
+             xmlns:converters="clr-namespace:Weather.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Weather.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <Border BorderBrush="DarkGray" BorderThickness="1">
+    <UserControl.Resources>
+        <converters:NullBoolConverter x:Key="NullCount" />
+    </UserControl.Resources>
+    <Border BorderBrush="DarkGray"
+            BorderThickness="1"
+            IsEnabled="{Binding SelectedStation.WeatherStation,
+                                Converter={StaticResource NullCount}}">
         <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Panel}">
-            <DockPanel Height="25"
+            <DockPanel Height="28"
                        DockPanel.Dock="Top"
                        Style="{DynamicResource Header}">
                 <Label Content="{Binding Content.ViewModel.Header}" Style="{DynamicResource HeaderLabel}" />
-                <ComboBox DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{DynamicResource ComboBoxTransparent}" Margin="3" Width="180" SelectedItem="{Binding Selected}">
+                <ComboBox Width="180"
+                          Margin="3"
+                          HorizontalAlignment="Right"
+                          DockPanel.Dock="Right"
+                          IsEditable="False"
+                          SelectedItem="{Binding Selected}"
+                          Style="{DynamicResource ComboBoxTransparent}">
                     <ComboBox.Items>
-                        <ComboBoxItem Content="Average Wind Direction" Tag="Average Wind Direction"/>
-                        <ComboBoxItem Content="Wind" Tag="Wind"/>
+                        <ComboBoxItem HorizontalContentAlignment="Right"
+                                      Content="Average Wind Direction"
+                                      Tag="Average Wind Direction" />
+                        <ComboBoxItem HorizontalContentAlignment="Right"
+                                      Content="Min / Max"
+                                      Tag="MinMax" />
                     </ComboBox.Items>
                 </ComboBox>
             </DockPanel>
-            <ContentControl BorderThickness="0" Content="{Binding Content}"/>
+            <ContentControl BorderThickness="0" Content="{Binding Content}" />
         </DockPanel>
     </Border>
 </UserControl>

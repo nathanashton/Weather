@@ -22,9 +22,11 @@ namespace Weather.ViewModels
         private readonly ISensorTypeCore _sensorTypeCore;
         private readonly IUnitCore _unitCore;
         private ISensorCore _sensorCore;
+        public ISelectedStation SelectedStation;
 
-        public SensorTypesViewModel(ISensorTypeCore sensorTypeCore, ILog log, IUnitCore unitCore, ISensorCore sensorCore)
+        public SensorTypesViewModel(ISensorTypeCore sensorTypeCore, ILog log, IUnitCore unitCore, ISensorCore sensorCore, ISelectedStation selectedStation)
         {
+            SelectedStation = selectedStation;
             _log = log;
             _sensorCore = sensorCore;
             _unitCore = unitCore;

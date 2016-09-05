@@ -14,8 +14,13 @@ namespace Weather.Common.Units
                 new UnitType {Name = "Temperature"},
                 new UnitType {Name = "Pressure"},
                 new UnitType {Name = "Speed"},
+                new UnitType {Name = "Wind Direction"},
                 new UnitType {Name = "Precipitation"},
-                new UnitType {Name = "Precipitation Rate"}
+                new UnitType {Name = "Precipitation Rate"},
+                new UnitType {Name = "Solar Radiation"},
+                new UnitType {Name = "UV Index"},
+                new UnitType {Name = "Leaf Wetness"},
+
             };
         }
     }

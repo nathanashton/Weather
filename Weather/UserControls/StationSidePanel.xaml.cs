@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Practices.Unity;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Weather.DependencyResolver;
 using Weather.ViewModels;
-using Microsoft.Practices.Unity;
-
 
 namespace Weather.UserControls
 {
@@ -25,7 +12,6 @@ namespace Weather.UserControls
     public partial class StationSidePanel : UserControl
     {
         private StationPanelViewModel _viewModel;
-
 
         public StationSidePanel()
         {
@@ -38,7 +24,7 @@ namespace Weather.UserControls
 
         private void StationSidePanel_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel.GetAllStations();
+ _viewModel.GetAllStations();
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

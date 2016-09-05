@@ -22,6 +22,12 @@ namespace Weather.Views
             _viewModel.Window = this;
             DataContext = _viewModel;
             Loaded += UnitsWindow_Loaded;
+            Closing += UnitsWindow_Closing;
+        }
+
+        private void UnitsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _viewModel.SelectedStation.OnStationsChanged();
         }
 
         private void UnitsWindow_Loaded(object sender, RoutedEventArgs e)

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Threading;
-using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.ViewModels;
 
@@ -53,39 +51,34 @@ namespace Weather.Views
             CreateDataGrid();
         }
 
-        private void MenuItemWithRadioButtons_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Button_Click_8(object sender, RoutedEventArgs e)
         {
-            MenuItem mi = sender as MenuItem;
-            if (mi != null)
-            {
-                RadioButton rb = mi.Icon as RadioButton;
-                if (rb != null)
-                {
-                    rb.IsChecked = true;
-                }
-            }
+            _viewModel.SelectedStation.BackOnePeriod();
         }
 
-        private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click_9(object sender, RoutedEventArgs e)
         {
-            //var weatherStation = ((ComboBox)e.Source).SelectedItem as WeatherStation;
-            //if (weatherStation == null) return;
-            //_viewModel.SelectedStation = weatherStation;
-            //CreateDataGrid();
+            _viewModel.SelectedStation.ForwardOnePeriod();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
+            _viewModel.SelectedStation.TimeSpanDay = true;
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
         {
-            Program.ChangeTheme(new Uri("/Skins/Dark.xaml", UriKind.Relative));
+            _viewModel.SelectedStation.TimeSpanWeek = true;
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void RadioButton_Checked_2(object sender, RoutedEventArgs e)
         {
-            Program.ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
+            _viewModel.SelectedStation.TimeSpanMonth = true;
+        }
+
+        private void RadioButton_Checked_3(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectedStation.TimeSpanYear = true;
         }
     }
 }

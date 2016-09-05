@@ -25,6 +25,11 @@ namespace Weather.ViewModels
 
         private void SelectedStation_StationsChanged(object sender, EventArgs e)
         {
+            if (SelectedStation.WeatherStation == null)
+            {
+                GetAllStations();
+                return;
+            }
             var id = SelectedStation.WeatherStation.WeatherStationId;
             GetAllStations();
             var s = Stations.FirstOrDefault(x => x.WeatherStationId == id);
@@ -49,20 +54,6 @@ namespace Weather.ViewModels
         }
 
 
-        //private void SelectedStation_StationsChanged(object sender, EventArgs e)
-        //{
-        //    var id = SelectedStation.WeatherStation.WeatherStationId;
-        //    GetAllStations();
-        //    var s = Stations.FirstOrDefault(x => x.WeatherStationId == id);
-        //    if (s != null)
-        //    {
-        //        SelectedStation.WeatherStation = s;
-        //    }
-        //    else
-        //    {
-        //        SelectedStation.WeatherStation = null;
-        //    }
-        //}
 
         public void GetAllStations()
         {

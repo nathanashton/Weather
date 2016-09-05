@@ -76,9 +76,18 @@
       <HintPath>..\packages\PropertyChanged.Fody.1.50.4\lib\dotnet\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Syncfusion.SfChart.WPF, Version=14.2451.0.32, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
-    <Reference Include="Syncfusion.Shared.WPF, Version=14.2451.0.32, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
-    <Reference Include="Syncfusion.Tools.WPF, Version=14.2451.0.32, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfChart.WPF, Version=14.1460.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Syncfusion.SfChart.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.WPF, Version=14.1460.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Syncfusion.Shared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Tools.WPF, Version=14.1460.0.41, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Syncfusion.Tools.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -131,11 +140,14 @@
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\SunTimes.cs" />
     <Compile Include="ScreenCapture.cs" />
-    <Compile Include="UserControls\Charts\GoldDeman.cs" />
-    <Compile Include="UserControls\Charts\Test.xaml.cs">
-      <DependentUpon>Test.xaml</DependentUpon>
+    <Compile Include="UserControls\Charts\AverageWindDirection.xaml.cs">
+      <DependentUpon>AverageWindDirection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Charts\TestViewModel.cs" />
+    <Compile Include="UserControls\Charts\AverageWindDirectionViewModel.cs" />
+    <Compile Include="UserControls\Charts\MinMax.xaml.cs">
+      <DependentUpon>MinMax.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Charts\MinMaxViewModel.cs" />
     <Compile Include="UserControls\Container.xaml.cs">
       <DependentUpon>Container.xaml</DependentUpon>
     </Compile>
@@ -194,7 +206,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Page Include="UserControls\Charts\Test.xaml">
+    <Page Include="UserControls\Charts\AverageWindDirection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Charts\MinMax.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -335,6 +351,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\cross_white_52px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\d_52px.png" />
+    <Resource Include="Resources\Icons\m_52px.png" />
+    <Resource Include="Resources\Icons\w_52px.png" />
+    <Resource Include="Resources\Icons\y_52px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\fast_forward_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\rewind_48px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
