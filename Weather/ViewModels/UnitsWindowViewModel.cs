@@ -1,8 +1,8 @@
-﻿using PropertyChanged;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PropertyChanged;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using Weather.Core.Interfaces;
@@ -15,7 +15,10 @@ namespace Weather.ViewModels
     public class UnitsWindowViewModel
     {
         private readonly ILog _log;
+        private readonly ISensorTypeCore _sensorTypeCore;
         private readonly IUnitCore _unitCore;
+        public ISelectedStation SelectedStation;
+
         public bool Adding { get; set; }
 
         public UnitsWindow Window { get; set; }
@@ -26,22 +29,11 @@ namespace Weather.ViewModels
         public Unit SelectedUnit { get; set; }
         public Unit Unit { get; set; }
         public bool IsDirty { get; set; }
-        private ISensorTypeCore _sensorTypeCore;
-        public ISelectedStation SelectedStation;
-
-        public UnitsWindowViewModel(IUnitCore unitCore, ILog log, ISensorTypeCore sensorTypeCore, ISelectedStation selectedStation)
-        {
-            _log = log;
-            SelectedStation = selectedStation;
-            _sensorTypeCore = sensorTypeCore;
-            _unitCore = unitCore;
-            UnitTypes = new ObservableCollection<UnitType>(Common.Units.UnitTypes.UnitsList);
-        }
 
         public ICommand SaveCommand
         {
             // Only allow save is something has changed, A unit is selected and is Valid
-            get { return new RelayCommand(Save, x => IsDirty && SelectedUnit != null && SelectedUnit.IsValid); }
+            get { return new RelayCommand(Save, x => IsDirty && (SelectedUnit != null) && SelectedUnit.IsValid); }
         }
 
         public ICommand AddCommand
@@ -52,13 +44,23 @@ namespace Weather.ViewModels
         public ICommand DeleteCommand
         {
             // Only allow delete when a unit is selected and its Id is not 0. If it's zero then it hasnt been added yet.
-            get { return new RelayCommand(Delete, x => SelectedUnit != null && SelectedUnit.UnitId != 0); }
+            get { return new RelayCommand(Delete, x => (SelectedUnit != null) && (SelectedUnit.UnitId != 0)); }
         }
 
         public ICommand CancelCommand
         {
             // Allow cancel if something has changed OR a unit is being added
-            get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && SelectedUnit != null); }
+            get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && (SelectedUnit != null)); }
+        }
+
+        public UnitsWindowViewModel(IUnitCore unitCore, ILog log, ISensorTypeCore sensorTypeCore,
+            ISelectedStation selectedStation)
+        {
+            _log = log;
+            SelectedStation = selectedStation;
+            _sensorTypeCore = sensorTypeCore;
+            _unitCore = unitCore;
+            UnitTypes = new ObservableCollection<UnitType>(Common.Units.UnitTypes.UnitsList);
         }
 
         private void Add(object obj)
@@ -82,7 +84,10 @@ namespace Weather.ViewModels
 
             var result = MessageBox.Show("Delete " + SelectedUnit.DisplayName + "?", "Confirm", MessageBoxButton.YesNo,
                 MessageBoxImage.Stop);
-            if (result != MessageBoxResult.Yes) return;
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
             _unitCore.Delete(SelectedUnit);
 
             SelectedUnit = null;
@@ -135,7 +140,10 @@ namespace Weather.ViewModels
 
         public void Save(object obj)
         {
-            if (!SelectedUnit.IsValid) return;
+            if (!SelectedUnit.IsValid)
+            {
+                return;
+            }
             _unitCore.AddOrUpdate(SelectedUnit);
             _log.Debug("Saved Unit");
             Adding = false;
@@ -145,10 +153,13 @@ namespace Weather.ViewModels
 
         public void CheckDirty()
         {
-            if (SelectedUnit == null || Unit == null) return;
-            if (SelectedUnit.DisplayName != Unit.DisplayName
-                || SelectedUnit.DisplayUnit != Unit.DisplayUnit
-                || SelectedUnit.UnitType != Unit.UnitType)
+            if ((SelectedUnit == null) || (Unit == null))
+            {
+                return;
+            }
+            if ((SelectedUnit.DisplayName != Unit.DisplayName)
+                || (SelectedUnit.DisplayUnit != Unit.DisplayUnit)
+                || (SelectedUnit.UnitType != Unit.UnitType))
             {
                 IsDirty = true;
             }

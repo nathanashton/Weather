@@ -12,11 +12,6 @@ namespace Weather.Common.Units
 
         public bool IsValid => Validate();
 
-        public override string ToString()
-        {
-            return DisplayName + " (" + DisplayUnit + ")";
-        }
-
         public string this[string columnName]
         {
             get
@@ -44,9 +39,14 @@ namespace Weather.Common.Units
             get { throw new NotImplementedException(); }
         }
 
+        public override string ToString()
+        {
+            return DisplayName + " (" + DisplayUnit + ")";
+        }
+
         private bool Validate()
         {
-            var f = !string.IsNullOrEmpty(DisplayName) && !string.IsNullOrEmpty(DisplayUnit) && UnitType != null;
+            var f = !string.IsNullOrEmpty(DisplayName) && !string.IsNullOrEmpty(DisplayUnit) && (UnitType != null);
             return f;
         }
     }

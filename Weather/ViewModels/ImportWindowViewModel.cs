@@ -1,6 +1,4 @@
-﻿using LumenWorks.Framework.IO.Csv;
-using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -8,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using LumenWorks.Framework.IO.Csv;
+using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Entities;
 using Weather.Common.EventArgs;
@@ -22,31 +22,12 @@ namespace Weather.ViewModels
     public class ImportWindowViewModel : NotifyBase
     {
         private readonly IImporter _importer;
-        private bool _multipleChecked;
-        private bool _singleChecked;
 
-        private readonly Stopwatch s =
+        private readonly Stopwatch _s =
             new Stopwatch();
 
-        public ImportWindowViewModel(IStationCore stationCore, IImporter importer)
-        {
-            Record = new ObservableCollection<Record>();
-            Records = new ObservableCollection<ObservableCollection<Record>>();
-            DateRecord = new ObservableCollection<Record>();
-            DateRecords = new ObservableCollection<ObservableCollection<Record>>();
-            FilteredRecords = new ObservableCollection<ObservableCollection<Record>>();
-            FilteredDateRecords = new ObservableCollection<ObservableCollection<Record>>();
-
-            _importer = importer;
-            importer.ImportChanged += Importer_ImportChanged;
-            importer.ImportComplete += Importer_ImportComplete;
-
-            //TODO
-            // SelectedStation = stationCore.GetAllStationsAsync()[0];
-
-            Matches = new ObservableCollection<Match>();
-            SingleChecked = true;
-        }
+        private bool _multipleChecked;
+        private bool _singleChecked;
 
         public bool SingleChecked
         {
@@ -101,7 +82,7 @@ namespace Weather.ViewModels
                 }
                 if (MultipleChecked)
                 {
-                    if (SelectedRecordDate != null && SelectedRecordTime != null)
+                    if ((SelectedRecordDate != null) && (SelectedRecordTime != null))
                     {
                         try
                         {
@@ -149,7 +130,7 @@ namespace Weather.ViewModels
             {
                 return new RelayCommand(Match,
                     x =>
-                        SelectedSensor != null && SelectedRecord != null && !SensorAlreadyMatched(SelectedSensor) &&
+                        (SelectedSensor != null) && (SelectedRecord != null) && !SensorAlreadyMatched(SelectedSensor) &&
                         !IndexAlreadyMatched(SelectedRecord.Index));
             }
         }
@@ -163,7 +144,7 @@ namespace Weather.ViewModels
 
         public ICommand ImportCommand
         {
-            get { return new RelayCommand(Import, x => Matches.Count > 0 && TimeStampSelected() && !Importing); }
+            get { return new RelayCommand(Import, x => (Matches.Count > 0) && TimeStampSelected() && !Importing); }
         }
 
         public int Progress { get; set; }
@@ -172,10 +153,31 @@ namespace Weather.ViewModels
 
         public int ExcludeLineCount { get; set; }
 
+        private ISelectedStation _selectedStation;
+
+        public ImportWindowViewModel(IImporter importer, ISelectedStation selectedStation)
+        {
+            _selectedStation = selectedStation;
+            Record = new ObservableCollection<Record>();
+            Records = new ObservableCollection<ObservableCollection<Record>>();
+            DateRecord = new ObservableCollection<Record>();
+            DateRecords = new ObservableCollection<ObservableCollection<Record>>();
+            FilteredRecords = new ObservableCollection<ObservableCollection<Record>>();
+            FilteredDateRecords = new ObservableCollection<ObservableCollection<Record>>();
+
+            _importer = importer;
+            importer.ImportChanged += Importer_ImportChanged;
+            importer.ImportComplete += Importer_ImportComplete;
+
+            SelectedStation = (WeatherStation) _selectedStation.WeatherStation;
+
+            Matches = new ObservableCollection<Match>();
+            SingleChecked = true;
+        }
+
         private void Importer_ImportComplete(object sender, EventArgs e)
         {
-            s.Stop();
-            var t = s.ElapsedMilliseconds;
+            _s.Stop();
             Importing = false;
         }
 
@@ -194,7 +196,7 @@ namespace Weather.ViewModels
             }
             if (MultipleChecked)
             {
-                if (SelectedRecordDate != null && SelectedRecordTime != null)
+                if ((SelectedRecordDate != null) && (SelectedRecordTime != null))
                 {
                     DateTime t;
                     if (DateTime.TryParse(SelectedRecordDate.Value + " " + SelectedRecordTime.Value, out t))
@@ -224,14 +226,17 @@ namespace Weather.ViewModels
                 _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index,
                     SelectedRecordTime.Index);
             }
-            s.Start();
+            _s.Start();
             _importer.Start();
             Importing = true;
         }
 
         private void Importer_ImportChanged(object sender, ImportEventArgs e)
         {
-            if (e.Progress != null) Progress = (int)e.Progress;
+            if (e.Progress != null)
+            {
+                Progress = (int) e.Progress;
+            }
         }
 
         public void ReadFile(string filePath)
@@ -294,7 +299,10 @@ namespace Weather.ViewModels
             var forwardslashes = date.Count(x => x == '/');
             var colons = date.Count(x => x == ':');
 
-            if (periods <= 1 && backslashed <= 1 && forwardslashes <= 1 && colons <= 0) return false;
+            if ((periods <= 1) && (backslashed <= 1) && (forwardslashes <= 1) && (colons <= 0))
+            {
+                return false;
+            }
             DateTime dt;
             return DateTime.TryParse(date, out dt);
         }
@@ -329,7 +337,10 @@ namespace Weather.ViewModels
             {
                 return true;
             }
-            if (SelectedRecordDate?.Index == index) return true;
+            if (SelectedRecordDate?.Index == index)
+            {
+                return true;
+            }
             return SelectedRecordTime?.Index == index;
         }
     }

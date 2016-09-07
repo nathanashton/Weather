@@ -1,7 +1,7 @@
-﻿using Microsoft.Win32;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Microsoft.Win32;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -34,12 +34,12 @@ namespace Weather.Views
         {
             var date = 0;
             var time = 0;
-            if (_viewModel.SelectedRecordDate != null && _viewModel.SelectedRecordTime != null)
+            if ((_viewModel.SelectedRecordDate != null) && (_viewModel.SelectedRecordTime != null))
             {
                 date = _viewModel.SelectedRecordDate.Index;
                 time = _viewModel.SelectedRecordTime.Index;
             }
-            if (_viewModel.Records != null && _viewModel.CurrentRecord != 0)
+            if ((_viewModel.Records != null) && (_viewModel.CurrentRecord != 0))
             {
                 _viewModel.Record = _viewModel.FilteredRecords[_viewModel.CurrentRecord - 1];
                 _viewModel.DateRecord = _viewModel.FilteredDateRecords[_viewModel.CurrentRecord - 1];
@@ -59,6 +59,7 @@ namespace Weather.Views
         private void IntegerUpDown_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             _viewModel.FilteredRecords =
+
                 new ObservableCollection<ObservableCollection<Record>>(
                     _viewModel.Records.ToList()
                         .GetRange(_viewModel.ExcludeLineCount, _viewModel.Records.Count - _viewModel.ExcludeLineCount));

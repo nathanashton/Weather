@@ -1,9 +1,10 @@
-﻿using Microsoft.Practices.Unity;
-using PropertyChanged;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Practices.Unity;
+using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
@@ -16,19 +17,46 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class SensorsWindowViewModel
     {
-        public SensorsWindow Window { get; set; }
-        public ObservableCollection<ISensor> Sensors { get; set; }
         private readonly ISensorCore _sensorCore;
         private readonly ISensorTypeCore _sensorTypeCore;
+        private readonly IStationCore _stationCore;
+        public ISelectedStation SelectedStation;
+
+        public SensorsWindow Window { get; set; }
+        public ObservableCollection<ISensor> Sensors { get; set; }
         public ISensor SelectedSensor { get; set; }
         public ISensor TempSelectedSensor { get; set; }
         public ObservableCollection<ISensorType> SensorTypes { get; set; }
         public bool Adding { get; set; }
         public bool IsDirty { get; set; }
-        private IStationCore _stationCore;
-        public ISelectedStation SelectedStation;
 
-        public SensorsWindowViewModel(ISensorCore sensorCore, ISensorTypeCore sensorTypeCore, IStationCore stationCore, ISelectedStation selectedStation)
+        public ICommand DeleteCommand
+        {
+            get { return new RelayCommand(Delete, x => (SelectedSensor != null) && (SelectedSensor.SensorId != 0)); }
+        }
+
+        public ICommand SaveCommand
+        {
+            get { return new RelayCommand(Save, x => IsDirty && (SelectedSensor != null) && SelectedSensor.IsValid); }
+        }
+
+        public ICommand SensorTypesCommand
+        {
+            get { return new RelayCommand(SensorTypesWindowOpen, x => SelectedSensor != null); }
+        }
+
+        public ICommand AddCommand
+        {
+            get { return new RelayCommand(Add, x => true); }
+        }
+
+        public ICommand CancelCommand
+        {
+            get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && (SelectedSensor != null)); }
+        }
+
+        public SensorsWindowViewModel(ISensorCore sensorCore, ISensorTypeCore sensorTypeCore, IStationCore stationCore,
+            ISelectedStation selectedStation)
         {
             SelectedStation = selectedStation;
             _sensorCore = sensorCore;
@@ -46,27 +74,8 @@ namespace Weather.ViewModels
             Window.SensorType.SelectionChanged += SensorType_SelectionChanged;
         }
 
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                return new RelayCommand(Delete, x => SelectedSensor != null && SelectedSensor.SensorId != 0);
-            }
-        }
-
-        public ICommand SaveCommand
-        {
-            get { return new RelayCommand(Save, x => IsDirty && SelectedSensor != null && SelectedSensor.IsValid); }
-        }
-
-        public ICommand SensorTypesCommand
-        {
-            get { return new RelayCommand(SensorTypesWindowOpen, x => SelectedSensor != null); }
-        }
-
         private void SensorTypesWindowOpen(object obj)
         {
-            var id = SelectedSensor.SensorType.SensorTypeId;
             var id2 = SelectedSensor.SensorId;
             var container = new Resolver().Bootstrap();
             var window = container.Resolve<SensorTypesWindow>();
@@ -79,19 +88,12 @@ namespace Weather.ViewModels
             Window.SelectSensorInListBox(SelectedSensor);
         }
 
-        public ICommand AddCommand
-        {
-            get { return new RelayCommand(Add, x => true); }
-        }
-
-        public ICommand CancelCommand
-        {
-            get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && SelectedSensor != null); }
-        }
-
         private void Save(object obj)
         {
-            if (!SelectedSensor.IsValid) return;
+            if (!SelectedSensor.IsValid)
+            {
+                return;
+            }
             _sensorCore.AddOrUpdate(SelectedSensor);
             Adding = false;
             GetAllSensors();
@@ -128,13 +130,17 @@ namespace Weather.ViewModels
             var used = _stationCore.AnyStationUsesSensor(SelectedSensor);
             if (used)
             {
-                MessageBox.Show("Cannot delete " + SelectedSensor + " as it is used in a Weather Station", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Cannot delete " + SelectedSensor + " as it is used in a Weather Station", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            var result = MessageBox.Show("Delete " + SelectedSensor.ToString() + "?", "Confirm", MessageBoxButton.YesNo,
+            var result = MessageBox.Show("Delete " + SelectedSensor + "?", "Confirm", MessageBoxButton.YesNo,
                 MessageBoxImage.Stop);
-            if (result != MessageBoxResult.Yes) return;
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
             _sensorCore.Delete(SelectedSensor);
 
             SelectedSensor = null;
@@ -143,22 +149,22 @@ namespace Weather.ViewModels
             GetAllSensors();
         }
 
-        private void SensorType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void SensorType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CheckDirty();
         }
 
-        private void Description_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void Description_TextChanged(object sender, TextChangedEventArgs e)
         {
             CheckDirty();
         }
 
-        private void Model_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void Model_TextChanged(object sender, TextChangedEventArgs e)
         {
             CheckDirty();
         }
 
-        private void Manufacturer_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void Manufacturer_TextChanged(object sender, TextChangedEventArgs e)
         {
             CheckDirty();
         }
@@ -175,14 +181,23 @@ namespace Weather.ViewModels
 
         public void CheckDirty()
         {
-            if (SelectedSensor == null || SelectedSensor.SensorType == null) return;
+            if (SelectedSensor?.SensorType == null)
+            {
+                return;
+            }
             if (Adding)
             {
                 IsDirty = true;
                 return;
             }
-            if (SelectedSensor == null || TempSelectedSensor == null) return;
-            if (SelectedSensor.Manufacturer != TempSelectedSensor.Manufacturer || SelectedSensor.Model != TempSelectedSensor.Model || SelectedSensor.Description != TempSelectedSensor.Description || SelectedSensor.SensorType.SensorTypeId != TempSelectedSensor.SensorType.SensorTypeId)
+            if ((SelectedSensor == null) || (TempSelectedSensor == null))
+            {
+                return;
+            }
+            if ((SelectedSensor.Manufacturer != TempSelectedSensor.Manufacturer) ||
+                (SelectedSensor.Model != TempSelectedSensor.Model) ||
+                (SelectedSensor.Description != TempSelectedSensor.Description) ||
+                (SelectedSensor.SensorType.SensorTypeId != TempSelectedSensor.SensorType.SensorTypeId))
             {
                 IsDirty = true;
             }

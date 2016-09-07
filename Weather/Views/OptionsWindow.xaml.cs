@@ -5,17 +5,14 @@ using Weather.ViewModels;
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for OptionsWindow.xaml
+    ///     Interaction logic for OptionsWindow.xaml
     /// </summary>
-    public partial class OptionsWindow : Window
+    public partial class OptionsWindow
     {
-        private OptionsWindowViewModel _viewModel;
-
         public OptionsWindow(OptionsWindowViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            DataContext = _viewModel;
+            DataContext = viewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -25,8 +22,8 @@ namespace Weather.Views
 
         private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            this.DragMove();
+            OnMouseLeftButtonDown(e);
+            DragMove();
         }
     }
 }

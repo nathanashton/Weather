@@ -1,6 +1,6 @@
-﻿using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PropertyChanged;
 using Weather.Common.Interfaces;
 
 namespace Weather.Common.Entities

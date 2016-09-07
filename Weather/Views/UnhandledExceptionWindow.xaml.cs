@@ -1,22 +1,22 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Input;
 using Weather.ViewModels;
 
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for UnhandledExceptionWindow.xaml
+    ///     Interaction logic for UnhandledExceptionWindow.xaml
     /// </summary>
-    public partial class UnhandledExceptionWindow : Window
+    public partial class UnhandledExceptionWindow
     {
-        public UnhandledExceptionWindowViewModel _viewModel;
+        public UnhandledExceptionWindowViewModel ViewModel;
 
         public UnhandledExceptionWindow(UnhandledExceptionWindowViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            _viewModel.Window = this;
-            DataContext = _viewModel;
+            ViewModel = viewModel;
+            ViewModel.Window = this;
+            DataContext = ViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -24,10 +24,10 @@ namespace Weather.Views
             Close();
         }
 
-        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            this.DragMove();
+            OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

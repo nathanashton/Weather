@@ -1,17 +1,16 @@
-﻿using Microsoft.Practices.Unity;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
+using Microsoft.Practices.Unity;
 using Weather.DependencyResolver;
 using Weather.ViewModels;
 
 namespace Weather.UserControls
 {
     /// <summary>
-    /// Interaction logic for StationSidePanel.xaml
+    ///     Interaction logic for StationSidePanel.xaml
     /// </summary>
-    public partial class StationSidePanel : UserControl
+    public partial class StationSidePanel
     {
-        private StationPanelViewModel _viewModel;
+        private readonly StationPanelViewModel _viewModel;
 
         public StationSidePanel()
         {
@@ -24,11 +23,7 @@ namespace Weather.UserControls
 
         private void StationSidePanel_Loaded(object sender, RoutedEventArgs e)
         {
- _viewModel.GetAllStations();
-        }
-
-        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            _viewModel.GetAllStations();
         }
     }
 }

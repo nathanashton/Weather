@@ -1,11 +1,7 @@
-﻿using PropertyChanged;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using PropertyChanged;
 using Weather.Common.Interfaces;
 using Weather.Helpers;
 
@@ -14,23 +10,22 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class OptionsWindowViewModel
     {
+        private readonly ISettings _settings;
 
         public ObservableCollection<string> Skins { get; set; }
         public string SelectedSkin { get; set; }
 
-        private ISettings _settings;
+        public ICommand SaveCommand
+        {
+            get { return new RelayCommand(Save, x => true); }
+        }
 
         public OptionsWindowViewModel(ISettings settings)
         {
             _settings = settings;
             _settings.Load();
-            Skins = new ObservableCollection<string> { "Dark", "Light" };
+            Skins = new ObservableCollection<string> {"Dark", "Light"};
             Load();
-        }
-
-        public ICommand SaveCommand
-        {
-            get { return new RelayCommand(Save, x => true); }
         }
 
         private void Save(object obj)
@@ -53,6 +48,5 @@ namespace Weather.ViewModels
             _settings.Load();
             SelectedSkin = _settings.Skin;
         }
-
     }
 }

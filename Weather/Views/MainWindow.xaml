@@ -1,10 +1,8 @@
 ﻿<Window x:Class="Weather.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Sys="clr-namespace:System;assembly=mscorlib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         xmlns:userControls="clr-namespace:Weather.UserControls"
         Title="Weather"
         Width="800"
@@ -16,29 +14,25 @@
         mc:Ignorable="d">
     <Window.Resources>
         <Storyboard x:Key="ShowDebugPanel">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(FrameworkElement.Height)">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dpanel" Storyboard.TargetProperty="(FrameworkElement.Height)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="150" />
             </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(UIElement.Visibility)">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Dpanel" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseDebugPanel">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(FrameworkElement.Height)">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dpanel" Storyboard.TargetProperty="(FrameworkElement.Height)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="150" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0" />
             </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dpanel" Storyboard.TargetProperty="(UIElement.Visibility)">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Dpanel" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="{x:Static Visibility.Collapsed}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <BooleanToVisibilityConverter x:Key="BoolVisConverter" />
-        <RadioButton x:Key="RadioButtonResource"
-                     HorizontalAlignment="Center"
-                     x:Shared="false"
-                     GroupName="MenuItemRadio"
-                     IsHitTestVisible="False" />
+
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -50,7 +44,8 @@
                 <Separator />
                 <MenuItem Command="{Binding OptionsWindowCommand}" Header="_Options" />
             </MenuItem>
-            <MenuItem Header="_Test">
+            <MenuItem Header="Test">
+                <MenuItem Click="MenuItem_Click" Header="IMport" />
                 <MenuItem Command="{Binding ThrowException}" Header="Throw Unhandled Exception" />
                 <MenuItem Command="{Binding DebugPanel}"
                           Header="Debug Panel"
@@ -59,23 +54,12 @@
                                               Mode=TwoWay}" />
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="Chart 1"
-                          IsCheckable="True"
-                          IsChecked="{Binding WeatherChartOneVisible,
-                                              Mode=TwoWay}" />
 
-                <MenuItem Header="Chart 2"
-                          IsCheckable="True"
-                          IsChecked="{Binding WeatherChartTwoVisible,
-                                              Mode=TwoWay}" />
 
                 <MenuItem Header="Sidebar"
                           IsCheckable="True"
                           IsChecked="{Binding SideBarVisible,
                                               Mode=TwoWay}" />
-
-
-
 
 
             </MenuItem>
@@ -99,12 +83,12 @@
                        ContentStringFormat="{}{0:dd MMM yyyy}"
                        Style="{DynamicResource HeaderLabel}" />
 
-                <RadioButton Margin="0,0,5,0"
+                <RadioButton Margin="2,2,5,2"
                              VerticalAlignment="Center"
                              BorderThickness="0"
                              Command="{Binding TimeSpanCommandDay}"
                              GroupName="TimeSpan"
-                             Style="{DynamicResource radio}">
+                             Style="{DynamicResource Radio}">
                     <Image Margin="5"
                            DockPanel.Dock="Left"
                            Source="pack://application:,,,/Resources/Icons/d_52px.png">
@@ -120,7 +104,7 @@
                     </Image>
 
                 </RadioButton>
-                <RadioButton Margin="0,0,5,0"
+                <RadioButton Margin="2,2,5,2"
                              VerticalAlignment="Center"
                              Background="Transparent"
                              BorderThickness="0"
@@ -144,7 +128,7 @@
                         </Image>
                     </DockPanel>
                 </RadioButton>
-                <RadioButton Margin="0,0,5,0"
+                <RadioButton Margin="2,2,5,2"
                              VerticalAlignment="Center"
                              Background="Transparent"
                              BorderThickness="0"
@@ -167,7 +151,8 @@
                         </Image>
                     </DockPanel>
                 </RadioButton>
-                <RadioButton VerticalAlignment="Center"
+                <RadioButton Margin="2,2,5,2"
+                             VerticalAlignment="Center"
                              Background="Transparent"
                              BorderThickness="0"
                              Command="{Binding TimeSpanCommandYear}"
@@ -191,43 +176,16 @@
                 </RadioButton>
 
 
-
-
-                <Button Margin="5,0,5,0"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Click="Button_Click_8">
-                    <Image Margin="5"
-                           DockPanel.Dock="Left"
-                           Source="pack://application:,,,/Resources/Icons/rewind_48px.png">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity" Value="0.3" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
+                <Button Margin="5,2,5,2"
+                        Command="{Binding PeriodBackCommand}"
+                        Style="{DynamicResource BackImage}">
+                    <Image Margin="5" DockPanel.Dock="Left" />
                 </Button>
 
-                <Button Background="Transparent"
-                        BorderThickness="0"
-                        Click="Button_Click_9">
-                    <Image Margin="5"
-                           DockPanel.Dock="Left"
-                           Source="pack://application:,,,/Resources/Icons/fast_forward_48px.png">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity" Value="0.3" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
+                <Button Margin="2"
+                        Command="{Binding PeriodForwardCommand}"
+                        Style="{DynamicResource ForwardImage}">
+                    <Image Margin="5" DockPanel.Dock="Left" />
                 </Button>
 
             </StackPanel>
@@ -310,7 +268,9 @@
 
             </Grid>
 
-            <Grid Grid.Column="1"
+            <Grid Grid.Row="0"
+                  Grid.RowSpan="2"
+                  Grid.Column="1"
                   Width="200"
                   Margin="0,5,5,5"
                   Visibility="{Binding Path=SideBarVisible,
@@ -319,7 +279,7 @@
 
             </Grid>
 
-            <DockPanel Name="dpanel"
+            <DockPanel Name="Dpanel"
                        Grid.Row="1"
                        Grid.Column="0"
                        Grid.ColumnSpan="2"
@@ -327,11 +287,24 @@
                        Background="Black"
                        Visibility="{Binding DebugPanelVisible,
                                             Converter={StaticResource BoolVisConverter}}">
-                <Label Background="Black"
-                       Content="DEBUG"
-                       DockPanel.Dock="Top"
-                       Foreground="Yellow" />
-                <ScrollViewer Name="scroll"
+
+
+                <DockPanel DockPanel.Dock="Top">
+                    <Label Background="Black"
+                           Content="DEBUG"
+                           DockPanel.Dock="Left"
+                           Foreground="Yellow" />
+                    <Button Width="20"
+                            HorizontalAlignment="Right"
+                            Background="Black"
+                            BorderThickness="0"
+                            Command="{Binding ClearDebugCommand}"
+                            Content="X"
+                            DockPanel.Dock="Right"
+                            Foreground="Yellow" />
+                </DockPanel>
+
+                <ScrollViewer Name="Scroll"
                               Margin="10,0,0,0"
                               VerticalAlignment="Stretch"
                               Background="Black"

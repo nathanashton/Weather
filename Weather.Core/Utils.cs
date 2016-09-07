@@ -12,14 +12,14 @@ namespace Weather.Core
             {
                 range = 1;
             }
-            var percentage = (current - startIndex) / range * 100;
+            var percentage = (current - startIndex)/range*100;
             return Convert.ToInt32(percentage);
         }
 
         public static int CalculatePercentage(long current, long startIndex, long endIndex)
         {
             var range = endIndex - startIndex;
-            double percentage = ((double)current - (double)startIndex) / (double)range * 100;
+            var percentage = (current - (double) startIndex)/range*100;
             return Convert.ToInt32(percentage);
         }
     }

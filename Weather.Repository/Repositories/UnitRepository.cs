@@ -10,23 +10,25 @@ namespace Weather.Repository.Repositories
 {
     public class UnitRepository : IUnitRepository
     {
-        private const string DbConnectionString = @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
         private readonly ILog _log;
+        private ISettings _settings;
 
-        public UnitRepository(ILog log)
+        public UnitRepository(ILog log, ISettings settings)
         {
             _log = log;
+            _settings = settings;
         }
 
         public List<Unit> GetAll()
         {
             var units = new List<Unit>();
             var sql = @"SELECT * FROM Units";
-            _log.Debug(sql);
+            _log.Debug("UnitRepository.GetAll();");
+
 
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -41,7 +43,9 @@ namespace Weather.Repository.Repositories
                                         UnitId = Convert.ToInt32(reader["UnitId"]),
                                         DisplayName = reader["DisplayName"].ToString(),
                                         DisplayUnit = reader["DisplayUnit"].ToString(),
-                                        UnitType = UnitTypes.UnitsList.FirstOrDefault(x => x.Name == reader["UnitType"].ToString())
+                                        UnitType =
+                                            UnitTypes.UnitsList.FirstOrDefault(
+                                                x => x.Name == reader["UnitType"].ToString())
                                     };
                                     units.Add(sensorType);
                                 }
@@ -60,11 +64,13 @@ namespace Weather.Repository.Repositories
 
         public Unit GetById(int id)
         {
+            _log.Debug("UnitRepository.GetById();");
+
             Unit unit = null;
             var sql = @"SELECT * FROM Units WHERE UnitId = @Id";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -84,7 +90,9 @@ namespace Weather.Repository.Repositories
                                         UnitId = Convert.ToInt32(reader["UnitId"]),
                                         DisplayName = reader["DisplayName"].ToString(),
                                         DisplayUnit = reader["DisplayUnit"].ToString(),
-                                        UnitType = UnitTypes.UnitsList.FirstOrDefault(x => x.Name == reader["UnitType"].ToString())
+                                        UnitType =
+                                            UnitTypes.UnitsList.FirstOrDefault(
+                                                x => x.Name == reader["UnitType"].ToString())
                                     };
                                 }
                             }
@@ -102,11 +110,14 @@ namespace Weather.Repository.Repositories
 
         public int Add(Unit unit)
         {
-            var sql = @"INSERT INTO Units (DisplayName, DisplayUnit, UnitType) VALUES (@DisplayName, @DisplayUnit, @UnitType)";
+            _log.Debug("UnitRepository.Add();");
+
+            var sql =
+                @"INSERT INTO Units (DisplayName, DisplayUnit, UnitType) VALUES (@DisplayName, @DisplayUnit, @UnitType)";
             var sql2 = "SELECT last_insert_rowid();";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -133,10 +144,12 @@ namespace Weather.Repository.Repositories
 
         public void Delete(int id)
         {
+            _log.Debug("UnitRepository.Delete();");
+
             var sql = @"DELETE FROM Units WHERE UnitId = @Id";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -157,10 +170,13 @@ namespace Weather.Repository.Repositories
 
         public void Update(Unit unit)
         {
-            var sql = @"UPDATE Units SET DisplayName = @DisplayName, DisplayUnit = @DisplayUnit, UnitType = @UnitType WHERE UnitId = @Id";
+            _log.Debug("UnitRepository.Update();");
+
+            var sql =
+                @"UPDATE Units SET DisplayName = @DisplayName, DisplayUnit = @DisplayUnit, UnitType = @UnitType WHERE UnitId = @Id";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {

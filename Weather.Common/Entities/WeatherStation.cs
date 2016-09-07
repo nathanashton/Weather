@@ -1,23 +1,18 @@
-﻿using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using PropertyChanged;
 using Weather.Common.Interfaces;
-using static System.String;
 
 namespace Weather.Common.Entities
 {
     [ImplementPropertyChanged]
     public class WeatherStation : IWeatherStation, IDataErrorInfo
     {
-        public string Description { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
-        public IList<IStationSensor> Sensors { get; set; }
-        public int WeatherStationId { get; set; }
-        public bool IsValid => Validate();
+        public WeatherStation()
+        {
+            Sensors = new List<IStationSensor>();
+        }
 
 
         public string this[string columnName]
@@ -47,6 +42,16 @@ namespace Weather.Common.Entities
             get { throw new NotImplementedException(); }
         }
 
+        public string Description { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public IList<IStationSensor> Sensors { get; set; }
+        public IList<IWeatherRecord> Records { get; set; }
+        public int WeatherStationId { get; set; }
+        public bool IsValid => Validate();
+
         public override string ToString()
         {
             return Manufacturer + " " + Model;
@@ -56,11 +61,6 @@ namespace Weather.Common.Entities
         {
             var f = !string.IsNullOrEmpty(Manufacturer) && !string.IsNullOrEmpty(Model);
             return f;
-        }
-
-        public WeatherStation()
-        {
-            Sensors = new List<IStationSensor>();
         }
     }
 }

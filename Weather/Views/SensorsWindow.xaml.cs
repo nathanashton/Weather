@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.ViewModels;
@@ -7,9 +9,9 @@ using Weather.ViewModels;
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for SensorsWindow.xaml
+    ///     Interaction logic for SensorsWindow.xaml
     /// </summary>
-    public partial class SensorsWindow : Window
+    public partial class SensorsWindow
     {
         private readonly SensorsWindowViewModel _viewModel;
 
@@ -23,7 +25,7 @@ namespace Weather.Views
             Closing += SensorsWindow_Closing;
         }
 
-        private void SensorsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void SensorsWindow_Closing(object sender, CancelEventArgs e)
         {
             _viewModel.SelectedStation.OnStationsChanged();
         }
@@ -37,8 +39,11 @@ namespace Weather.Views
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = ((ListBox)e.Source).SelectedItem;
-            if (selection == null) return;
+            var selection = ((ListBox) e.Source).SelectedItem;
+            if (selection == null)
+            {
+                return;
+            }
 
             _viewModel.TempSelectedSensor = selection as ISensor;
             _viewModel.SelectedSensor = new Sensor
@@ -57,7 +62,7 @@ namespace Weather.Views
 
         public void SelectSensorInListBox(ISensor sensor)
         {
-            lb.SelectedItem = sensor;
+            Lb.SelectedItem = sensor;
         }
 
         public void SelectSiUnitInComboBox(ISensorType unit)
@@ -65,17 +70,17 @@ namespace Weather.Views
             foreach (var item in SensorType.Items)
             {
                 var o = item as SensorType;
-                if (o != null && o.SensorTypeId == _viewModel.SelectedSensor.SensorType.SensorTypeId)
+                if ((o != null) && (o.SensorTypeId == _viewModel.SelectedSensor.SensorType.SensorTypeId))
                 {
                     SensorType.SelectedItem = item;
                 }
             }
         }
 
-        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            this.DragMove();
+            OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

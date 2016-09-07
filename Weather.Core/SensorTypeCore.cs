@@ -8,8 +8,8 @@ namespace Weather.Core
 {
     public class SensorTypeCore : ISensorTypeCore
     {
-        private readonly ISensorTypeRepository _repository;
         private readonly ILog _log;
+        private readonly ISensorTypeRepository _repository;
 
         public SensorTypeCore(ISensorTypeRepository repository, ILog log)
         {

@@ -1,36 +1,37 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using Weather.Common.Interfaces;
 using Weather.ViewModels;
 
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for SensorSelectWindow.xaml
+    ///     Interaction logic for SensorSelectWindow.xaml
     /// </summary>
-    public partial class SensorSelectWindow : Window
+    public partial class SensorSelectWindow
     {
-        public SensorSelectWindowViewModel _viewModel;
+        public SensorSelectWindowViewModel ViewModel;
 
         public SensorSelectWindow(SensorSelectWindowViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            DataContext = _viewModel;
-            _viewModel.Window = this;
+            ViewModel = viewModel;
+            DataContext = ViewModel;
+            ViewModel.Window = this;
             Loaded += SensorSelectWindow_Loaded;
         }
 
         private void SensorSelectWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel.GetAllSensors();
-            if (_viewModel.StationSensor != null && _viewModel.StationSensor.Sensor != null)
+            ViewModel.GetAllSensors();
+            if (ViewModel.StationSensor?.Sensor != null)
             {
-                foreach (var item in cb.Items)
+                foreach (var item in Cb.Items)
                 {
-                    var t = (ISensor)item;
-                    if (t.SensorId == _viewModel.StationSensor.Sensor.SensorId)
+                    var t = (ISensor) item;
+                    if (t.SensorId == ViewModel.StationSensor.Sensor.SensorId)
                     {
-                        cb.SelectedItem = item;
+                        Cb.SelectedItem = item;
                     }
                 }
             }
@@ -41,10 +42,10 @@ namespace Weather.Views
             Close();
         }
 
-        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            this.DragMove();
+            OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

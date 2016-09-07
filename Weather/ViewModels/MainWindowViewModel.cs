@@ -1,9 +1,10 @@
-﻿using Microsoft.Practices.Unity;
-using PropertyChanged;
-using System;
+﻿using System;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Microsoft.Practices.Unity;
+using PropertyChanged;
 using Weather.Common;
+using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
@@ -36,12 +37,12 @@ namespace Weather.ViewModels
                 {
                     DebugPanel = "";
                     var storyboard = MainWindow.Resources["ShowDebugPanel"] as Storyboard;
-                    storyboard.Begin();
+                    storyboard?.Begin();
                 }
                 else
                 {
                     var storyboard = MainWindow.Resources["CloseDebugPanel"] as Storyboard;
-                    storyboard.Begin();
+                    storyboard?.Begin();
                 }
                 OnPropertyChanged(() => DebugPanelVisible);
             }
@@ -51,25 +52,7 @@ namespace Weather.ViewModels
 
         public string Clock { get; set; }
         public MainWindow MainWindow { get; set; }
-        private readonly IStationCore _stationCore;
         public string DebugPanel { get; set; }
-        private readonly ILog _log;
-
-        public MainWindowViewModel(IStationCore stationCore, IImporter importer, ILog log, ISelectedStation selectedStation)
-        {
-            SelectedStation = selectedStation;
-            _log = log;
-            _log.DebugPanelMessage += _log_DebugPanelMessage;
-            _stationCore = stationCore;
-            SideBarVisible = true;
-        }
-
-        private void _log_DebugPanelMessage(object sender, Common.EventArgs.DebugMessageArgs e)
-        {
-            if (!DebugPanelVisible) return;
-            DebugPanel += DateTime.Now + " => " + e.Message + Environment.NewLine;
-            MainWindow.scroll.ScrollToBottom();
-        }
 
         public ICommand SensorsWindowCommand
         {
@@ -79,6 +62,27 @@ namespace Weather.ViewModels
         public ICommand WeatherStationsCommand
         {
             get { return new RelayCommand(StationsWindowOpen, x => true); }
+        }
+
+        public ICommand PeriodBackCommand
+        {
+            get { return new RelayCommand(PeriodBack, x => SelectedStation.WeatherStation != null); }
+        }
+
+
+        public ICommand PeriodForwardCommand
+        {
+            get { return new RelayCommand(PeriodForward, x => SelectedStation.WeatherStation != null); }
+        }
+
+        public ICommand ClearDebugCommand
+        {
+            get { return new RelayCommand(ClearDebug ,x=> true); }
+        }
+
+        private void ClearDebug(object obj)
+        {
+            DebugPanel = String.Empty;
         }
 
         public ICommand SensorTypesCommand
@@ -111,41 +115,9 @@ namespace Weather.ViewModels
             get { return new RelayCommand(UpdateTimeSpanYear, x => SelectedStation.WeatherStation != null); }
         }
 
-        private void UpdateTimeSpanDay(object obj)
-        {
-            SelectedStation.TimeSpanDay = true;
-        }
-
-        private void UpdateTimeSpanWeek(object obj)
-        {
-            SelectedStation.TimeSpanWeek = true;
-        }
-
-        private void UpdateTimeSpanMonth(object obj)
-        {
-            SelectedStation.TimeSpanMonth = true;
-        }
-
-        private void UpdateTimeSpanYear(object obj)
-        {
-            SelectedStation.TimeSpanYear = true;
-        }
-
         public ICommand OptionsWindowCommand
         {
             get { return new RelayCommand(ShowOptions, x => true); }
-        }
-
-        private void Throw(object obj)
-        {
-            throw new NullReferenceException("Unahnded");
-        }
-
-        private void ShowOptions(object obj)
-        {
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<OptionsWindow>();
-            window.ShowDialog();
         }
 
         public ICommand StationsCommand
@@ -161,6 +133,66 @@ namespace Weather.ViewModels
         public ICommand SensorTypesWindowCommand
         {
             get { return new RelayCommand(SensorTypesWindowOpen, x => true); }
+        }
+
+        public MainWindowViewModel(ILog log,
+            ISelectedStation selectedStation)
+        {
+            SelectedStation = selectedStation;
+            log.DebugPanelMessage += _log_DebugPanelMessage;
+            SideBarVisible = true;
+        }
+
+        private void PeriodBack(object obj)
+        {
+            SelectedStation.BackOnePeriod();
+        }
+
+        private void PeriodForward(object obj)
+        {
+            SelectedStation.ForwardOnePeriod();
+        }
+
+        private void _log_DebugPanelMessage(object sender, DebugMessageArgs e)
+        {
+            if (!DebugPanelVisible)
+            {
+                return;
+            }
+            DebugPanel += DateTime.Now + " => " + e.Message + Environment.NewLine;
+            MainWindow.Scroll.ScrollToBottom();
+        }
+
+        private void UpdateTimeSpanDay(object obj)
+        {
+            SelectedStation.SetTimeSpanDay();
+        }
+
+        private void UpdateTimeSpanWeek(object obj)
+        {
+            SelectedStation.SetTimeSpanWeek();
+        }
+
+        private void UpdateTimeSpanMonth(object obj)
+        {
+            SelectedStation.SetTimeSpanMonth();
+        }
+
+        private void UpdateTimeSpanYear(object obj)
+        {
+            SelectedStation.SetTimeSpanYear();
+        }
+
+        private void Throw(object obj)
+        {
+            throw new NullReferenceException("Unahnded");
+        }
+
+        private void ShowOptions(object obj)
+        {
+            var container = new Resolver().Bootstrap();
+            var window = container.Resolve<OptionsWindow>();
+            window.ShowDialog();
         }
 
         private void OpenStations(object obj)
@@ -188,21 +220,6 @@ namespace Weather.ViewModels
             window.ShowDialog();
         }
 
-        private async void GetAllStations()
-        {
-            //Stations.Clear();
-            //var allstations = await _stationCore.GetAllStationsAsync();
-            //Stations = new ObservableCollection<IWeatherStation>(allstations);
-        }
-
-        private void Import(object obj)
-        {
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<ImportWindow>();
-            window.ShowDialog();
-
-            GetAllStations();
-        }
 
         private void SensorTypes(object obj)
         {

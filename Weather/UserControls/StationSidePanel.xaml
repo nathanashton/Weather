@@ -2,15 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Weather.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <Border Grid.Row="0"
-            Grid.Column="1"
-            BorderBrush="DarkGray"
-            BorderThickness="1">
+    <Border BorderBrush="DarkGray" BorderThickness="1">
         <DockPanel Style="{DynamicResource Panel}">
             <DockPanel Height="25"
                        DockPanel.Dock="Top"
@@ -26,41 +22,31 @@
                       FontSize="14"
                       FontWeight="Bold"
                       ItemsSource="{Binding Stations}"
-                      SelectedItem="{Binding SelectedStation.WeatherStation,
-                                             Mode=TwoWay}"
-                      Style="{DynamicResource ComboBoxTransparent}" />
+                      SelectedItem="{Binding Selected,
+                                             Mode=TwoWay}" />
 
-            <Label Content="{Binding SelectedStation.WeatherStation.Latitude}"
-                   DockPanel.Dock="Top"
-                   Style="{DynamicResource HeaderLabel}" />
-            <Label Content="{Binding SelectedStation.WeatherStation.Longitude}"
-                   DockPanel.Dock="Top"
-                   Style="{DynamicResource HeaderLabel}" />
+            <Label Content="{Binding SelectedStation.WeatherStation.Latitude}" DockPanel.Dock="Top" />
+            <Label Content="{Binding SelectedStation.WeatherStation.Longitude}" DockPanel.Dock="Top" />
 
 
             <DockPanel>
                 <Label Content="Sensors"
                        DockPanel.Dock="Top"
-                       FontWeight="Bold"
-                       Style="{DynamicResource HeaderLabel}" />
+                       FontWeight="Bold" />
                 <ItemsControl Width="Auto"
                               Margin="5,0,0,0"
                               ItemsSource="{Binding SelectedStation.WeatherStation.Sensors}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Style="{DynamicResource HeaderTextbox}" Text="{Binding Sensor.}" />
-                                <TextBlock Style="{DynamicResource HeaderTextbox}" Text="{Binding Correction}" />
-                                <TextBlock Style="{DynamicResource HeaderTextbox}" Text="{Binding Sensor.SensorType.Name}" />
+                                <TextBlock Text="{Binding Sensor}" />
+                                <TextBlock Text="{Binding Correction}" />
+                                <TextBlock Text="{Binding Sensor.SensorType.Name}" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </DockPanel>
-
-
-
-
 
 
         </DockPanel>

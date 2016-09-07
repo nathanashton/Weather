@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.ViewModels;
@@ -7,11 +9,11 @@ using Weather.ViewModels;
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for StationsWindow.xaml
+    ///     Interaction logic for StationsWindow.xaml
     /// </summary>
-    public partial class StationsWindow : Window
+    public partial class StationsWindow
     {
-        private StationsWindowViewModel _viewModel;
+        private readonly StationsWindowViewModel _viewModel;
 
         public StationsWindow(StationsWindowViewModel viewModel)
         {
@@ -23,9 +25,9 @@ namespace Weather.Views
             Closing += StationsWindow_Closing;
         }
 
-        private void StationsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void StationsWindow_Closing(object sender, CancelEventArgs e)
         {
-            _viewModel._selectedStation.OnStationsChanged();
+            _viewModel.SelectedStation.OnStationsChanged();
         }
 
         private void StationsWindow_Loaded(object sender, RoutedEventArgs e)
@@ -36,25 +38,31 @@ namespace Weather.Views
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = ((ListBox)e.Source).SelectedItem;
-            if (selection == null) return;
+            var selection = ((ListBox) e.Source).SelectedItem;
+            if (selection == null)
+            {
+                return;
+            }
 
             _viewModel.TempSelectedWeatherStation = selection as IWeatherStation;
-            _viewModel.SelectedWeatherStation = new WeatherStation
+            if (_viewModel.TempSelectedWeatherStation != null)
             {
-                WeatherStationId = _viewModel.TempSelectedWeatherStation.WeatherStationId,
-                Manufacturer = _viewModel.TempSelectedWeatherStation.Manufacturer,
-                Model = _viewModel.TempSelectedWeatherStation.Model,
-                Latitude = _viewModel.TempSelectedWeatherStation.Latitude,
-                Longitude = _viewModel.TempSelectedWeatherStation.Longitude,
-                Description = _viewModel.TempSelectedWeatherStation.Description,
-                Sensors = _viewModel.TempSelectedWeatherStation.Sensors
-            };
+                _viewModel.SelectedWeatherStation = new WeatherStation
+                {
+                    WeatherStationId = _viewModel.TempSelectedWeatherStation.WeatherStationId,
+                    Manufacturer = _viewModel.TempSelectedWeatherStation.Manufacturer,
+                    Model = _viewModel.TempSelectedWeatherStation.Model,
+                    Latitude = _viewModel.TempSelectedWeatherStation.Latitude,
+                    Longitude = _viewModel.TempSelectedWeatherStation.Longitude,
+                    Description = _viewModel.TempSelectedWeatherStation.Description,
+                    Sensors = _viewModel.TempSelectedWeatherStation.Sensors
+                };
+            }
         }
 
         public void SelectStationInListBox(IWeatherStation station)
         {
-            lb.SelectedItem = station;
+            Lb.SelectedItem = station;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -63,10 +71,10 @@ namespace Weather.Views
         }
 
 
-        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            this.DragMove();
+            OnMouseLeftButtonDown(e);
+            DragMove();
         }
     }
 }

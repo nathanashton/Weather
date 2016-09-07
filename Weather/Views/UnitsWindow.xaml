@@ -49,7 +49,6 @@
                     <Button Width="53"
                             Margin="10,7,0,7"
                             HorizontalAlignment="Left"
-                            Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding AddCommand}"
                             DockPanel.Dock="Left"
@@ -65,7 +64,6 @@
                     <Button Width="65"
                             Margin="2,7,7,7"
                             HorizontalAlignment="Left"
-                            Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding DeleteCommand}"
                             DockPanel.Dock="Left"
@@ -115,7 +113,8 @@
                             BorderBrush="#A0A0A0"
                             Command="{Binding SaveCommand}">
                         <DockPanel>
-                            <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
+                            <Image DockPanel.Dock="Left"
+                                   Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
                                 <Image.Style>
                                     <Style TargetType="{x:Type Image}">
                                         <Style.Triggers>
@@ -136,7 +135,7 @@
                 <DockPanel Margin="10">
                     <DockPanel>
 
-                        <ListBox Name="lb"
+                        <ListBox Name="Lb"
                                  Width="180"
                                  DockPanel.Dock="Left"
                                  ItemsSource="{Binding Units}"
@@ -175,7 +174,8 @@
                                     <Style TargetType="{x:Type TextBox}">
                                         <Style.Triggers>
                                             <Trigger Property="Validation.HasError" Value="true">
-                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                                                <Setter Property="ToolTip"
+                                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -201,7 +201,8 @@
                                     <Style TargetType="{x:Type TextBox}">
                                         <Style.Triggers>
                                             <Trigger Property="Validation.HasError" Value="true">
-                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                                                <Setter Property="ToolTip"
+                                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>

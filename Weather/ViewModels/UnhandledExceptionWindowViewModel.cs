@@ -1,9 +1,9 @@
-﻿using PropertyChanged;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Windows;
 using System.Windows.Input;
+using PropertyChanged;
 using Weather.Common.Interfaces;
 using Weather.Helpers;
 
@@ -12,18 +12,14 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class UnhandledExceptionWindowViewModel
     {
+        private readonly ISettings _settings;
+
         public Window Window { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }
         public string Source { get; set; }
-        private ISettings _settings;
 
         public bool ShowDetails { get; set; }
-
-        public UnhandledExceptionWindowViewModel(ISettings settings)
-        {
-            _settings = settings;
-        }
 
         public ICommand DetailsCommand
         {
@@ -33,6 +29,11 @@ namespace Weather.ViewModels
         public ICommand SendErrorReportCommand
         {
             get { return new RelayCommand(SendErrorReport, x => true); }
+        }
+
+        public UnhandledExceptionWindowViewModel(ISettings settings)
+        {
+            _settings = settings;
         }
 
         private void Details(object obj)
@@ -51,8 +52,8 @@ namespace Weather.ViewModels
 
         private void SendErrorReport(object obj)
         {
-            string[] lines = { Message, Source, StackTrace };
-            System.IO.File.WriteAllLines(Path.Combine(_settings.ErrorPath, "errorreport.txt"), lines);
+            string[] lines = {Message, Source, StackTrace};
+            File.WriteAllLines(Path.Combine(_settings.ErrorPath, "errorreport.txt"), lines);
             Zip();
 
             File.Delete(Path.Combine(_settings.ErrorPath, "errorreport.txt"));
@@ -67,8 +68,8 @@ namespace Weather.ViewModels
         {
             var zipName = DateTime.Now.ToString("ddMMyyyyHHmmss") + ".zip";
 
-            string startPath = _settings.ErrorPath;
-            string zipPath = Path.Combine(_settings.ApplicationPath, zipName);
+            var startPath = _settings.ErrorPath;
+            var zipPath = Path.Combine(_settings.ApplicationPath, zipName);
 
             ZipFile.CreateFromDirectory(startPath, zipPath);
 

@@ -1,10 +1,8 @@
 ﻿<UserControl x:Class="Weather.UserControls.Container"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:chart="http://schemas.syncfusion.com/wpf"
              xmlns:converters="clr-namespace:Weather.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Weather.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -24,19 +22,11 @@
                 <ComboBox Width="180"
                           Margin="3"
                           HorizontalAlignment="Right"
+                          DisplayMemberPath="Name"
                           DockPanel.Dock="Right"
                           IsEditable="False"
-                          SelectedItem="{Binding Selected}"
-                          Style="{DynamicResource ComboBoxTransparent}">
-                    <ComboBox.Items>
-                        <ComboBoxItem HorizontalContentAlignment="Right"
-                                      Content="Average Wind Direction"
-                                      Tag="Average Wind Direction" />
-                        <ComboBoxItem HorizontalContentAlignment="Right"
-                                      Content="Min / Max"
-                                      Tag="MinMax" />
-                    </ComboBox.Items>
-                </ComboBox>
+                          ItemsSource="{Binding Charts}"
+                          SelectedItem="{Binding Selected}" />
             </DockPanel>
             <ContentControl BorderThickness="0" Content="{Binding Content}" />
         </DockPanel>

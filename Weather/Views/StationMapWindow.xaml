@@ -15,7 +15,7 @@
                Background="White"
                Content="Right click to set position"
                DockPanel.Dock="Bottom" />
-        <wpf:Map x:Name="myMap"
+        <wpf:Map x:Name="MyMap"
                  CredentialsProvider="Au5zesLgPujoeeh3yHbAUF6cTGlDqCbJmOrvfiYzyP1WIhWl-D_tsQblTmt1FsUN"
                  MouseRightButtonUp="Map_MouseRightButtonUp"
                  ZoomLevel="12" />

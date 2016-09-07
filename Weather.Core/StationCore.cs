@@ -1,5 +1,5 @@
-﻿using PropertyChanged;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PropertyChanged;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
@@ -9,10 +9,11 @@ namespace Weather.Core
     [ImplementPropertyChanged]
     public class StationCore : IStationCore
     {
-        private readonly IWeatherStationRepository _weatherStationRepository;
         private readonly IStationSensorRepository _stationSensorRepository;
+        private readonly IWeatherStationRepository _weatherStationRepository;
 
-        public StationCore(IWeatherStationRepository weatherStationRepository, IStationSensorRepository stationSensorRepository)
+        public StationCore(IWeatherStationRepository weatherStationRepository,
+            IStationSensorRepository stationSensorRepository)
         {
             _weatherStationRepository = weatherStationRepository;
             _stationSensorRepository = stationSensorRepository;

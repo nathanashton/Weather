@@ -1,8 +1,8 @@
-﻿using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
+using Microsoft.Practices.Unity;
 using Weather.Common.Interfaces;
 using Weather.DependencyResolver;
 using Weather.UserControls;
@@ -14,7 +14,6 @@ namespace Weather
 {
     internal static class Program
     {
-
         [STAThread]
         private static void Main()
         {
@@ -55,18 +54,20 @@ namespace Weather
 
 
             // Charts
-            container.RegisterType<AverageWindDirection>();
             container.RegisterType<AverageWindDirectionViewModel>();
+            container.RegisterType<LineGraphViewModel>();
 
-            container.RegisterType<MinMax>();
             container.RegisterType<MinMaxViewModel>();
+
+            container.RegisterType<AllRecordsViewModel>();
+
 
             container.RegisterType<StationMapWindow>();
 
             var log = container.Resolve<ILog>();
             var settings = container.Resolve<ISettings>();
             log.Info("Application Started");
-            RunApplication((UnityContainer)container, log, settings);
+            RunApplication((UnityContainer) container, log, settings);
         }
 
         private static void RunApplication(UnityContainer container, ILog log, ISettings settings)
@@ -92,11 +93,11 @@ namespace Weather
             settings.Load();
             if (settings.Skin == "Dark")
             {
-                Program.ChangeTheme(new Uri("/Skins/Dark.xaml", UriKind.Relative));
+                ChangeTheme(new Uri("/Skins/Dark.xaml", UriKind.Relative));
             }
             else if (settings.Skin == "Light")
             {
-                Program.ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
+                ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
             }
 
             application.Run(mainWindow);
@@ -110,26 +111,27 @@ namespace Weather
             var image = ScreenCapture.CaptureActiveWindow();
             image.Save(Path.Combine(settings.ErrorPath, "unhandledexception.jpg"), ImageFormat.Jpeg);
 
-            Exception ex = e.ExceptionObject as Exception;
+            var ex = e.ExceptionObject as Exception;
 
             var window = container.Resolve<UnhandledExceptionWindow>();
 
-            window._viewModel.Message = "\"" + ex.Message + "\"";
-            window._viewModel.StackTrace = ex.StackTrace;
-            window._viewModel.Source = ex.Source;
+            if (ex != null)
+            {
+                window.ViewModel.Message = "\"" + ex.Message + "\"";
+                window.ViewModel.StackTrace = ex.StackTrace;
+                window.ViewModel.Source = ex.Source;
+            }
 
             window.ShowDialog();
 
-           // Environment.Exit(1);
+            // Environment.Exit(1);
         }
 
         public static void ChangeTheme(Uri uri)
         {
-            ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
+            var resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(resourceDict);
         }
-
-
     }
 }

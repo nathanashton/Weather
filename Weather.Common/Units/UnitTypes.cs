@@ -1,5 +1,5 @@
-﻿using PropertyChanged;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PropertyChanged;
 
 namespace Weather.Common.Units
 {
@@ -19,8 +19,7 @@ namespace Weather.Common.Units
                 new UnitType {Name = "Precipitation Rate"},
                 new UnitType {Name = "Solar Radiation"},
                 new UnitType {Name = "UV Index"},
-                new UnitType {Name = "Leaf Wetness"},
-
+                new UnitType {Name = "Leaf Wetness"}
             };
         }
     }

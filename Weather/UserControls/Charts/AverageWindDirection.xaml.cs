@@ -1,20 +1,16 @@
-﻿using PropertyChanged;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using Weather.DependencyResolver;
+﻿using System.Windows;
 using Microsoft.Practices.Unity;
-
+using PropertyChanged;
+using Weather.DependencyResolver;
 
 namespace Weather.UserControls.Charts
 {
     /// <summary>
-    /// Interaction logic for Test.xaml
+    ///     Interaction logic for Test.xaml
     /// </summary>
     [ImplementPropertyChanged]
-    public partial class AverageWindDirection : UserControl
+    public partial class AverageWindDirection
     {
-
         public AverageWindDirectionViewModel ViewModel { get; set; }
 
         public AverageWindDirection()
@@ -29,10 +25,6 @@ namespace Weather.UserControls.Charts
         private void Test_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.GetCompatibleUnits();
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
         }
     }
 }

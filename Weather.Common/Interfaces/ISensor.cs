@@ -12,5 +12,6 @@ namespace Weather.Common.Interfaces
         IList<ISensorValue> SensorValues { get; set; }
         bool IsValid { get; }
         string FullName { get; }
+        string ShortName { get; }
     }
 }

@@ -6,12 +6,13 @@ namespace Weather.Repository.Repositories
 {
     public class StationSensorRepository : IStationSensorRepository
     {
-        private const string DbConnectionString = @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
-        private ILog _log;
+        private readonly ILog _log;
+        private readonly ISettings _settings;
 
-        public StationSensorRepository(ILog log)
+        public StationSensorRepository(ILog log, ISettings settings)
         {
             _log = log;
+            _settings = settings;
         }
 
         public IStationSensor GetById(int id)
@@ -21,11 +22,14 @@ namespace Weather.Repository.Repositories
 
         public void Update(IStationSensor stationSensor)
         {
-            var sql = @"UPDATE WeatherStations_Sensors SET SensorId = @SensorId, Correction = @Correction, Notes = @Notes WHERE Id = @StationSensorId";
+            _log.Debug("StationSensorRepository.Update();");
+
+            var sql =
+                @"UPDATE WeatherStations_Sensors SET SensorId = @SensorId, Correction = @Correction, Notes = @Notes WHERE Id = @StationSensorId";
 
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -44,7 +48,7 @@ namespace Weather.Repository.Repositories
             {
                 _log.Error("", ex);
                 throw;
-            };
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using PropertyChanged;
 using Weather.Common.Interfaces;
 using Weather.Common.Units;
 using static System.String;
@@ -12,17 +12,6 @@ namespace Weather.Common.Entities
     [ImplementPropertyChanged]
     public class SensorType : IDataErrorInfo, ISensorType
     {
-        public int SensorTypeId { get; set; }
-        public string Name { get; set; }
-        public Unit SIUnit { get; set; }
-        public IList<Unit> Units { get; set; } = new ObservableCollection<Unit>();
-        public bool IsValid => Validate();
-
-        public override string ToString()
-        {
-            return Name;
-        }
-
         public string this[string columnName]
         {
             get
@@ -50,9 +39,20 @@ namespace Weather.Common.Entities
             get { throw new NotImplementedException(); }
         }
 
+        public int SensorTypeId { get; set; }
+        public string Name { get; set; }
+        public Unit SIUnit { get; set; }
+        public IList<Unit> Units { get; set; } = new ObservableCollection<Unit>();
+        public bool IsValid => Validate();
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
         private bool Validate()
         {
-            var f = !IsNullOrEmpty(Name) && SIUnit != null;
+            var f = !IsNullOrEmpty(Name) && (SIUnit != null);
             return f;
         }
     }

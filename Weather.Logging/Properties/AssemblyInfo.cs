@@ -1,6 +1,6 @@
-﻿using log4net.Config;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using log4net.Config;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -15,10 +15,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: XmlConfigurator(ConfigFile =
-    "Log4Net.config"
-    , Watch =
-        true
-    )]
+                   "Log4Net.config"
+               , Watch =
+                   true
+           )]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

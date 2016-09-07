@@ -10,5 +10,6 @@ namespace Weather.Common.Interfaces
         Unit DisplayUnit { get; set; }
         double? DisplayValue { get; set; }
         ISensor Sensor { get; set; }
+        IWeatherStation Station { get; set; }
     }
 }

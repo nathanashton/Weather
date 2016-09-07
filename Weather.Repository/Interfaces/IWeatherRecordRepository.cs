@@ -1,12 +1,12 @@
-﻿namespace Weather.Repository.Interfaces
+﻿using System;
+using System.Collections.Generic;
+using Weather.Common.Interfaces;
+
+namespace Weather.Repository.Interfaces
 {
     public interface IWeatherRecordRepository
     {
-        //Task<IEnumerable<IWeatherRecord>> GetAllWeatherRecordsAsync();
-        //Task<IEnumerable<IWeatherRecord>> GetWeatherRecordsForStationAsync(WeatherStation station);
-
-        //void AddWeatherRecord(IWeatherRecord record);
-        //void DeleteWeatherRecord(int id);
-        //void UpdateWeatherRecord(IWeatherRecord record);
+        List<IWeatherRecord> GetAll();
+        List<IWeatherRecord> GetAllForStation(int weatherStationId, DateTime startDate, DateTime endDate);
     }
 }

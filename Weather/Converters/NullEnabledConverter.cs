@@ -8,20 +8,13 @@ namespace Weather.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string)
+            var s = value as string;
+            if (s != null)
             {
-                if (string.IsNullOrEmpty((string)value))
-                {
-                    return false;
-                }
-                return true;
+                return !string.IsNullOrEmpty(s);
             }
 
-            if (value == null)
-            {
-                return false;
-            }
-            return true;
+            return value != null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

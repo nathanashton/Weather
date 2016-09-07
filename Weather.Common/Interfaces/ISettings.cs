@@ -8,6 +8,7 @@
         string DatabasePath { get; }
         string Skin { get; set; }
         string SettingsFile { get; }
+        string DatabaseConnectionString { get; }
 
         void Save();
         void Load();

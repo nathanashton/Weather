@@ -4,22 +4,13 @@
     <Application.Resources>
 
 
-
-
-
         <ResourceDictionary>
-
-
-
-
 
 
             <ResourceDictionary.MergedDictionaries>
 
                 <ResourceDictionary Source="Skins/Light.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-
 
 
         </ResourceDictionary>

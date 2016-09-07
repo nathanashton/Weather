@@ -7,6 +7,8 @@ namespace Weather.Repository.Interfaces
     {
         List<IWeatherStation> GetAllWeatherStations();
 
+        IWeatherStation GetById(int id);
+
         int Add(IWeatherStation station);
 
         void AddSensorToStation(IStationSensor sensor, IWeatherStation station);
@@ -18,5 +20,7 @@ namespace Weather.Repository.Interfaces
         void Update(IWeatherStation station);
 
         bool AnyStationUsesSensor(ISensor sensor);
+
+        IWeatherStation GetByIdShort(int id);
     }
 }

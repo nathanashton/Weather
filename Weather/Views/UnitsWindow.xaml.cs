@@ -1,21 +1,22 @@
-﻿using PropertyChanged;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Weather.Common.Interfaces;
+using System.Windows.Input;
+using PropertyChanged;
 using Weather.Common.Units;
 using Weather.ViewModels;
 
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for UnitsWindow.xaml
+    ///     Interaction logic for UnitsWindow.xaml
     /// </summary>
     [ImplementPropertyChanged]
-    public partial class UnitsWindow : Window
+    public partial class UnitsWindow
     {
         private readonly UnitsWindowViewModel _viewModel;
 
-        public UnitsWindow(UnitsWindowViewModel viewModel, ISettings settings)
+        public UnitsWindow(UnitsWindowViewModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;
@@ -25,7 +26,7 @@ namespace Weather.Views
             Closing += UnitsWindow_Closing;
         }
 
-        private void UnitsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void UnitsWindow_Closing(object sender, CancelEventArgs e)
         {
             _viewModel.SelectedStation.OnStationsChanged();
         }
@@ -36,29 +37,35 @@ namespace Weather.Views
             _viewModel.RegisterDirtyHandlers();
         }
 
-        private void ListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = ((ListBox)e.Source).SelectedItem;
-            if (selection == null) return;
-            _viewModel.Unit = ((ListBox)e.Source).SelectedItem as Unit;
-            _viewModel.SelectedUnit = new Unit
+            var selection = ((ListBox) e.Source).SelectedItem;
+            if (selection == null)
             {
-                UnitId = _viewModel.Unit.UnitId,
-                DisplayName = _viewModel.Unit.DisplayName,
-                DisplayUnit = _viewModel.Unit.DisplayUnit,
-                UnitType = _viewModel.Unit.UnitType
-            };
+                return;
+            }
+            _viewModel.Unit = ((ListBox) e.Source).SelectedItem as Unit;
+            if (_viewModel.Unit != null)
+            {
+                _viewModel.SelectedUnit = new Unit
+                {
+                    UnitId = _viewModel.Unit.UnitId,
+                    DisplayName = _viewModel.Unit.DisplayName,
+                    DisplayUnit = _viewModel.Unit.DisplayUnit,
+                    UnitType = _viewModel.Unit.UnitType
+                };
+            }
         }
 
         public void SelectUnitInListBox(Unit unit)
         {
-            lb.SelectedItem = unit;
+            Lb.SelectedItem = unit;
         }
 
-        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            this.DragMove();
+            OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

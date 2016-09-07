@@ -1,9 +1,9 @@
-﻿using LumenWorks.Framework.IO.Csv;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using LumenWorks.Framework.IO.Csv;
 using Weather.Common.Entities;
 using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
@@ -15,15 +15,15 @@ namespace Weather.Core
     {
         private readonly ISensorCore _sensorCore;
         private readonly IStationCore _stationCore;
+        private readonly BackgroundWorker _worker;
+
+        private readonly List<SensorValue> listSensorValues = new List<SensorValue>();
+        private readonly List<WeatherRecord> listWeatherRecords = new List<WeatherRecord>();
         private List<Tuple<ISensor, int>> _data;
         private int _excludeLines;
         private string _filePath;
         private WeatherStation _station;
         private int[] _timestamp;
-        private readonly BackgroundWorker _worker;
-
-        private List<SensorValue> listSensorValues = new List<SensorValue>();
-        private List<WeatherRecord> listWeatherRecords = new List<WeatherRecord>();
 
         public Importer(ISensorCore sensorCore, IStationCore stationCore)
         {
@@ -45,11 +45,6 @@ namespace Weather.Core
 
         public event EventHandler ImportComplete;
 
-        private void OnChanged(int p)
-        {
-            ImportChanged?.Invoke(this, new ImportEventArgs { Progress = p });
-        }
-
         public void Import(string filePath, WeatherStation station, List<Tuple<ISensor, int>> data, int excludeLines,
             params int[] timestamp)
         {
@@ -58,6 +53,11 @@ namespace Weather.Core
             _timestamp = timestamp;
             _station = station;
             _excludeLines = excludeLines;
+        }
+
+        private void OnChanged(int p)
+        {
+            ImportChanged?.Invoke(this, new ImportEventArgs {Progress = p});
         }
 
         private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -94,7 +94,7 @@ namespace Weather.Core
                             dt = DateTime.Parse(csv[_timestamp[0]] + " " + csv[_timestamp[1]]);
                         }
                         //    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
-                        var weatherrecord = new WeatherRecord { TimeStamp = dt };
+                        var weatherrecord = new WeatherRecord {TimeStamp = dt};
 
                         foreach (var d in _data)
                         {

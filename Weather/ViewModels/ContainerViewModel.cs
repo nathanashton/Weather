@@ -1,5 +1,6 @@
-﻿using PropertyChanged;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using PropertyChanged;
 using Weather.Common;
 using Weather.Core.Interfaces;
 using Weather.UserControls.Charts;
@@ -9,25 +10,16 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class ContainerViewModel : NotifyBase
     {
-        private ComboBoxItem _selected;
+        private Chart _selected;
+        public ObservableCollection<Chart> Charts { get; set; }
 
-        public ComboBoxItem Selected
+        public Chart Selected
         {
             get { return _selected; }
             set
             {
                 _selected = value;
-                if (_selected.Tag.ToString() == "Average Wind Direction")
-                {
-                    Content = new AverageWindDirection();
-                } else if (_selected.Tag.ToString() == "MinMax")
-                {
-                    Content = new MinMax();
-                }
-                else
-                {
-                    Content = null;
-                }
+                Content = _selected.Content;
                 OnPropertyChanged(() => Selected);
             }
         }
@@ -39,6 +31,35 @@ namespace Weather.ViewModels
         public ContainerViewModel(ISelectedStation selectedStation)
         {
             SelectedStation = selectedStation;
+            Charts = new ObservableCollection<Chart>
+            {
+                new Chart
+                {
+                    Name = "Average Wind Direction",
+                    Content = new AverageWindDirection()
+                },
+                new Chart
+                {
+                    Name = "Min / Max",
+                    Content = new MinMax()
+                },
+                new Chart
+                {
+                    Name = "All Records",
+                    Content = new AllRecords()
+                },
+                            new Chart
+                {
+                    Name = "Line Graph",
+                    Content = new LineGraph()
+                }
+            };
         }
+    }
+
+    public class Chart
+    {
+        public string Name { get; set; }
+        public ContentControl Content { get; set; }
     }
 }

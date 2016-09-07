@@ -8,8 +8,8 @@ namespace Weather.Core
 {
     public class UnitCore : IUnitCore
     {
-        private readonly IUnitRepository _repository;
         private readonly ILog _log;
+        private readonly IUnitRepository _repository;
 
         public UnitCore(IUnitRepository repository, ILog log)
         {

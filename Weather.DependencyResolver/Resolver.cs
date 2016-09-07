@@ -11,18 +11,21 @@ namespace Weather.DependencyResolver
 {
     public class Resolver
     {
-        public static ILog log = new Log();
-        public static ISettings settings = new Settings(log);
-        public static ISelectedStation test = new SelectedStation();
+        public static ILog Log = new Log();
+        public static ISettings Settings = new Settings(Log);
+        public static ISelectedStation Test = new SelectedStation();
 
         public IUnityContainer Bootstrap()
         {
             var container = new UnityContainer();
 
-           //container.RegisterType<ISettings, Settings>(new ContainerControlledLifetimeManager());
-            container.RegisterInstance<ISettings>(settings);
-            container.RegisterInstance<ILog>(log);
-            container.RegisterInstance<ISelectedStation>(test);
+            //container.RegisterType<ISettings, Settings>(new ContainerControlledLifetimeManager());
+            container.RegisterInstance(Settings);
+            container.RegisterInstance(Log);
+
+
+            container.RegisterInstance(Test);
+
 
             container.RegisterType<IStationCore, StationCore>();
             container.RegisterType<ISensorCore, SensorCore>();
@@ -38,7 +41,15 @@ namespace Weather.DependencyResolver
             container.RegisterType<IUnitRepository, UnitRepository>();
             container.RegisterType<IUnitCore, UnitCore>();
 
+            container.RegisterType<ISensorValueRepository, SensorValueRepository>();
+            container.RegisterType<ISensorValueCore, SensorValueCore>();
+
+            container.RegisterType<IWeatherRecordRepository, WeatherRecordRepository>();
+            container.RegisterType<IWeatherRecordCore, WeatherRecordCore>();
+
+
             container.RegisterType<IStationSensorRepository, StationSensorRepository>();
+
 
             return container;
         }

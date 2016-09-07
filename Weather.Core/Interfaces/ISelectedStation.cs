@@ -14,7 +14,7 @@ namespace Weather.Core.Interfaces
         bool TimeSpanMonth { get; set; }
         bool TimeSpanYear { get; set; }
         TimeSpan TimeSpan { get; set; }
-        string TimeSpanWords { get;  }
+        string TimeSpanWords { get; }
 
         event EventHandler StationsChanged;
 
@@ -31,6 +31,15 @@ namespace Weather.Core.Interfaces
         void BackOnePeriod();
 
         void ForwardOnePeriod();
+
+        void SetTimeSpanDay();
+
+        void SetTimeSpanWeek();
+
+        void SetTimeSpanMonth();
+
+        void SetTimeSpanYear();
+
 
     }
 }

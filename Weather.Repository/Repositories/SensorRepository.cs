@@ -10,19 +10,22 @@ namespace Weather.Repository.Repositories
 {
     public class SensorRepository : ISensorRepository
     {
-        private const string DbConnectionString = @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
         private readonly ILog _log;
+        private readonly ISettings _settings;
 
-        private IUnitRepository _unitRepository;
+        private readonly IUnitRepository _unitRepository;
 
-        public SensorRepository(ILog log, IUnitRepository unitRepository)
+        public SensorRepository(ILog log, IUnitRepository unitRepository, ISettings settings)
         {
             _log = log;
             _unitRepository = unitRepository;
+            _settings = settings;
         }
 
         public ISensor GetById(int id)
         {
+            _log.Debug("SensorRepository.GetById();");
+
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
                 SensorId = 0,
@@ -43,13 +46,13 @@ namespace Weather.Repository.Repositories
                         s.[SensorTypeId] as SensorTypeId,
                         st.[SensorTypeId] as SensorTypeSensorTypeId,
                         st.[Name] as Name,
-st.[SIUnitId] as SIUnitId
+                        st.[SIUnitId] as SIUnitId
                         FROM [Sensors] s
                         LEFT JOIN SensorTypes st ON s.SensorTypeId = st.SensorTypeId WHERE s.SensorId = @Id";
 
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -85,21 +88,21 @@ st.[SIUnitId] as SIUnitId
             }
 
             var sensorTypes = mappedReader
-                .GroupBy(x => new { x.SensorTypeSensorTypeId, x.Name, x.SIUnitId }, x => x, (key, g) =>
-                   new
-                   {
-                       key.SensorTypeSensorTypeId,
-                       SensorType =
-                           new SensorType
-                           {
-                               SensorTypeId = (int)key.SensorTypeSensorTypeId,
-                               Name = key.Name,
-                               SIUnit = _unitRepository.GetById(key.SIUnitId)
-                           }
-                   }).ToList();
+                .GroupBy(x => new {x.SensorTypeSensorTypeId, x.Name, x.SIUnitId}, x => x, (key, g) =>
+                    new
+                    {
+                        key.SensorTypeSensorTypeId,
+                        SensorType =
+                        new SensorType
+                        {
+                            SensorTypeId = key.SensorTypeSensorTypeId,
+                            Name = key.Name,
+                            SIUnit = _unitRepository.GetById(key.SIUnitId)
+                        }
+                    }).ToList();
 
             var sensors = mappedReader
-                .GroupBy(x => new { x.SensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId }, x => x,
+                .GroupBy(x => new {x.SensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId}, x => x,
                     (key, g) =>
                         new Sensor
                         {
@@ -115,6 +118,8 @@ st.[SIUnitId] as SIUnitId
 
         public List<ISensor> GetAllSensors()
         {
+            _log.Debug("SensorRepository.GetAllSensors();");
+
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
                 SensorId = 0,
@@ -135,13 +140,13 @@ st.[SIUnitId] as SIUnitId
                         s.[SensorTypeId] as SensorTypeId,
                         st.[SensorTypeId] as SensorTypeSensorTypeId,
                         st.[Name] as Name,
-st.[SIUnitId] as SIUnitId
+                        st.[SIUnitId] as SIUnitId
                         FROM [Sensors] s
                         LEFT JOIN SensorTypes st ON s.SensorTypeId = st.SensorTypeId";
 
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -175,21 +180,21 @@ st.[SIUnitId] as SIUnitId
             }
 
             var sensorTypes = mappedReader
-                .GroupBy(x => new { x.SensorTypeSensorTypeId, x.Name, x.SIUnitId }, x => x, (key, g) =>
-                   new
-                   {
-                       key.SensorTypeSensorTypeId,
-                       SensorType =
-                           new SensorType
-                           {
-                               SensorTypeId = (int)key.SensorTypeSensorTypeId,
-                               Name = key.Name,
-                               SIUnit = _unitRepository.GetById(key.SIUnitId)
-                           }
-                   }).ToList();
+                .GroupBy(x => new {x.SensorTypeSensorTypeId, x.Name, x.SIUnitId}, x => x, (key, g) =>
+                    new
+                    {
+                        key.SensorTypeSensorTypeId,
+                        SensorType =
+                        new SensorType
+                        {
+                            SensorTypeId = key.SensorTypeSensorTypeId,
+                            Name = key.Name,
+                            SIUnit = _unitRepository.GetById(key.SIUnitId)
+                        }
+                    }).ToList();
 
             var sensors = mappedReader
-                .GroupBy(x => new { x.SensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId }, x => x,
+                .GroupBy(x => new {x.SensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId}, x => x,
                     (key, g) =>
                         new Sensor
                         {
@@ -205,11 +210,14 @@ st.[SIUnitId] as SIUnitId
 
         public int Add(ISensor sensor)
         {
-            var sql = @"INSERT INTO Sensors (Manufacturer, Model, Description, SensorTypeId) VALUES (@Manufacturer, @Model, @Description, @SensorTypeId)";
+            _log.Debug("SensorRepository.Add();");
+
+            var sql =
+                @"INSERT INTO Sensors (Manufacturer, Model, Description, SensorTypeId) VALUES (@Manufacturer, @Model, @Description, @SensorTypeId)";
             var sql2 = "SELECT last_insert_rowid();";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -237,10 +245,13 @@ st.[SIUnitId] as SIUnitId
 
         public void Update(ISensor sensor)
         {
-            var sql = @"UPDATE Sensors SET Manufacturer = @Manufacturer, Model = @Model, Description = @Description, SensorTypeId = @SensorTypeId WHERE SensorId = @Id";
+            _log.Debug("SensorRepository.Update();");
+
+            var sql =
+                @"UPDATE Sensors SET Manufacturer = @Manufacturer, Model = @Model, Description = @Description, SensorTypeId = @SensorTypeId WHERE SensorId = @Id";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -266,10 +277,12 @@ st.[SIUnitId] as SIUnitId
 
         public void Delete(int id)
         {
+            _log.Debug("SensorRepository.Delete();");
+
             var sql = @"DELETE FROM Sensors WHERE SensorId = @Id";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -290,10 +303,12 @@ st.[SIUnitId] as SIUnitId
 
         public bool AnySensorUsesSensorType(ISensorType sensorType)
         {
+            _log.Debug("SensorRepository.AnySensorUsesSensorType();");
+
             var sql = @"SELECT * FROM Sensors WHERE SensorTypeId = @Id";
             try
             {
-                using (var connection = new SQLiteConnection(DbConnectionString))
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
                 {
                     connection.Open();
                     {
@@ -302,7 +317,10 @@ st.[SIUnitId] as SIUnitId
                             command.Parameters.AddWithValue("@Id", sensorType.SensorTypeId);
                             using (var reader = command.ExecuteReader())
                             {
-                                if (reader.HasRows) return true;
+                                if (reader.HasRows)
+                                {
+                                    return true;
+                                }
                                 return false;
                             }
                         }

@@ -1,13 +1,47 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Weather.Skins">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+
+    <Style x:Key="BackImage" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Style.Resources>
+            <Style TargetType="{x:Type Image}">
+                <Setter Property="Source" Value="pack://application:,,,/Resources/Icons/rewind_48px.png" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Style.Resources>
+
+
+    </Style>
+
+
+    <Style x:Key="ForwardImage" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Style.Resources>
+            <Style TargetType="{x:Type Image}">
+                <Setter Property="Source" Value="pack://application:,,,/Resources/Icons/fast_forward_48px.png" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Style.Resources>
+
+
+    </Style>
 
 
     <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#B3ADAB" />
     <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#fff" />
     <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#888" />
-    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="#FCFCFC" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="Transparent" />
     <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="#D1CECD" />
 
 
@@ -47,9 +81,12 @@
                 <Setter TargetName="Arrow" Property="Shape.Fill" Value="#FF8D979E" />
             </Trigger>
             <Trigger Property="UIElement.IsEnabled" Value="False">
-                <Setter TargetName="Border" Property="Panel.Background" Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
-                <Setter TargetName="ButtonBorder" Property="Panel.Background" Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
-                <Setter TargetName="ButtonBorder" Property="Border.BorderBrush" Value="{StaticResource ComboBoxDisabledBorderBrush}" />
+                <Setter TargetName="Border" Property="Panel.Background"
+                        Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
+                <Setter TargetName="ButtonBorder" Property="Panel.Background"
+                        Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
+                <Setter TargetName="ButtonBorder" Property="Border.BorderBrush"
+                        Value="{StaticResource ComboBoxDisabledBorderBrush}" />
                 <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}" />
                 <Setter TargetName="Arrow" Property="Shape.Fill" Value="#999" />
             </Trigger>
@@ -131,7 +168,8 @@
                             <Setter TargetName="DropDownBorder" Property="FrameworkElement.MinHeight" Value="95" />
                         </Trigger>
                         <Trigger Property="UIElement.IsEnabled" Value="False">
-                            <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}" />
+                            <Setter Property="TextElement.Foreground"
+                                    Value="{StaticResource ComboBoxDisabledForegroundBrush}" />
                         </Trigger>
                         <Trigger Property="ItemsControl.IsGrouping" Value="True">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
@@ -152,7 +190,7 @@
     </Style>
 
 
-    <Style x:Key="HeaderBG" TargetType="{x:Type DockPanel}">
+    <Style x:Key="HeaderBg" TargetType="{x:Type DockPanel}">
         <Setter Property="Background" Value="DarkGray" />
     </Style>
 
@@ -229,7 +267,7 @@
     </Style>
 
 
-    <Style x:Key="radio"
+    <Style x:Key="Radio"
            BasedOn="{StaticResource {x:Type ToggleButton}}"
            TargetType="RadioButton">
         <Setter Property="Background" Value="Transparent" />

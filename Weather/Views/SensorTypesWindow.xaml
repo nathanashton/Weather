@@ -51,7 +51,6 @@
                     <Button Width="53"
                             Margin="10,7,0,7"
                             HorizontalAlignment="Left"
-                            Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding AddCommand}"
                             DockPanel.Dock="Left"
@@ -67,7 +66,6 @@
                     <Button Width="65"
                             Margin="2,7,7,7"
                             HorizontalAlignment="Left"
-                            Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding DeleteCommand}"
                             DockPanel.Dock="Left"
@@ -116,7 +114,8 @@
                             BorderBrush="#A0A0A0"
                             Command="{Binding SaveCommand}">
                         <DockPanel Background="Transparent">
-                            <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
+                            <Image DockPanel.Dock="Left"
+                                   Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Style.Triggers>
@@ -137,7 +136,7 @@
                 <DockPanel Margin="10">
                     <DockPanel>
 
-                        <ListBox Name="lb"
+                        <ListBox Name="Lb"
                                  Width="180"
                                  DockPanel.Dock="Left"
                                  ItemsSource="{Binding SensorTypes}"
@@ -145,7 +144,8 @@
                     </DockPanel>
 
                     <DockPanel Margin="10,0,0,0">
-                        <Grid IsEnabled="{Binding TempSelectedSensorType, Converter={StaticResource NullBoolConverter}}">
+                        <Grid
+                            IsEnabled="{Binding TempSelectedSensorType, Converter={StaticResource NullBoolConverter}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -175,7 +175,8 @@
                                     <Style TargetType="{x:Type TextBox}">
                                         <Style.Triggers>
                                             <Trigger Property="Validation.HasError" Value="true">
-                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                                                <Setter Property="ToolTip"
+                                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -195,7 +196,7 @@
                                         Command="{Binding UnitsWindowCommand}"
                                         Content="..."
                                         DockPanel.Dock="Right" />
-                                <ComboBox Name="SIUnit"
+                                <ComboBox Name="SiUnit"
                                           Height="22"
                                           Margin="2"
                                           VerticalContentAlignment="Center"
@@ -226,7 +227,8 @@
                                         Command="{Binding AddUnitCommand}"
                                         DockPanel.Dock="Left">
                                     <DockPanel Background="Transparent">
-                                        <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/plus_48px.png">
+                                        <Image DockPanel.Dock="Left"
+                                               Source="pack://application:,,,/Resources/Icons/plus_48px.png">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>
@@ -252,7 +254,8 @@
                                         Command="{Binding DeleteUnitCommand}"
                                         DockPanel.Dock="Left">
                                     <DockPanel Background="Transparent">
-                                        <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/minus_48px.png">
+                                        <Image DockPanel.Dock="Left"
+                                               Source="pack://application:,,,/Resources/Icons/minus_48px.png">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>

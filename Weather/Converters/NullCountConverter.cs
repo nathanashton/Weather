@@ -9,10 +9,13 @@ namespace Weather.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return false;
+            if (value == null)
+            {
+                return false;
+            }
 
             var collection = value as ICollection;
-            return collection != null ? (collection.Count == 0 ? false : true) : true;
+            return (collection == null) || (collection.Count != 0);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
