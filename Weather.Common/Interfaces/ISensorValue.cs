@@ -11,5 +11,7 @@ namespace Weather.Common.Interfaces
         double? DisplayValue { get; set; }
         ISensor Sensor { get; set; }
         IWeatherStation Station { get; set; }
+        int StationId { get; set; }
+        int SensorId { get; set; }
     }
 }

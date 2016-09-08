@@ -38,12 +38,16 @@ namespace Weather.UserControls.Charts
         {
             ViewModel.SelectedStation.SelectedStationsChanged -= ViewModel.SelectedStation_SelectedStationsChanged;
             ViewModel.SelectedStation.TimeSpanChanged -= ViewModel.SelectedStation_TimeSpanChanged;
+            ViewModel.SelectedStation.GetRecordsCompleted -= ViewModel.SelectedStation_GetRecordsCompleted;
+
         }
 
         private void MinMax_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectedStation.SelectedStationsChanged += ViewModel.SelectedStation_SelectedStationsChanged;
             ViewModel.SelectedStation.TimeSpanChanged += ViewModel.SelectedStation_TimeSpanChanged;
+            ViewModel.SelectedStation.GetRecordsCompleted += ViewModel.SelectedStation_GetRecordsCompleted;
+
         }
     }
 }

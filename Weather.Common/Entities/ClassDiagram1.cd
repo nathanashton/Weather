@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Weather.Common.Entities.Sensor">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIAAAAACkAYAECAgAAAAAAAAAAIAAAAgAAAAAACA=</HashCode>
+      <FileName>Entities\Sensor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Weather.Common.Entities.SensorType">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgCAAQAECAgAAAQAAAAAAEAAEAACAAAAAAA=</HashCode>
+      <FileName>Entities\SensorType.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Weather.Common.Entities.SensorValue">
+    <Position X="2.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAIIAAAQAAAAAEEAAAAAAAAAAAAAAAQAIAAAAACAA=</HashCode>
+      <FileName>Entities\SensorValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.179" />
+  </Class>
+  <Class Name="Weather.Common.Entities.StationSensor">
+    <Position X="13" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAQAAEAAEAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\StationSensor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Weather.Common.Entities.WeatherRecord">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAIAAAAAAAgAAAAAAACA=</HashCode>
+      <FileName>Entities\WeatherRecord.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Weather.Common.Entities.WeatherStation">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAgAAAIAAECoAQAECAgIAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Entities\WeatherStation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Weather.Common.Units.Unit">
+    <Position X="16" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAACAAQAECAgAAAAAAAAABAAAQAAEAAAAAAA=</HashCode>
+      <FileName>Units\Unit.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

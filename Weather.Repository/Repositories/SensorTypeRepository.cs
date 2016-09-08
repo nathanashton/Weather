@@ -131,6 +131,48 @@ namespace Weather.Repository.Repositories
             return sensorTypes.Cast<ISensorType>().ToList();
         }
 
+        public List<ISensorType> GetAllTest()
+        {
+            _log.Debug("SensorTypeRepository.GetAll();");
+            List<ISensorType> SensorTypes = new List<ISensorType>();
+
+            var sql = @"SELECT * FROM SensorTypes";
+
+            try
+            {
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var sensorType = new SensorType
+                                    {
+                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
+                                        Name = reader["Name"].ToString(),
+                                        Units = new List<Unit>(),
+                                        SIUnit = null
+                                    };
+                                    SensorTypes.Add(sensorType);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+
+            return SensorTypes;
+        }
+
         //TODO
         public ISensorType GetById(int id)
         {

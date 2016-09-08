@@ -46,6 +46,9 @@ namespace Weather.Core
             }
         }
 
+        public event EventHandler GetRecordsStarted;
+        public event EventHandler GetRecordsCompleted;
+
         public bool TimeSpanDay
         {
             get { return _timeSpanDay; }
@@ -114,6 +117,18 @@ namespace Weather.Core
                 _endDate = value;
                 OnPropertyChanged(() => EndDate);
             }
+        }
+
+        public void OnGetRecordsStarted()
+        {
+            GetRecordsStarted?.Invoke(this, null);
+        }
+
+        public void OnGetRecordsCompleted()
+        {
+            GetRecordsCompleted?.Invoke(this, null);
+
+
         }
 
         public event EventHandler StationsChanged;

@@ -55,5 +55,6 @@ namespace Weather.Common.Entities
             var f = !IsNullOrEmpty(Name) && (SIUnit != null);
             return f;
         }
+        public int SIUnitId { get; set; }
     }
 }

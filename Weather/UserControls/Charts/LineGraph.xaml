@@ -17,6 +17,14 @@
                       SelectedItem="{Binding SelectedSensor,
                                              Mode=TwoWay}" />
 
+            <ComboBox Height="22"
+                      Margin="5,0,5,0"
+                      HorizontalAlignment="Right"
+                      DockPanel.Dock="Top"
+                      ItemsSource="{Binding SelectedStation.WeatherStation.Sensors}"
+                      SelectedItem="{Binding SelectedSensor2,
+                                             Mode=TwoWay}" />
+
         </DockPanel>
 
 
@@ -53,6 +61,18 @@
                                         StrokeThickness="1"
                                         XBindingPath="Date"
                                         YBindingPath="Value" />
+
+            <chart:FastLineBitmapSeries FontSize="11"
+                                        Interior="Green"
+                                        ItemsSource="{Binding Data2}"
+                                        Label="{Binding SelectedSensor2.Sensor.SensorType}"
+                                        StrokeThickness="1"
+                                        XBindingPath="Date"
+                                        YBindingPath="Value">
+                <chart:FastLineBitmapSeries.YAxis>
+                    <chart:NumericalAxis FontSize="11" OpposedPosition="True" />
+                </chart:FastLineBitmapSeries.YAxis>
+            </chart:FastLineBitmapSeries>
 
 
 

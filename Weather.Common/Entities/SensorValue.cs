@@ -14,11 +14,11 @@ namespace Weather.Common.Entities
         {
             get
             {
-                var sensor = Station.Sensors.FirstOrDefault(x => x.Sensor.SensorId == Sensor.SensorId);
-                if (sensor != null)
-                {
-                    return sensor.Correction + RawValue;
-                }
+                //var sensor = Station.Sensors.FirstOrDefault(x => x.Sensor.SensorId == Sensor.SensorId);
+                //if (sensor != null)
+                //{
+                //    return sensor.Correction + RawValue;
+                //}
                 return RawValue;
             }
         }
@@ -30,10 +30,12 @@ namespace Weather.Common.Entities
         public ISensor Sensor { get; set; }
 
         public IWeatherStation Station { get; set; }
+        public int StationId { get; set; }
 
         public override string ToString()
         {
             return CorrectedValue.ToString();
         }
+        public int SensorId { get; set; }
     }
 }

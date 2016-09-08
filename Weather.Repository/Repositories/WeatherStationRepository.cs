@@ -21,6 +21,52 @@ namespace Weather.Repository.Repositories
             _sensorRepository = sensorRepository;
         }
 
+        public List<IWeatherStation> GetAllTest()
+        {
+            _log.Debug("WeatherStationRepository.GetById();");
+            var Stations = new List<IWeatherStation>();
+
+            var sql = @"SELECT * FROM WeatherStations";
+            try
+            {
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var station = new WeatherStation
+                                    {
+                                        WeatherStationId = Convert.ToInt32(reader["WeatherStationId"]),
+                                        Manufacturer = reader["Manufacturer"].ToString(),
+                                        Model = reader["Model"].ToString(),
+                                        Description = reader["Description"].ToString(),
+                                        Sensors = null,
+                                        Records = null
+                                    };
+
+                                    Stations.Add(station);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+
+
+
+            return Stations;
+        }
+
         public IWeatherStation GetById(int id)
         {
             _log.Debug("WeatherStationRepository.GetById();");

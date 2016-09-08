@@ -16,6 +16,13 @@ namespace Weather.Core.Interfaces
         TimeSpan TimeSpan { get; set; }
         string TimeSpanWords { get; }
 
+        event EventHandler GetRecordsStarted;
+        event EventHandler GetRecordsCompleted;
+        void OnGetRecordsStarted();
+        void OnGetRecordsCompleted();
+        
+
+
         event EventHandler StationsChanged;
 
         event EventHandler SelectedStationsChanged;

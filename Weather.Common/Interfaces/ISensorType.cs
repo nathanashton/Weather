@@ -10,5 +10,6 @@ namespace Weather.Common.Interfaces
         IList<Unit> Units { get; set; }
         Unit SIUnit { get; set; }
         bool IsValid { get; }
+        int SIUnitId { get; set; }
     }
 }

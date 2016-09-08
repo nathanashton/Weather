@@ -10,6 +10,10 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class ContainerViewModel : NotifyBase
     {
+        public bool Loading { get; set; }
+        public bool LoadingInvert { get; set; }
+
+
         private Chart _selected;
         public ObservableCollection<Chart> Charts { get; set; }
 
@@ -30,7 +34,13 @@ namespace Weather.ViewModels
 
         public ContainerViewModel(ISelectedStation selectedStation)
         {
+            Loading = false;
+            LoadingInvert = true;
+
             SelectedStation = selectedStation;
+            SelectedStation.GetRecordsStarted += SelectedStation_GetRecordsStarted;
+            SelectedStation.GetRecordsCompleted += SelectedStation_GetRecordsCompleted;
+
             Charts = new ObservableCollection<Chart>
             {
                 new Chart
@@ -54,6 +64,19 @@ namespace Weather.ViewModels
                     Content = new LineGraph()
                 }
             };
+        }
+
+        private void SelectedStation_GetRecordsCompleted(object sender, System.EventArgs e)
+        {
+            Loading = false;
+            LoadingInvert = true;
+        }
+
+        private void SelectedStation_GetRecordsStarted(object sender, System.EventArgs e)
+        {
+            if (Content == null) return;
+            Loading = true;
+            LoadingInvert = false;
         }
     }
 

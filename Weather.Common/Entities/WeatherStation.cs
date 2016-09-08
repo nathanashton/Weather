@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using PropertyChanged;
 using Weather.Common.Interfaces;
@@ -48,7 +49,7 @@ namespace Weather.Common.Entities
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public IList<IStationSensor> Sensors { get; set; }
-        public IList<IWeatherRecord> Records { get; set; }
+        public IList<IWeatherRecord> Records { get; set; } = new ObservableCollection<IWeatherRecord>();
         public int WeatherStationId { get; set; }
         public bool IsValid => Validate();
 

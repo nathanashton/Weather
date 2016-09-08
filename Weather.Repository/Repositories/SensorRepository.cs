@@ -116,6 +116,56 @@ namespace Weather.Repository.Repositories
             return sensors.Cast<ISensor>().First();
         }
 
+
+        public List<ISensor> GetAllSensorsTest()
+        {
+            _log.Debug("SensorRepository.GetAllSensors();");
+            var Sensors = new List<ISensor>();
+           
+            var sql = @"SELECT * FROM Sensors";
+
+            try
+            {
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var sensor = new Sensor
+                                    {
+                                        SensorId = Convert.ToInt32(reader["SensorId"]),
+                                        Manufacturer = reader["Manufacturer"].ToString(),
+                                        Model = reader["Model"].ToString(),
+                                        Description = reader["Description"].ToString(),
+                                        SensorType = null,
+                                        SensorValues = null,
+                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"])
+                                    };
+                                    Sensors.Add(sensor);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+
+
+
+
+            return Sensors;
+        }
+
+
         public List<ISensor> GetAllSensors()
         {
             _log.Debug("SensorRepository.GetAllSensors();");

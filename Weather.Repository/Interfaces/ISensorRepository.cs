@@ -7,6 +7,9 @@ namespace Weather.Repository.Interfaces
     {
         List<ISensor> GetAllSensors();
 
+        List<ISensor> GetAllSensorsTest();
+
+
         int Add(ISensor sensor);
 
         void Update(ISensor sensor);

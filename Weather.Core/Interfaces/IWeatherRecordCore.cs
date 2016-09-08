@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Weather.Common.Interfaces;
 
 namespace Weather.Core.Interfaces
@@ -7,6 +8,6 @@ namespace Weather.Core.Interfaces
     public interface IWeatherRecordCore
     {
         List<IWeatherRecord> GetAllRecords();
-        List<IWeatherRecord> GetAllRecordsForStationBetweenDates(int weatherStationId, DateTime startDate, DateTime endDate);
+        Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId, DateTime startDate, DateTime endDate, Action callback);
     }
 }

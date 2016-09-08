@@ -9,6 +9,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <converters:NullBoolConverter x:Key="NullCount" />
+        <BooleanToVisibilityConverter x:Key="boolvis" />
     </UserControl.Resources>
     <Border BorderBrush="DarkGray"
             BorderThickness="1"
@@ -28,7 +29,24 @@
                           ItemsSource="{Binding Charts}"
                           SelectedItem="{Binding Selected}" />
             </DockPanel>
-            <ContentControl BorderThickness="0" Content="{Binding Content}" />
+            <Grid>
+                <ProgressBar Width="100"
+                             Height="25"
+                             Margin="5"
+                             Panel.ZIndex="2000"
+                             Background="White"
+                             IsIndeterminate="True"
+                             Opacity="1"
+                             Visibility="{Binding Loading,
+                                                  Converter={StaticResource boolvis}}" />
+
+                <Grid Panel.ZIndex="1000"
+                      Background="Black"
+                      Opacity="0.1"
+                      Visibility="{Binding Loading,
+                                           Converter={StaticResource boolvis}}" />
+                <ContentControl BorderThickness="0" Content="{Binding Content}" />
+            </Grid>
         </DockPanel>
     </Border>
 </UserControl>

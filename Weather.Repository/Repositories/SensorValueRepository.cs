@@ -44,8 +44,7 @@ namespace Weather.Repository.Repositories
                                     {
                                         SensorValueId = Convert.ToInt32(reader["SensorValueId"]),
                                         RawValue = DbUtils.ParseDoubleNull(reader["RawValue"].ToString()),
-                                        Sensor =
-                                            _sensorRepository.GetById(Convert.ToInt32(reader["DisplayUnit"].ToString()))
+                                        SensorId = Convert.ToInt32(reader["SensorId"].ToString())
                                     };
                                     sensorValues.Add(sensorValue);
                                 }
@@ -60,6 +59,11 @@ namespace Weather.Repository.Repositories
                 throw;
             }
             return sensorValues;
+        }
+
+        public List<ISensorValue> GetAllTest()
+        {
+            throw new NotImplementedException();
         }
 
 
@@ -87,8 +91,7 @@ namespace Weather.Repository.Repositories
                                     {
                                         SensorValueId = Convert.ToInt32(reader["SensorValueId"]),
                                         RawValue = DbUtils.ParseDoubleNull(reader["RawValue"].ToString()),
-                                        Sensor =
-                                            _sensorRepository.GetById(Convert.ToInt32(reader["SensorId"].ToString()))
+                                        SensorId = Convert.ToInt32(reader["SensorId"].ToString())
                                     };
                                 }
                             }

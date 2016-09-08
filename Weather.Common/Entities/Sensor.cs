@@ -49,6 +49,7 @@ namespace Weather.Common.Entities
         public string Model { get; set; }
         public string Description { get; set; }
         public ISensorType SensorType { get; set; }
+        public int SensorTypeId { get; set; }
         public IList<ISensorValue> SensorValues { get; set; } = new List<ISensorValue>();
 
         public string FullName => ToString() + " (" + SensorType.Name + ")";

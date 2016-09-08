@@ -7,6 +7,8 @@ namespace Weather.Repository.Interfaces
     {
         List<ISensorValue> GetAll();
 
+        List<ISensorValue> GetAllTest();
+
         ISensorValue GetById(int id);
 
         int Add(ISensorValue sensorValue);
