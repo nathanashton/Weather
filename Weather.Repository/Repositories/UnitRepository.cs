@@ -11,7 +11,7 @@ namespace Weather.Repository.Repositories
     public class UnitRepository : IUnitRepository
     {
         private readonly ILog _log;
-        private ISettings _settings;
+        private readonly ISettings _settings;
 
         public UnitRepository(ILog log, ISettings settings)
         {

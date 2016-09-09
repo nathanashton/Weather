@@ -20,8 +20,7 @@
                        DockPanel.Dock="Top"
                        Style="{DynamicResource Header}">
                 <Label Content="{Binding Content.ViewModel.Header}" Style="{DynamicResource HeaderLabel}" />
-                <ComboBox Width="180"
-                          Margin="3"
+                <ComboBox Margin="3"
                           HorizontalAlignment="Right"
                           DisplayMemberPath="Name"
                           DockPanel.Dock="Right"

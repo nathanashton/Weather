@@ -13,6 +13,6 @@ namespace Weather.Repository.Interfaces
 
         Task<List<IWeatherRecord>> GetAllTestAsync();
 
-        Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate, DateTime endDate, Action callback);
+        Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate, DateTime endDate);
     }
 }

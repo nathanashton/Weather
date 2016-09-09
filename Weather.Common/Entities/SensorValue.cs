@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Weather.Common.Interfaces;
+﻿using Weather.Common.Interfaces;
 using Weather.Common.Units;
 
 namespace Weather.Common.Entities
@@ -31,11 +30,11 @@ namespace Weather.Common.Entities
 
         public IWeatherStation Station { get; set; }
         public int StationId { get; set; }
+        public int SensorId { get; set; }
 
         public override string ToString()
         {
             return CorrectedValue.ToString();
         }
-        public int SensorId { get; set; }
     }
 }

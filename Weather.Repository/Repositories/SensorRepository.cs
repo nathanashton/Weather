@@ -121,7 +121,7 @@ namespace Weather.Repository.Repositories
         {
             _log.Debug("SensorRepository.GetAllSensors();");
             var Sensors = new List<ISensor>();
-           
+
             var sql = @"SELECT * FROM Sensors";
 
             try
@@ -158,8 +158,6 @@ namespace Weather.Repository.Repositories
                 _log.Error("", ex);
                 throw;
             }
-
-
 
 
             return Sensors;

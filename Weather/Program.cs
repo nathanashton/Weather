@@ -54,12 +54,13 @@ namespace Weather
 
 
             // Charts
-            container.RegisterType<AverageWindDirectionViewModel>();
             container.RegisterType<LineGraphViewModel>();
 
-            container.RegisterType<MinMaxViewModel>();
+            //container.RegisterType<AverageWindDirectionViewModel>();
 
-            container.RegisterType<AllRecordsViewModel>();
+            //container.RegisterType<MinMaxViewModel>();
+
+            //container.RegisterType<AllRecordsViewModel>();
 
 
             container.RegisterType<StationMapWindow>();

@@ -18,22 +18,16 @@ namespace Weather.Core.Interfaces
 
         event EventHandler GetRecordsStarted;
         event EventHandler GetRecordsCompleted;
-        void OnGetRecordsStarted();
-        void OnGetRecordsCompleted();
-        
 
+        event EventHandler SelectedStationChanged;
+        event EventHandler SelectedStationUpdated;
 
-        event EventHandler StationsChanged;
-
-        event EventHandler SelectedStationsChanged;
-
-        event EventHandler TimeSpanChanged;
-
-        void OnStationsChanged();
-
+        void OnSelectedStationUpdated();
         void OnSelectedStationChanged();
 
-        void OnTimeSpanChanged();
+        void OnGetRecordsStarted();
+        void OnGetRecordsCompleted();
+
 
         void BackOnePeriod();
 
@@ -46,7 +40,5 @@ namespace Weather.Core.Interfaces
         void SetTimeSpanMonth();
 
         void SetTimeSpanYear();
-
-
     }
 }

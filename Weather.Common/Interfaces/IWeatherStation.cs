@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Weather.Common.Interfaces
 {
@@ -13,6 +14,6 @@ namespace Weather.Common.Interfaces
         bool IsValid { get; }
 
         IList<IStationSensor> Sensors { get; set; }
-        IList<IWeatherRecord> Records { get; set; }
+        ObservableCollection<IWeatherRecord> Records { get; set; }
     }
 }

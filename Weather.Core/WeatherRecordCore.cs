@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Repository.Interfaces;
@@ -16,12 +13,13 @@ namespace Weather.Core
         private readonly ISensorValueRepository _sv;
 
         private ISensorRepository _s;
-        private IUnitRepository _u;
         private ISensorTypeRepository _st;
+        private IUnitRepository _u;
         private IWeatherStationRepository _ws;
 
 
-        public WeatherRecordCore(IWeatherRecordRepository repository, ISensorValueRepository sv, ISensorRepository s, IUnitRepository u, ISensorTypeRepository st, IWeatherStationRepository ws)
+        public WeatherRecordCore(IWeatherRecordRepository repository, ISensorValueRepository sv, ISensorRepository s,
+            IUnitRepository u, ISensorTypeRepository st, IWeatherStationRepository ws)
         {
             _repository = repository;
             _sv = sv;
@@ -36,9 +34,10 @@ namespace Weather.Core
             return _repository.GetAll();
         }
 
-        public async Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId, DateTime startDate, DateTime endDate, Action callback)
+        public async Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId,
+            DateTime startDate, DateTime endDate)
         {
-            var all = await _repository.GetAllForStation(weatherStationId, startDate, endDate, callback);
+            var all = await _repository.GetAllForStation(weatherStationId, startDate, endDate);
             return all;
         }
     }

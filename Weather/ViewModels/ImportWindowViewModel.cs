@@ -27,6 +27,8 @@ namespace Weather.ViewModels
             new Stopwatch();
 
         private bool _multipleChecked;
+
+        private readonly ISelectedStation _selectedStation;
         private bool _singleChecked;
 
         public bool SingleChecked
@@ -152,8 +154,6 @@ namespace Weather.ViewModels
         public string FilePath { get; set; }
 
         public int ExcludeLineCount { get; set; }
-
-        private ISelectedStation _selectedStation;
 
         public ImportWindowViewModel(IImporter importer, ISelectedStation selectedStation)
         {

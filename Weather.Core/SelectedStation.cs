@@ -16,7 +16,7 @@ namespace Weather.Core
         private string _timeSpanWords;
         private bool _timeSpanYear;
         private IWeatherStation _weatherStation;
-        
+
         public SelectedStation()
         {
             SetTimeSpanWeek();
@@ -24,7 +24,7 @@ namespace Weather.Core
             EndDate = DateTime.Now;
             UpdateDates();
         }
-        
+
         public IWeatherStation WeatherStation
         {
             get { return _weatherStation; }
@@ -48,6 +48,9 @@ namespace Weather.Core
 
         public event EventHandler GetRecordsStarted;
         public event EventHandler GetRecordsCompleted;
+        public event EventHandler SelectedStationChanged;
+
+        public event EventHandler SelectedStationUpdated;
 
         public bool TimeSpanDay
         {
@@ -119,6 +122,16 @@ namespace Weather.Core
             }
         }
 
+        public void OnSelectedStationUpdated()
+        {
+            SelectedStationUpdated?.Invoke(this, null);
+        }
+
+        public void OnSelectedStationChanged()
+        {
+            SelectedStationChanged?.Invoke(this, null);
+        }
+
         public void OnGetRecordsStarted()
         {
             GetRecordsStarted?.Invoke(this, null);
@@ -127,42 +140,21 @@ namespace Weather.Core
         public void OnGetRecordsCompleted()
         {
             GetRecordsCompleted?.Invoke(this, null);
-
-
         }
 
-        public event EventHandler StationsChanged;
-        public event EventHandler TimeSpanChanged;
-        public event EventHandler SelectedStationsChanged;
-
-
-        public void OnStationsChanged()
-        {
-            StationsChanged?.Invoke(this, null);
-        }
-
-        public void OnSelectedStationChanged()
-        {
-            SelectedStationsChanged?.Invoke(this, null);
-        }
-
-        public void OnTimeSpanChanged()
-        {
-            TimeSpanChanged?.Invoke(this, null);
-        }
 
         public void BackOnePeriod()
         {
             StartDate = StartDate - TimeSpan;
             EndDate = EndDate - TimeSpan;
-            OnTimeSpanChanged();
+            OnSelectedStationUpdated();
         }
 
         public void ForwardOnePeriod()
         {
             StartDate = StartDate + TimeSpan;
             EndDate = EndDate + TimeSpan;
-            OnTimeSpanChanged();
+            OnSelectedStationUpdated();
         }
 
         public void SetTimeSpanDay()
@@ -174,7 +166,7 @@ namespace Weather.Core
             TimeSpanYear = false;
             TimeSpanWords = "Day";
             UpdateDates();
-            OnTimeSpanChanged();
+            OnSelectedStationUpdated();
         }
 
         public void SetTimeSpanWeek()
@@ -186,7 +178,7 @@ namespace Weather.Core
             TimeSpanYear = false;
             TimeSpanWords = "Week";
             UpdateDates();
-            OnTimeSpanChanged();
+            OnSelectedStationUpdated();
         }
 
         public void SetTimeSpanMonth()
@@ -198,7 +190,7 @@ namespace Weather.Core
             TimeSpanYear = false;
             TimeSpanWords = "Month";
             UpdateDates();
-            OnTimeSpanChanged();
+            OnSelectedStationUpdated();
         }
 
         public void SetTimeSpanYear()
@@ -210,7 +202,7 @@ namespace Weather.Core
             TimeSpanYear = true;
             TimeSpanWords = "Year";
             UpdateDates();
-            OnTimeSpanChanged();
+            OnSelectedStationUpdated();
         }
 
         private void UpdateDates()

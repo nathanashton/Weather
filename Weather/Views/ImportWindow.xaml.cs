@@ -59,7 +59,6 @@ namespace Weather.Views
         private void IntegerUpDown_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             _viewModel.FilteredRecords =
-
                 new ObservableCollection<ObservableCollection<Record>>(
                     _viewModel.Records.ToList()
                         .GetRange(_viewModel.ExcludeLineCount, _viewModel.Records.Count - _viewModel.ExcludeLineCount));

@@ -77,12 +77,7 @@ namespace Weather.ViewModels
 
         public ICommand ClearDebugCommand
         {
-            get { return new RelayCommand(ClearDebug ,x=> true); }
-        }
-
-        private void ClearDebug(object obj)
-        {
-            DebugPanel = String.Empty;
+            get { return new RelayCommand(ClearDebug, x => true); }
         }
 
         public ICommand SensorTypesCommand
@@ -141,6 +136,11 @@ namespace Weather.ViewModels
             SelectedStation = selectedStation;
             log.DebugPanelMessage += _log_DebugPanelMessage;
             SideBarVisible = true;
+        }
+
+        private void ClearDebug(object obj)
+        {
+            DebugPanel = string.Empty;
         }
 
         private void PeriodBack(object obj)

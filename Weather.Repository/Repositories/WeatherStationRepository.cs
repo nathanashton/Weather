@@ -63,7 +63,6 @@ namespace Weather.Repository.Repositories
             }
 
 
-
             return Stations;
         }
 
@@ -198,12 +197,12 @@ namespace Weather.Repository.Repositories
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
-                Latitude = (double?)0,
-                Longitude = (double?)0,
-                SensorId = (int?)0,
-                Correction = (double?)0,
+                Latitude = (double?) 0,
+                Longitude = (double?) 0,
+                SensorId = (int?) 0,
+                Correction = (double?) 0,
                 Notes = string.Empty,
-                StationSensorId = (int?)0
+                StationSensorId = (int?) 0
             }).ToList();
 
             var sql = @"SELECT
@@ -259,7 +258,7 @@ namespace Weather.Repository.Repositories
 
             var sensors =
                 mappedReader.Where(x => x.SensorId != null)
-                    .Select(x => new { x.WeatherStationId, x.SensorId, x.Correction, x.Notes, x.StationSensorId });
+                    .Select(x => new {x.WeatherStationId, x.SensorId, x.Correction, x.Notes, x.StationSensorId});
 
             var stations = mappedReader
                 .GroupBy(
@@ -300,7 +299,7 @@ namespace Weather.Repository.Repositories
                             Sensor = new Sensor {SensorId = (int) sensor.SensorId},
                             Correction = sensor.Correction,
                             Notes = sensor.Notes,
-                            StationSensorId = (int)sensor.StationSensorId
+                            StationSensorId = (int) sensor.StationSensorId
                         };
                         station.Sensors.Add(n);
                     }

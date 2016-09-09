@@ -44,6 +44,7 @@ namespace Weather.Common.Entities
         public Unit SIUnit { get; set; }
         public IList<Unit> Units { get; set; } = new ObservableCollection<Unit>();
         public bool IsValid => Validate();
+        public int SIUnitId { get; set; }
 
         public override string ToString()
         {
@@ -55,6 +56,5 @@ namespace Weather.Common.Entities
             var f = !IsNullOrEmpty(Name) && (SIUnit != null);
             return f;
         }
-        public int SIUnitId { get; set; }
     }
 }

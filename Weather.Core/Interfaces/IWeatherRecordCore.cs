@@ -8,6 +8,8 @@ namespace Weather.Core.Interfaces
     public interface IWeatherRecordCore
     {
         List<IWeatherRecord> GetAllRecords();
-        Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId, DateTime startDate, DateTime endDate, Action callback);
+
+        Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId, DateTime startDate,
+            DateTime endDate);
     }
 }

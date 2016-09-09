@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
@@ -14,11 +12,12 @@ namespace Weather.Repository.Repositories
     public class WeatherRecordRepository : IWeatherRecordRepository
     {
         private readonly ILog _log;
-        private readonly IWeatherStationRepository _weatherStationRepository;
-        private readonly ISettings _settings;
         private readonly ISensorTypeRepository _sensorTypeRepository;
+        private readonly ISettings _settings;
+        private readonly IWeatherStationRepository _weatherStationRepository;
 
-        public WeatherRecordRepository(ILog log, IWeatherStationRepository weatherStationRepository, ISettings settings, ISensorTypeRepository sensorTypeRepository)
+        public WeatherRecordRepository(ILog log, IWeatherStationRepository weatherStationRepository, ISettings settings,
+            ISensorTypeRepository sensorTypeRepository)
         {
             _settings = settings;
             _log = log;
@@ -209,9 +208,10 @@ namespace Weather.Repository.Repositories
             return Records;
         }
 
-        public async Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate, DateTime endDate, Action callback)
+        public async Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate,
+            DateTime endDate)
         {
-            List<IWeatherRecord> WeatherRecords = new List<IWeatherRecord>();
+            var WeatherRecords = new List<IWeatherRecord>();
             var allWeatherStations = _weatherStationRepository.GetAllWeatherStations();
             var allSensorTypes = _sensorTypeRepository.GetAll();
 
@@ -226,7 +226,7 @@ namespace Weather.Repository.Repositories
                 wrsvWeatherRecordId = 0,
                 wrsvSensorValueId = 0,
                 SensorValueId = 0,
-                RawValue = (double?)0,
+                RawValue = (double?) 0,
                 SensorId = 0,
                 sSensorId = 0,
                 Manufacturer = string.Empty,
@@ -238,7 +238,8 @@ namespace Weather.Repository.Repositories
             var ss = startDate.ToString("yyyy-MM-dd HH:mm:ss");
             var ee = endDate.ToString("yyyy-MM-dd HH:mm:ss");
 
-            var sql2 = @"SELECT
+            var sql2 =
+                @"SELECT
                 wr.[WeatherRecordId] as WeatherRecordId,
                 wr.[Timestamp] as Timestamp,
                 wr.[WeatherStationId] as WeatherStationId,
@@ -303,26 +304,28 @@ namespace Weather.Repository.Repositories
                 throw;
             }
 
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 var sensors =
-  mappedReader.GroupBy(x => new { x.sSensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId }, x => x,
-      (key, g) => new Sensor
-      {
-          SensorId = key.sSensorId,
-          Manufacturer = key.Manufacturer,
-          Model = key.Model,
-          Description = key.Description,
-          SensorType = allSensorTypes.FirstOrDefault(x => x.SensorTypeId == key.SensorTypeId)
-      }).ToList();
+                    mappedReader.GroupBy(
+                        x => new {x.sSensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId}, x => x,
+                        (key, g) => new Sensor
+                        {
+                            SensorId = key.sSensorId,
+                            Manufacturer = key.Manufacturer,
+                            Model = key.Model,
+                            Description = key.Description,
+                            SensorType = allSensorTypes.FirstOrDefault(x => x.SensorTypeId == key.SensorTypeId)
+                        }).ToList();
 
                 var sensorValues =
-                    mappedReader.GroupBy(x => new { x.SensorValueId, x.RawValue, x.SensorId }, x => x,
+                    mappedReader.GroupBy(x => new {x.SensorValueId, x.RawValue, x.SensorId}, x => x,
                         (key, g) => new SensorValue
                         {
                             SensorValueId = key.SensorValueId,
                             RawValue = key.RawValue,
                             SensorId = key.SensorId,
-                            Sensor = sensors.FirstOrDefault(x => x.SensorId == key.SensorId),
+                            Sensor = sensors.FirstOrDefault(x => x.SensorId == key.SensorId)
                         }).ToList();
 
                 var stations = mappedReader
@@ -346,8 +349,13 @@ namespace Weather.Repository.Repositories
                                 {
                                     WeatherRecordId = key.WeatherRecordId,
                                     TimeStamp = key.Timestamp,
-                                    WeatherStation = allWeatherStations.FirstOrDefault(x => x.WeatherStationId == key.WeatherStationId),
-                                    SensorValues = sensorValues.Where(x => x.SensorValueId == key.wrsvSensorValueId).Cast<ISensorValue>().ToList()
+                                    WeatherStation =
+                                        allWeatherStations.FirstOrDefault(
+                                            x => x.WeatherStationId == key.WeatherStationId),
+                                    SensorValues =
+                                        sensorValues.Where(x => x.SensorValueId == key.wrsvSensorValueId)
+                                            .Cast<ISensorValue>()
+                                            .ToList()
                                 }
                             }).ToList();
 
@@ -355,7 +363,6 @@ namespace Weather.Repository.Repositories
 
 
                 WeatherRecords = distinctrecords.Select(y => y.WeatherRecord).Cast<IWeatherRecord>().ToList();
-                callback();
             });
             return WeatherRecords;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using PropertyChanged;
 using Weather.Common;
@@ -10,11 +11,9 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class ContainerViewModel : NotifyBase
     {
+        private Chart _selected;
         public bool Loading { get; set; }
         public bool LoadingInvert { get; set; }
-
-
-        private Chart _selected;
         public ObservableCollection<Chart> Charts { get; set; }
 
         public Chart Selected
@@ -43,22 +42,22 @@ namespace Weather.ViewModels
 
             Charts = new ObservableCollection<Chart>
             {
+                //new Chart
+                //{
+                //    Name = "Average Wind Direction",
+                //    Content = new AverageWindDirection()
+                //},
+                //new Chart
+                //{
+                //    Name = "Min / Max",
+                //    Content = new MinMax()
+                //},
+                //new Chart
+                //{
+                //    Name = "All Records",
+                //    Content = new AllRecords()
+                //},
                 new Chart
-                {
-                    Name = "Average Wind Direction",
-                    Content = new AverageWindDirection()
-                },
-                new Chart
-                {
-                    Name = "Min / Max",
-                    Content = new MinMax()
-                },
-                new Chart
-                {
-                    Name = "All Records",
-                    Content = new AllRecords()
-                },
-                            new Chart
                 {
                     Name = "Line Graph",
                     Content = new LineGraph()
@@ -66,15 +65,18 @@ namespace Weather.ViewModels
             };
         }
 
-        private void SelectedStation_GetRecordsCompleted(object sender, System.EventArgs e)
+        private void SelectedStation_GetRecordsCompleted(object sender, EventArgs e)
         {
             Loading = false;
             LoadingInvert = true;
         }
 
-        private void SelectedStation_GetRecordsStarted(object sender, System.EventArgs e)
+        private void SelectedStation_GetRecordsStarted(object sender, EventArgs e)
         {
-            if (Content == null) return;
+            if (Content == null)
+            {
+                return;
+            }
             Loading = true;
             LoadingInvert = false;
         }

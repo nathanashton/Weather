@@ -28,7 +28,7 @@ namespace Weather.Views
 
         private void UnitsWindow_Closing(object sender, CancelEventArgs e)
         {
-            _viewModel.SelectedStation.OnStationsChanged();
+            //   _viewModel.SelectedStation.OnStationsChanged();
         }
 
         private void UnitsWindow_Loaded(object sender, RoutedEventArgs e)

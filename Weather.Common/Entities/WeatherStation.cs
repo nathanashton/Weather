@@ -49,7 +49,7 @@ namespace Weather.Common.Entities
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public IList<IStationSensor> Sensors { get; set; }
-        public IList<IWeatherRecord> Records { get; set; } = new ObservableCollection<IWeatherRecord>();
+        public ObservableCollection<IWeatherRecord> Records { get; set; } = new ObservableCollection<IWeatherRecord>();
         public int WeatherStationId { get; set; }
         public bool IsValid => Validate();
 

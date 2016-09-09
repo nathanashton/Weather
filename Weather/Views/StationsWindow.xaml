@@ -115,8 +115,7 @@
                             BorderBrush="#A0A0A0"
                             Command="{Binding SaveCommand}">
                         <DockPanel Background="Transparent">
-                            <Image DockPanel.Dock="Left"
-                                   Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
+                            <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Style.Triggers>
@@ -145,8 +144,7 @@
                     </DockPanel>
 
                     <DockPanel Margin="10,0,0,0">
-                        <Grid
-                            IsEnabled="{Binding SelectedWeatherStation, Converter={StaticResource NullBoolConverter}}">
+                        <Grid IsEnabled="{Binding SelectedWeatherStation, Converter={StaticResource NullBoolConverter}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -178,8 +176,7 @@
                                     <Style TargetType="{x:Type TextBox}">
                                         <Style.Triggers>
                                             <Trigger Property="Validation.HasError" Value="true">
-                                                <Setter Property="ToolTip"
-                                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -205,8 +202,7 @@
                                     <Style TargetType="{x:Type TextBox}">
                                         <Style.Triggers>
                                             <Trigger Property="Validation.HasError" Value="true">
-                                                <Setter Property="ToolTip"
-                                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -324,8 +320,7 @@
                                         Command="{Binding AddSensorCommand}"
                                         DockPanel.Dock="Left">
                                     <DockPanel Background="Transparent">
-                                        <Image DockPanel.Dock="Left"
-                                               Source="pack://application:,,,/Resources/Icons/plus_48px.png">
+                                        <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/plus_48px.png">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>
@@ -351,8 +346,7 @@
                                         Command="{Binding EditSensorCommand}"
                                         DockPanel.Dock="Left">
                                     <DockPanel Background="Transparent">
-                                        <Image DockPanel.Dock="Left"
-                                               Source="pack://application:,,,/Resources/Icons/edit_48px.png">
+                                        <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/edit_48px.png">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>
@@ -378,8 +372,7 @@
                                         Command="{Binding DeleteSensorCommand}"
                                         DockPanel.Dock="Left">
                                     <DockPanel Background="Transparent">
-                                        <Image DockPanel.Dock="Left"
-                                               Source="pack://application:,,,/Resources/Icons/minus_48px.png">
+                                        <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/minus_48px.png">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>

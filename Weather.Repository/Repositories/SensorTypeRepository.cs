@@ -134,7 +134,7 @@ namespace Weather.Repository.Repositories
         public List<ISensorType> GetAllTest()
         {
             _log.Debug("SensorTypeRepository.GetAll();");
-            List<ISensorType> SensorTypes = new List<ISensorType>();
+            var SensorTypes = new List<ISensorType>();
 
             var sql = @"SELECT * FROM SensorTypes";
 

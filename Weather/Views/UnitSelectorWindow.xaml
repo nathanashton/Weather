@@ -84,8 +84,7 @@
                             BorderBrush="#A0A0A0"
                             Command="{Binding AddCommand}">
                         <DockPanel Background="Transparent">
-                            <Image DockPanel.Dock="Left"
-                                   Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
+                            <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Style.Triggers>

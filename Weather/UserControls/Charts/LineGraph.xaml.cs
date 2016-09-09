@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Practices.Unity;
 using Weather.DependencyResolver;
 
 namespace Weather.UserControls.Charts
 {
     /// <summary>
-    /// Interaction logic for LineGraph.xaml
+    ///     Interaction logic for LineGraph.xaml
     /// </summary>
     public partial class LineGraph : UserControl
     {
@@ -36,17 +25,25 @@ namespace Weather.UserControls.Charts
 
         private void MinMax_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.SelectedStation.SelectedStationsChanged -= ViewModel.SelectedStation_SelectedStationsChanged;
-            ViewModel.SelectedStation.TimeSpanChanged -= ViewModel.SelectedStation_TimeSpanChanged;
+            ViewModel.SelectedStation.SelectedStationUpdated -= ViewModel.SelectedStation_SelectedStationUpdated;
             ViewModel.SelectedStation.GetRecordsCompleted -= ViewModel.SelectedStation_GetRecordsCompleted;
-
         }
 
         private void MinMax_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.SelectedStation.SelectedStationsChanged += ViewModel.SelectedStation_SelectedStationsChanged;
-            ViewModel.SelectedStation.TimeSpanChanged += ViewModel.SelectedStation_TimeSpanChanged;
+            ViewModel.SelectedStation.SelectedStationUpdated += ViewModel.SelectedStation_SelectedStationUpdated;
             ViewModel.SelectedStation.GetRecordsCompleted += ViewModel.SelectedStation_GetRecordsCompleted;
+        }
+
+        private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+           ViewModel.SelectedSensor = null;
+
+        }
+
+        private void Label_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
+        {
+          ViewModel.SelectedSensor2 = null;
 
         }
     }

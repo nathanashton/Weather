@@ -28,7 +28,7 @@ namespace Weather.Views
 
         private void SensorTypesWindow_Closing(object sender, CancelEventArgs e)
         {
-            _viewModel.SelectedStation.OnStationsChanged();
+            // _viewModel.SelectedStation.OnStationsChanged();
         }
 
         private void SensorTypesWindow_Loaded(object sender, RoutedEventArgs e)
