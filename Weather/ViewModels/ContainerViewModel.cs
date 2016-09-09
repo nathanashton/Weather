@@ -52,11 +52,11 @@ namespace Weather.ViewModels
                 //    Name = "Min / Max",
                 //    Content = new MinMax()
                 //},
-                //new Chart
-                //{
-                //    Name = "All Records",
-                //    Content = new AllRecords()
-                //},
+                new Chart
+                {
+                    Name = "All Records",
+                    Content = new AllRecords()
+                },
                 new Chart
                 {
                     Name = "Line Graph",

@@ -26,16 +26,21 @@ namespace Weather.UserControls.Charts
 
         private void AllRecords_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            _viewModel.SelectedStation.SelectedStationsChanged -= _viewModel.SelectedStation_SelectedStationsChanged;
-            _viewModel.SelectedStation.TimeSpanChanged -= _viewModel.SelectedStation_TimeSpanChanged;
+            _viewModel.SelectedStation.SelectedStationChanged -= _viewModel.SelectedStation_SelectedStationsChanged;
+            _viewModel.SelectedStation.SelectedStationRecordsUpdated -= _viewModel.SelectedStation_SelectedStationRecordsUpdated;
+            _viewModel.SelectedStation.GetRecordsCompleted -= _viewModel.SelectedStation_GetRecordsCompleted;
+
         }
 
         private void AllRecords_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            _viewModel.SelectedStation.SelectedStationsChanged += _viewModel.SelectedStation_SelectedStationsChanged;
-            _viewModel.SelectedStation.TimeSpanChanged += _viewModel.SelectedStation_TimeSpanChanged;
+            _viewModel.SelectedStation.SelectedStationChanged += _viewModel.SelectedStation_SelectedStationsChanged;
+            _viewModel.SelectedStation.SelectedStationRecordsUpdated += _viewModel.SelectedStation_SelectedStationRecordsUpdated;
+            _viewModel.SelectedStation.GetRecordsCompleted += _viewModel.SelectedStation_GetRecordsCompleted;
             _viewModel.Draw();
         }
+
+
 
         public void RenderGrid()
         {

@@ -109,6 +109,11 @@ namespace Weather.UserControls.Charts
         public void SelectedStation_GetRecordsCompleted(object sender, EventArgs e)
         {
             DrawGraph();
+            if (SelectedStation.WeatherStation.Records != null && SelectedStation.WeatherStation.Records.Count > 1000)
+            {
+                var f = SelectedStation.WeatherStation.Records;
+
+            }
         }
 
         public void DrawGraph()
@@ -128,10 +133,19 @@ namespace Weather.UserControls.Charts
 
             if (SelectedSensor != null)
             {
-                var records =
-                    SelectedStation.WeatherStation.Records.Where(
-                            x => x.SensorValues.Any(r => r.Sensor.SensorType.Name == SelectedSensor.Sensor.SensorType.Name))
-                        .ToList();
+                var records = new List<IWeatherRecord>();
+                foreach (var record in SelectedStation.WeatherStation.Records)
+                {
+                    foreach (var s in record.SensorValues)
+                    {
+                        if (s.Sensor.SensorType.SensorTypeId == SelectedSensor.Sensor.SensorType.SensorTypeId)
+                        {
+                            records.Add(record);
+                        }
+                    }
+                }
+
+              
 
                 var sensorValues = new List<T>();
                 foreach (var record in records)
@@ -155,41 +169,47 @@ namespace Weather.UserControls.Charts
 
 
                 Data = new ObservableCollection<GraphData>(data);
+                //return;
             }
 
 
-            // Sensor 2
-            if (SelectedSensor2 != null)
-            {
-                var records2 =
-                    SelectedStation.WeatherStation.Records.Where(
-                            x =>
-                                x.SensorValues.Any(
-                                    r => r.Sensor.SensorType.Name == SelectedSensor2.Sensor.SensorType.Name))
-                        .ToList();
+            //// Sensor 2
+            //if (SelectedSensor2 != null)
+            //{
+            //    var records2 = new List<IWeatherRecord>();
+            //    foreach (var record in SelectedStation.WeatherStation.Records)
+            //    {
+            //        foreach (var s in record.SensorValues)
+            //        {
+            //            if (s.Sensor.SensorType.SensorTypeId == SelectedSensor2.Sensor.SensorType.SensorTypeId)
+            //            {
+            //                records2.Add(record);
+            //            }
+            //        }
+            //    }
 
-                var sensorValues2 = new List<T>();
-                foreach (var record in records2)
-                {
-                    foreach (var r in record.SensorValues)
-                    {
-                        var f = new T
-                        {
-                            TimeStamp = record.TimeStamp,
-                            SensorValue = r
-                        };
-                        sensorValues2.Add(f);
-                    }
-                }
+            //    var sensorValues2 = new List<T>();
+            //    foreach (var record in records2)
+            //    {
+            //        foreach (var r in record.SensorValues)
+            //        {
+            //            var f = new T
+            //            {
+            //                TimeStamp = record.TimeStamp,
+            //                SensorValue = r
+            //            };
+            //            sensorValues2.Add(f);
+            //        }
+            //    }
 
-                var data2 = sensorValues2.GroupBy(x => new {x.TimeStamp, x.SensorValue}, x => x,
-                    (key, g) => new GraphData
-                    {
-                        Date = key.TimeStamp,
-                        Value = key.SensorValue.CorrectedValue
-                    }).ToList().OrderBy(x => x.Date);
-                Data2 = new ObservableCollection<GraphData>(data2);
-            }
+            //    var data2 = sensorValues2.GroupBy(x => new {x.TimeStamp, x.SensorValue}, x => x,
+            //        (key, g) => new GraphData
+            //        {
+            //            Date = key.TimeStamp,
+            //            Value = key.SensorValue.CorrectedValue
+            //        }).ToList().OrderBy(x => x.Date);
+            //    Data2 = new ObservableCollection<GraphData>(data2);
+            //}
         }
     }
 

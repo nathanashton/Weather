@@ -131,6 +131,10 @@
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\SunTimes.cs" />
     <Compile Include="ScreenCapture.cs" />
+    <Compile Include="UserControls\Charts\AllRecords.xaml.cs">
+      <DependentUpon>AllRecords.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Charts\AllRecordsViewModel.cs" />
     <Compile Include="UserControls\Charts\LineGraph.xaml.cs">
       <DependentUpon>LineGraph.xaml</DependentUpon>
     </Compile>
@@ -185,6 +189,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
+    <Page Include="UserControls\Charts\AllRecords.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\Charts\LineGraph.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

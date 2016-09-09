@@ -70,7 +70,7 @@ namespace Weather.Repository.Repositories
             return Joins;
         }
 
-  
+
         public async Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate,
             DateTime endDate)
         {
@@ -222,10 +222,19 @@ namespace Weather.Repository.Repositories
                                 }
                             }).ToList();
 
-              //  var distinctrecords = stations.GroupBy(x => x.WeatherRecordId, (key, group) => group.First()).ToList();
 
-
-                WeatherRecords = stations.Select(y => y.WeatherRecord).Cast<IWeatherRecord>().ToList();
+                WeatherRecords =
+                    stations.GroupBy(x =>
+                                x.WeatherRecordId, x => x.WeatherRecord,
+                        (key, g) =>
+                            new WeatherRecord
+                            {
+                                WeatherRecordId = key,
+                                SensorValues = g.SelectMany(ff => ff.SensorValues).Distinct().ToList(),
+                                TimeStamp = g.Select(x => x.TimeStamp).First(),
+                                WeatherStationId = g.Select(x => x.WeatherStationId).First(),
+                                WeatherStation = g.Select(x => x.WeatherStation).First()
+                            }).Cast<IWeatherRecord>().ToList();
             });
             return WeatherRecords;
         }

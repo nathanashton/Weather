@@ -21,12 +21,12 @@ namespace Weather.UserControls.Charts
             SelectedStation = selectedStation;
         }
 
-        public void SelectedStation_TimeSpanChanged(object sender, EventArgs e)
+ public void SelectedStation_SelectedStationsChanged(object sender, EventArgs e)
         {
             Draw();
         }
 
-        public void SelectedStation_SelectedStationsChanged(object sender, EventArgs e)
+        public void SelectedStation_SelectedStationRecordsUpdated(object sender, System.EventArgs e)
         {
             Draw();
         }
@@ -37,16 +37,12 @@ namespace Weather.UserControls.Charts
             {
                 return;
             }
-
-            //if (SelectedStation.WeatherStation.Records == null || SelectedStation.WeatherStation.Records.Count == 0)
-            //{
-            //    SelectedStation.WeatherStation.Records =
-            //        new ObservableCollection<IWeatherRecord>(
-            //            _weatherRecordCore.GetAllRecordsForStationBetweenDates(
-            //                SelectedStation.WeatherStation.WeatherStationId,
-            //                SelectedStation.StartDate, SelectedStation.EndDate));
-            //}
             Window.RenderGrid();
+        }
+
+        public void SelectedStation_GetRecordsCompleted(object sender, System.EventArgs e)
+        {
+            Draw();
         }
     }
 }
