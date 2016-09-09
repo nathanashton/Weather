@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
-using Weather.Common.Units;
 using Weather.ViewModels;
 
 namespace Weather.Views
@@ -52,12 +51,10 @@ namespace Weather.Views
                 {
                     SensorTypeId = _viewModel.TempSelectedSensorType.SensorTypeId,
                     Name = _viewModel.TempSelectedSensorType.Name,
-                    SIUnit = _viewModel.TempSelectedSensorType.SIUnit,
-                    Units = _viewModel.TempSelectedSensorType.Units
+                    UnitType = _viewModel.TempSelectedSensorType.UnitType
                 };
             }
 
-            SelectSiUnitInComboBox(_viewModel.SelectedSensorType.SIUnit);
         }
 
         public void SelectUnitInListBox(ISensorType sensorType)
@@ -65,17 +62,7 @@ namespace Weather.Views
             Lb.SelectedItem = sensorType;
         }
 
-        public void SelectSiUnitInComboBox(Unit unit)
-        {
-            foreach (var item in SiUnit.Items)
-            {
-                var o = item as Unit;
-                if ((o != null) && (o.UnitId == _viewModel.SelectedSensorType.SIUnit.UnitId))
-                {
-                    SiUnit.SelectedItem = item;
-                }
-            }
-        }
+       
 
         private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

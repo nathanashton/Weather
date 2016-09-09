@@ -201,9 +201,7 @@ namespace Weather.ViewModels
 
         private void UnitsWindowOpen(object obj)
         {
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<UnitsWindow>();
-            window.ShowDialog();
+          
         }
 
         private void StationsWindowOpen(object obj)

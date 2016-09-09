@@ -153,8 +153,6 @@
     <Compile Include="ViewModels\StationsWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorTypesViewModel.cs" />
     <Compile Include="ViewModels\UnhandledExceptionWindowViewModel.cs" />
-    <Compile Include="ViewModels\UnitSelectorWindowViewModel.cs" />
-    <Compile Include="ViewModels\UnitsWindowViewModel.cs" />
     <Compile Include="Views\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
     </Compile>
@@ -178,12 +176,6 @@
     </Compile>
     <Compile Include="Views\UnhandledExceptionWindow.xaml.cs">
       <DependentUpon>UnhandledExceptionWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UnitSelectorWindow.xaml.cs">
-      <DependentUpon>UnitSelectorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UnitsWindow.xaml.cs">
-      <DependentUpon>UnitsWindow.xaml</DependentUpon>
     </Compile>
     <Resource Include="Skins\Dark.xaml">
       <SubType>Designer</SubType>
@@ -256,14 +248,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UnitSelectorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UnitsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -308,6 +292,10 @@
     <ProjectReference Include="..\Weather.DependencyResolver\Weather.DependencyResolver.csproj">
       <Project>{55462379-e855-495e-b91d-149f8b44329a}</Project>
       <Name>Weather.DependencyResolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Weather.Units\Weather.Units.csproj">
+      <Project>{6f5f33c0-f021-43be-bc6d-6ba10b5fbe94}</Project>
+      <Name>Weather.Units</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

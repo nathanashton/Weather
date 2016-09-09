@@ -25,13 +25,13 @@ namespace Weather.UserControls.Charts
 
         private void MinMax_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.SelectedStation.SelectedStationUpdated -= ViewModel.SelectedStation_SelectedStationUpdated;
+            ViewModel.SelectedStation.SelectedStationRecordsUpdated -= ViewModel.SelectedStationRecordsSelectedStationRecordsUpdated;
             ViewModel.SelectedStation.GetRecordsCompleted -= ViewModel.SelectedStation_GetRecordsCompleted;
         }
 
         private void MinMax_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.SelectedStation.SelectedStationUpdated += ViewModel.SelectedStation_SelectedStationUpdated;
+            ViewModel.SelectedStation.SelectedStationRecordsUpdated += ViewModel.SelectedStationRecordsSelectedStationRecordsUpdated;
             ViewModel.SelectedStation.GetRecordsCompleted += ViewModel.SelectedStation_GetRecordsCompleted;
         }
 

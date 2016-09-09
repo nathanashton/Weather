@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
@@ -53,25 +54,27 @@ namespace Weather.ViewModels
             SelectedStation = selectedStation;
             _stationCore = stationCore;
 
-            SelectedStation.SelectedStationUpdated += SelectedStation_SelectedStationUpdated;
+            SelectedStation.SelectedStationRecordsUpdated += SelectedStationRecordsSelectedStationRecordsUpdated;
             SelectedStation.SelectedStationChanged += SelectedStation_SelectedStationChanged;
+            SelectedStation.SelectedStationUpdated += SelectedStation_SelectedStationUpdated;
         }
 
-        private async void SelectedStation_SelectedStationChanged(object sender, EventArgs e)
+        private void SelectedStation_SelectedStationUpdated(object sender, EventArgs e)
         {
-            //if (SelectedStation.WeatherStation == null)
-            //{
-            //    GetAllStations();
-            //    return;
-            //}
-            //var id = SelectedStation.WeatherStation.WeatherStationId;
-            //GetAllStations();
-            //var s = Stations.FirstOrDefault(x => x.WeatherStationId == id);
-            //SelectedStation.WeatherStation = s;
-            //await GetRecords();
+            var id = SelectedStation.WeatherStation.WeatherStationId;
+            GetAllStations();
+            var found = Stations.FirstOrDefault(x => x.WeatherStationId == id);
+            if (found != null)
+            { Selected = found; }
         }
 
-        private async void SelectedStation_SelectedStationUpdated(object sender, EventArgs e)
+        private void SelectedStation_SelectedStationChanged(object sender, EventArgs e)
+        {
+            // Stations may have changed so update
+           // GetAllStations();
+        }
+
+        private async void SelectedStationRecordsSelectedStationRecordsUpdated(object sender, EventArgs e)
         {
             await GetRecords();
         }
@@ -84,14 +87,12 @@ namespace Weather.ViewModels
             }
             SelectedStation.OnGetRecordsStarted();
 
-
             SelectedStation.WeatherStation.Records = new ObservableCollection<IWeatherRecord>(await
                 _weatherRecordCore.GetAllRecordsForStationBetweenDates(
                     SelectedStation.WeatherStation.WeatherStationId, SelectedStation.StartDate,
                     SelectedStation.EndDate).ConfigureAwait(true));
             SelectedStation.OnGetRecordsCompleted();
         }
-
 
         public void GetAllStations()
         {

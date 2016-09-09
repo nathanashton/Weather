@@ -19,11 +19,14 @@ namespace Weather.Core.Interfaces
         event EventHandler GetRecordsStarted;
         event EventHandler GetRecordsCompleted;
 
-        event EventHandler SelectedStationChanged;
         event EventHandler SelectedStationUpdated;
+        event EventHandler SelectedStationChanged;
+        event EventHandler SelectedStationRecordsUpdated;
 
-        void OnSelectedStationUpdated();
+        void OnSelectedStationRecordsUpdated();
         void OnSelectedStationChanged();
+        void OnSelectedStationUpdated();
+
 
         void OnGetRecordsStarted();
         void OnGetRecordsCompleted();

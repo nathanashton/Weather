@@ -41,6 +41,7 @@ namespace Weather.UserControls.Charts
                 _selectedSensor = value;
                 DrawGraph();
                 OnPropertyChanged(() => SelectedSensor);
+                OnPropertyChanged(() => Title);
             }
         }
 
@@ -60,6 +61,8 @@ namespace Weather.UserControls.Charts
                 _selectedSensor2 = value;
                 DrawGraph();
                 OnPropertyChanged(() => SelectedSensor2);
+                OnPropertyChanged(() => Title);
+
             }
         }
 
@@ -67,11 +70,19 @@ namespace Weather.UserControls.Charts
         {
             get
             {
-                if (SelectedSensor == null)
+                if (SelectedSensor != null && SelectedSensor2 == null)
                 {
-                    return "Line Graph (" + SelectedStation.TimeSpanWords + ")";
+                    return SelectedSensor.Sensor.SensorType.ToString();
                 }
-                return "Line Graph " + SelectedSensor.Sensor.SensorType + " (" + SelectedStation.TimeSpanWords + ")";
+                if (SelectedSensor != null && SelectedSensor2 != null)
+                {
+                    return SelectedSensor.Sensor.SensorType + " / " + SelectedSensor2.Sensor.SensorType;
+                }
+                if (SelectedSensor == null && SelectedSensor2 != null)
+                {
+                    return SelectedSensor2.Sensor.ToString();
+                }
+                return "Line Graph";
             }
         }
 
@@ -82,7 +93,7 @@ namespace Weather.UserControls.Charts
         }
 
 
-        public void SelectedStation_SelectedStationUpdated(object sender, EventArgs e)
+        public void SelectedStationRecordsSelectedStationRecordsUpdated(object sender, EventArgs e)
         {
             if (SelectedStation?.WeatherStation != null)
             {

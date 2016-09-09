@@ -1,4 +1,4 @@
-﻿using Weather.Common.Units;
+﻿using Weather.Units;
 
 namespace Weather.Common.Interfaces
 {

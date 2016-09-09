@@ -30,7 +30,6 @@ namespace Weather.DependencyResolver
             container.RegisterType<IStationCore, StationCore>();
             container.RegisterType<ISensorCore, SensorCore>();
             container.RegisterType<IImporter, Importer>();
-            container.RegisterType<IUnitTypesCore, UnitTypesCore>();
 
             container.RegisterType<IWeatherStationRepository, WeatherStationRepository>();
             container.RegisterType<ISensorRepository, SensorRepository>();
@@ -38,8 +37,6 @@ namespace Weather.DependencyResolver
             container.RegisterType<ISensorTypeRepository, SensorTypeRepository>();
             container.RegisterType<ISensorTypeCore, SensorTypeCore>();
 
-            container.RegisterType<IUnitRepository, UnitRepository>();
-            container.RegisterType<IUnitCore, UnitCore>();
 
             container.RegisterType<ISensorValueRepository, SensorValueRepository>();
             container.RegisterType<ISensorValueCore, SensorValueCore>();

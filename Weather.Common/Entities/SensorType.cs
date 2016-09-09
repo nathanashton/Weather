@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using PropertyChanged;
 using Weather.Common.Interfaces;
-using Weather.Common.Units;
+using Weather.Units.Interfaces;
 using static System.String;
 
 namespace Weather.Common.Entities
@@ -23,13 +21,7 @@ namespace Weather.Common.Entities
                         return "Name is required";
                     }
                 }
-                if (columnName == "SIUnit")
-                {
-                    if (SIUnit == null)
-                    {
-                        return "SI Unit is required";
-                    }
-                }
+             
                 return null;
             }
         }
@@ -41,10 +33,9 @@ namespace Weather.Common.Entities
 
         public int SensorTypeId { get; set; }
         public string Name { get; set; }
-        public Unit SIUnit { get; set; }
-        public IList<Unit> Units { get; set; } = new ObservableCollection<Unit>();
+        public IUnitType UnitType { get; set; }
+
         public bool IsValid => Validate();
-        public int SIUnitId { get; set; }
 
         public override string ToString()
         {
@@ -53,8 +44,8 @@ namespace Weather.Common.Entities
 
         private bool Validate()
         {
-            var f = !IsNullOrEmpty(Name) && (SIUnit != null);
-            return f;
+           ;
+            return !IsNullOrEmpty(Name) && UnitType != null;
         }
     }
 }

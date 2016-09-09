@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Weather.Common.Units;
+﻿using Weather.Units.Interfaces;
 
 namespace Weather.Common.Interfaces
 {
@@ -7,9 +6,7 @@ namespace Weather.Common.Interfaces
     {
         int SensorTypeId { get; set; }
         string Name { get; set; }
-        IList<Unit> Units { get; set; }
-        Unit SIUnit { get; set; }
+        IUnitType UnitType { get; set; }
         bool IsValid { get; }
-        int SIUnitId { get; set; }
     }
 }

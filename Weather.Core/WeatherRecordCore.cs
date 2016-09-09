@@ -14,17 +14,15 @@ namespace Weather.Core
 
         private ISensorRepository _s;
         private ISensorTypeRepository _st;
-        private IUnitRepository _u;
         private IWeatherStationRepository _ws;
 
 
         public WeatherRecordCore(IWeatherRecordRepository repository, ISensorValueRepository sv, ISensorRepository s,
-            IUnitRepository u, ISensorTypeRepository st, IWeatherStationRepository ws)
+             ISensorTypeRepository st, IWeatherStationRepository ws)
         {
             _repository = repository;
             _sv = sv;
             _s = s;
-            _u = u;
             _st = st;
             _ws = ws;
         }

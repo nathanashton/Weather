@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Weather.Common.Interfaces;
-using Weather.Common.Units;
 
 namespace Weather.Repository.Interfaces
 {
@@ -8,7 +7,6 @@ namespace Weather.Repository.Interfaces
     {
         List<ISensorType> GetAll();
 
-        List<ISensorType> GetAllTest();
 
         ISensorType GetById(int id);
 
@@ -18,10 +16,6 @@ namespace Weather.Repository.Interfaces
 
         void Update(ISensorType sensorType);
 
-        void AddUnitToSensorType(Unit unit, ISensorType sensorType);
-
-        void RemoveUnitFromSensorType(Unit unit, ISensorType sensortype);
-
-        bool AnySensorTypesUseUnit(Unit unit);
+   
     }
 }

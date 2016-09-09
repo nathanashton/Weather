@@ -48,9 +48,10 @@ namespace Weather.Core
 
         public event EventHandler GetRecordsStarted;
         public event EventHandler GetRecordsCompleted;
+        public event EventHandler SelectedStationUpdated;
         public event EventHandler SelectedStationChanged;
 
-        public event EventHandler SelectedStationUpdated;
+        public event EventHandler SelectedStationRecordsUpdated;
 
         public bool TimeSpanDay
         {
@@ -122,14 +123,19 @@ namespace Weather.Core
             }
         }
 
-        public void OnSelectedStationUpdated()
+        public void OnSelectedStationRecordsUpdated()
         {
-            SelectedStationUpdated?.Invoke(this, null);
+            SelectedStationRecordsUpdated?.Invoke(this, null);
         }
 
         public void OnSelectedStationChanged()
         {
             SelectedStationChanged?.Invoke(this, null);
+        }
+
+        public void OnSelectedStationUpdated()
+        {
+            SelectedStationUpdated?.Invoke(this, null);
         }
 
         public void OnGetRecordsStarted()
@@ -147,14 +153,14 @@ namespace Weather.Core
         {
             StartDate = StartDate - TimeSpan;
             EndDate = EndDate - TimeSpan;
-            OnSelectedStationUpdated();
+            OnSelectedStationRecordsUpdated();
         }
 
         public void ForwardOnePeriod()
         {
             StartDate = StartDate + TimeSpan;
             EndDate = EndDate + TimeSpan;
-            OnSelectedStationUpdated();
+            OnSelectedStationRecordsUpdated();
         }
 
         public void SetTimeSpanDay()
@@ -166,7 +172,7 @@ namespace Weather.Core
             TimeSpanYear = false;
             TimeSpanWords = "Day";
             UpdateDates();
-            OnSelectedStationUpdated();
+            OnSelectedStationRecordsUpdated();
         }
 
         public void SetTimeSpanWeek()
@@ -178,7 +184,7 @@ namespace Weather.Core
             TimeSpanYear = false;
             TimeSpanWords = "Week";
             UpdateDates();
-            OnSelectedStationUpdated();
+            OnSelectedStationRecordsUpdated();
         }
 
         public void SetTimeSpanMonth()
@@ -190,7 +196,7 @@ namespace Weather.Core
             TimeSpanYear = false;
             TimeSpanWords = "Month";
             UpdateDates();
-            OnSelectedStationUpdated();
+            OnSelectedStationRecordsUpdated();
         }
 
         public void SetTimeSpanYear()
@@ -202,7 +208,7 @@ namespace Weather.Core
             TimeSpanYear = true;
             TimeSpanWords = "Year";
             UpdateDates();
-            OnSelectedStationUpdated();
+            OnSelectedStationRecordsUpdated();
         }
 
         private void UpdateDates()

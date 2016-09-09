@@ -7,10 +7,10 @@ using Microsoft.Practices.Unity;
 using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
-using Weather.Common.Units;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
+using Weather.Units.Interfaces;
 using Weather.Views;
 
 namespace Weather.ViewModels
@@ -21,13 +21,12 @@ namespace Weather.ViewModels
         private readonly ILog _log;
         private readonly ISensorCore _sensorCore;
         private readonly ISensorTypeCore _sensorTypeCore;
-        private readonly IUnitCore _unitCore;
         public ISelectedStation SelectedStation;
 
+        public ObservableCollection<IUnitType> UnitTypes { get; set; }
         public SensorTypesWindow Window { get; set; }
         public ObservableCollection<ISensorType> SensorTypes { get; set; }
-        public Unit SelectedUnit { get; set; }
-        public ObservableCollection<Unit> Units { get; set; }
+
         public bool IsDirty { get; set; }
         public ISensorType SelectedSensorType { get; set; }
         public ISensorType TempSelectedSensorType { get; set; }
@@ -38,10 +37,6 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Cancel, x => (IsDirty || Adding) && (SelectedSensorType != null)); }
         }
 
-        public ICommand UnitsWindowCommand
-        {
-            get { return new RelayCommand(OpenUnitsWindow, x => true); }
-        }
 
         public ICommand SaveCommand
         {
@@ -60,58 +55,36 @@ namespace Weather.ViewModels
             }
         }
 
-        public ICommand AddUnitCommand
-        {
-            get { return new RelayCommand(AddUnit, x => SelectedSensorType != null); }
-        }
-
-        public ICommand DeleteUnitCommand
-        {
-            get { return new RelayCommand(DeleteUnit, x => (SelectedSensorType != null) && (SelectedUnit != null)); }
-        }
-
+    
         public ICommand AddCommand
         {
             get { return new RelayCommand(Add, x => true); }
         }
 
-        public SensorTypesViewModel(ISensorTypeCore sensorTypeCore, ILog log, IUnitCore unitCore, ISensorCore sensorCore,
+        public SensorTypesViewModel(ISensorTypeCore sensorTypeCore, ILog log, ISensorCore sensorCore,
             ISelectedStation selectedStation)
         {
             SelectedStation = selectedStation;
             _log = log;
             _sensorCore = sensorCore;
-            _unitCore = unitCore;
             _sensorTypeCore = sensorTypeCore;
             SensorTypes = new ObservableCollection<ISensorType>();
+            UnitTypes = new ObservableCollection<IUnitType>(Units.UnitTypes.AllUnitTypes);
         }
 
-        private void OpenUnitsWindow(object obj)
-        {
-            var id2 = SelectedSensorType.SensorTypeId;
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<UnitsWindow>();
-            window.ShowDialog();
-
-            GetSensorTypes();
-
-            SelectedSensorType = SensorTypes.First(x => x.SensorTypeId == id2);
-            Window.SelectUnitInListBox(SelectedSensorType);
-        }
-
+      
         public void GetSensorTypes()
         {
-            Units = new ObservableCollection<Unit>(_unitCore.GetAll());
             SensorTypes = new ObservableCollection<ISensorType>(_sensorTypeCore.GetAll());
         }
 
         public void RegisterDirtyHandlers()
         {
             Window.Name.TextChanged += Name_TextChanged;
-            Window.SiUnit.SelectionChanged += SIUnit_SelectionChanged;
+            Window.SiUnit.SelectionChanged += SiUnit_SelectionChanged;
         }
 
-        private void SIUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SiUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CheckDirty();
         }
@@ -123,7 +96,7 @@ namespace Weather.ViewModels
                 GetSensorTypes();
             }
             Window.Name.Text = TempSelectedSensorType.Name;
-            Window.SelectSiUnitInComboBox(TempSelectedSensorType.SIUnit);
+           
             Adding = false;
             SelectedSensorType = null;
             TempSelectedSensorType = null;
@@ -135,63 +108,10 @@ namespace Weather.ViewModels
             CheckDirty();
         }
 
-        private void AddUnit(object obj)
-        {
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<UnitSelectorWindow>();
-            window.ViewModel.SensorType = SelectedSensorType;
-            window.ShowDialog();
+    
+        
 
-            // Get Unit that was added from the above dialog.
-            var unit = SelectedSensorType.Units.LastOrDefault();
-
-            if (Adding)
-            {
-                if (unit != null)
-                {
-                    if (SelectedSensorType.SIUnit == null)
-                    {
-                        SelectedSensorType.SIUnit = unit;
-                    }
-                    return;
-                }
-            }
-
-            if (unit == null)
-            {
-                return; // No unit was added
-            }
-            var id = SelectedSensorType.SensorTypeId;
-            _sensorTypeCore.AddUnitToSensorType(unit, SelectedSensorType);
-            CheckDirty();
-            GetSensorTypes();
-
-            SelectedSensorType = SensorTypes.First(x => x.SensorTypeId == id);
-            Window.SelectSiUnitInComboBox(SelectedSensorType.SIUnit);
-        }
-
-        private void DeleteUnit(object obj)
-        {
-            if (SelectedSensorType.SIUnit.UnitId == SelectedUnit.UnitId)
-            {
-                MessageBox.Show("Cannot delete " + SelectedUnit.DisplayName + " unit as it is set as the SI Unit.",
-                    "Error", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return;
-            }
-            if (SelectedSensorType.Units.Count == 1)
-            {
-                MessageBox.Show("Cannot delete " + SelectedUnit.DisplayName + " as it is the only unit.", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            var id = SelectedSensorType.SensorTypeId;
-            _sensorTypeCore.RemoveUnitFromSensorType(SelectedUnit, SelectedSensorType);
-            CheckDirty();
-            GetSensorTypes();
-            SelectedSensorType = SensorTypes.First(x => x.SensorTypeId == id);
-            Window.SelectSiUnitInComboBox(SelectedSensorType.SIUnit);
-        }
+      
 
         private void Delete(object obj)
         {
@@ -228,8 +148,7 @@ namespace Weather.ViewModels
             {
                 return;
             }
-            if ((SelectedSensorType.Name != TempSelectedSensorType.Name) ||
-                (SelectedSensorType.SIUnit.UnitId != TempSelectedSensorType.SIUnit.UnitId))
+            if ((SelectedSensorType.Name != TempSelectedSensorType.Name || SelectedSensorType.UnitType != TempSelectedSensorType.UnitType))
             {
                 IsDirty = true;
             }
@@ -253,11 +172,6 @@ namespace Weather.ViewModels
             if (Adding)
             {
                 _sensorTypeCore.Add(SelectedSensorType);
-                foreach (var unit in SelectedSensorType.Units)
-                {
-                    _sensorTypeCore.AddUnitToSensorType(unit, SelectedSensorType);
-                }
-                SelectedSensorType.SIUnit = SelectedSensorType.Units.First();
             }
 
             if (!SelectedSensorType.IsValid)

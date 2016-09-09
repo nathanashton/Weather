@@ -2,21 +2,6 @@
 {
     public class UnitEnums
     {
-        public enum EnumUnitType
-        {
-          Pressure,
-          Temperature,
-          Velocity,
-          Direction,
-          Humidity,
-          Uv,
-          Precipitation,
-          PrecipitationRate,
-          Irradiance,
-          Luminosity,
-          CloudCover
-        }
-
         public enum EnumUnit
         {
             Hectopascal,
@@ -42,7 +27,20 @@
             Flux,
             Okta
         }
+
+        public enum EnumUnitType
+        {
+            Pressure,
+            Temperature,
+            Velocity,
+            Direction,
+            Humidity,
+            Uv,
+            Precipitation,
+            PrecipitationRate,
+            Irradiance,
+            Luminosity,
+            CloudCover
+        }
     }
-
-
 }

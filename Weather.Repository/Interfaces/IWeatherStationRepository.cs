@@ -7,7 +7,6 @@ namespace Weather.Repository.Interfaces
     {
         List<IWeatherStation> GetAllWeatherStations();
 
-        List<IWeatherStation> GetAllTest();
 
 
         IWeatherStation GetById(int id);

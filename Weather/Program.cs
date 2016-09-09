@@ -29,11 +29,7 @@ namespace Weather
             container.RegisterType<ImportWindow>();
             container.RegisterType<ImportWindowViewModel>();
 
-            container.RegisterType<UnitsWindow>();
-            container.RegisterType<UnitsWindowViewModel>();
-
-            container.RegisterType<UnitSelectorWindow>();
-            container.RegisterType<UnitSelectorWindowViewModel>();
+   
 
             container.RegisterType<SensorTypesWindow>();
             container.RegisterType<SensorTypesViewModel>();

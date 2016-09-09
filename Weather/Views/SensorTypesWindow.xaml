@@ -184,21 +184,16 @@
                                    Grid.Column="0"
                                    VerticalAlignment="Center"
                                    VerticalContentAlignment="Center"
-                                   Content="SI Unit" />
+                                   Content="Unit Type" />
                             <DockPanel Grid.Row="1" Grid.Column="1">
-                                <Button Height="22"
-                                        Margin="5,5,0,5"
-                                        Background="Transparent"
-                                        BorderBrush="#A0A0A0"
-                                        Command="{Binding UnitsWindowCommand}"
-                                        Content="..."
-                                        DockPanel.Dock="Right" />
+
                                 <ComboBox Name="SiUnit"
                                           Height="22"
                                           Margin="2"
                                           VerticalContentAlignment="Center"
-                                          ItemsSource="{Binding SelectedSensorType.Units}"
-                                          SelectedItem="{Binding SelectedSensorType.SIUnit}" />
+                                          DisplayMemberPath="DisplayName"
+                                          ItemsSource="{Binding UnitTypes}"
+                                          SelectedItem="{Binding SelectedSensorType.UnitType}" />
                             </DockPanel>
                             <Label Grid.Row="2"
                                    Grid.Column="0"
@@ -209,67 +204,12 @@
                             <ListBox Grid.Row="2"
                                      Grid.Column="1"
                                      Height="100"
-                                     ItemsSource="{Binding SelectedSensorType.Units}"
-                                     SelectedItem="{Binding SelectedUnit}" />
+                                     ItemsSource="{Binding SelectedSensorType.UnitType.Units}" />
                             <StackPanel Grid.Row="3"
                                         Grid.Column="1"
                                         Height="30"
                                         HorizontalAlignment="Right"
-                                        Orientation="Horizontal">
-                                <Button Width="45"
-                                        Margin="10,7,0,7"
-                                        HorizontalAlignment="Right"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Command="{Binding AddUnitCommand}"
-                                        DockPanel.Dock="Left">
-                                    <DockPanel Background="Transparent">
-                                        <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/plus_48px.png">
-                                            <Image.Style>
-                                                <Style TargetType="Image">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsEnabled" Value="False">
-                                                            <Setter Property="Opacity" Value="0.3" />
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Image.Style>
-                                        </Image>
-                                        <Label VerticalContentAlignment="Center"
-                                               Background="Transparent"
-                                               Content="Add"
-                                               FontSize="11"
-                                               Padding="0" />
-                                    </DockPanel>
-                                </Button>
-                                <Button Width="65"
-                                        Margin="2,7,7,7"
-                                        HorizontalAlignment="Right"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Command="{Binding DeleteUnitCommand}"
-                                        DockPanel.Dock="Left">
-                                    <DockPanel Background="Transparent">
-                                        <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/minus_48px.png">
-                                            <Image.Style>
-                                                <Style TargetType="Image">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsEnabled" Value="False">
-                                                            <Setter Property="Opacity" Value="0.3" />
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Image.Style>
-                                        </Image>
-
-                                        <Label VerticalContentAlignment="Center"
-                                               Background="Transparent"
-                                               Content="Delete"
-                                               FontSize="11"
-                                               Padding="0" />
-                                    </DockPanel>
-                                </Button>
-                            </StackPanel>
+                                        Orientation="Horizontal" />
                         </Grid>
                     </DockPanel>
                 </DockPanel>

@@ -27,103 +27,7 @@ namespace Weather.Repository.Repositories
 
         public List<IWeatherRecord> GetAll()
         {
-            // _log.Debug("WeatherRecordRepository.GetAll();");
-
-            // var mappedReader = Enumerable.Empty<object>().Select(r => new
-            // {
-            //     WeatherRecordId = 0,
-            //     Timestamp = new DateTime(),
-            //     WeatherStationId = 0,
-            //     Id = 0,
-            //     wrsvWeatherRecordId = 0,
-            //     wrsvSensorValueId = 0
-            // }).ToList();
-
-            // var sql = @"SELECT
-            //wr.[WeatherRecordId] as WeatherRecordId,
-            //wr.[Timestamp] as Timestamp,
-            //wr.[WeatherStationId] as WeatherStationId,
-            //wrsv.[Id] as Id,
-            //wrsv.[WeatherRecordId] as wrsvWeatherRecordId,
-            //wrsv.[SensorValueId] as wrsvSensorValueId
-            //FROM [WeatherRecords] wr
-            //LEFT JOIN WeatherRecords_SensorValues wrsv ON wr.WeatherRecordId = wrsv.WeatherRecordId";
-
-            // try
-            // {
-            //     using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
-            //     {
-            //         connection.Open();
-            //         {
-            //             using (var command = new SQLiteCommand(sql, connection))
-            //             {
-            //                 using (var reader = command.ExecuteReader())
-            //                 {
-            //                     while (reader.Read())
-            //                     {
-            //                         mappedReader.Add(new
-            //                         {
-            //                             WeatherRecordId = Convert.ToInt32(reader["WeatherRecordId"]),
-            //                             Timestamp = Convert.ToDateTime(reader["Timestamp"]),
-            //                             WeatherStationId = Convert.ToInt32(reader["WeatherStationId"]),
-            //                             Id = Convert.ToInt32(reader["Id"]),
-            //                             wrsvWeatherRecordId = Convert.ToInt32(reader["wrsvWeatherRecordId"]),
-            //                             wrsvSensorValueId = Convert.ToInt32(reader["wrsvSensorValueId"])
-            //                         });
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-            // catch (SQLiteException ex)
-            // {
-            //     _log.Error("", ex);
-            //     throw;
-            // }
-
-            // var sensorValues =
-            //     mappedReader
-            //         .Select(
-            //             x => new {x.WeatherRecordId, SensorValue = _sensorValueRepository.GetById(x.wrsvSensorValueId)})
-            //         .ToList();
-
-            // var stations = mappedReader
-            //     .GroupBy(
-            //         x =>
-            //             new
-            //             {
-            //                 x.WeatherRecordId,
-            //                 x.Timestamp,
-            //                 x.WeatherStationId,
-            //                 x.Id,
-            //                 x.wrsvWeatherRecordId,
-            //                 x.wrsvSensorValueId
-            //             }, x => x,
-            //         (key, g) =>
-            //             new
-            //             {
-            //                 key.WeatherRecordId,
-            //                 WeatherRecord =
-            //                 new WeatherRecord
-            //                 {
-            //                     WeatherRecordId = key.WeatherRecordId,
-            //                     TimeStamp = key.Timestamp,
-            //                     WeatherStation = _weatherStationRepository.GetById(key.WeatherStationId),
-            //                     SensorValues = new List<ISensorValue>()
-            //                 }
-            //             }).ToList();
-
-            // var distinctrecords = stations.GroupBy(x => x.WeatherRecordId, (key, group) => group.First()).ToList();
-            // foreach (var record in distinctrecords)
-            // {
-            //     record.WeatherRecord.SensorValues =
-            //         sensorValues.Where(x => x.WeatherRecordId == record.WeatherRecordId)
-            //             .Select(y => y.SensorValue)
-            //             .ToList();
-            // }
             return null;
-            //    return distinctrecords.Select(y => y.WeatherRecord).Cast<IWeatherRecord>().ToList();
         }
 
         public async Task<List<Join>> GetAllJoins()
@@ -166,48 +70,7 @@ namespace Weather.Repository.Repositories
             return Joins;
         }
 
-        public async Task<List<IWeatherRecord>> GetAllTestAsync()
-        {
-            var Records = new List<IWeatherRecord>();
-
-            var sql = @"SELECT * FROM WeatherRecords";
-
-            try
-            {
-                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
-                {
-                    connection.Open();
-                    {
-                        using (var command = new SQLiteCommand(sql, connection))
-                        {
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (reader.Read())
-                                {
-                                    var record = new WeatherRecord
-                                    {
-                                        WeatherRecordId = Convert.ToInt32(reader["WeatherRecordId"]),
-                                        TimeStamp = Convert.ToDateTime(reader["Timestamp"]),
-                                        SensorValues = null,
-                                        WeatherStation = null,
-                                        WeatherStationId = Convert.ToInt32(reader["WeatherStationId"])
-                                    };
-                                    Records.Add(record);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                _log.Error("", ex);
-                throw;
-            }
-
-            return Records;
-        }
-
+  
         public async Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate,
             DateTime endDate)
         {
@@ -359,10 +222,10 @@ namespace Weather.Repository.Repositories
                                 }
                             }).ToList();
 
-                var distinctrecords = stations.GroupBy(x => x.WeatherRecordId, (key, group) => group.First()).ToList();
+              //  var distinctrecords = stations.GroupBy(x => x.WeatherRecordId, (key, group) => group.First()).ToList();
 
 
-                WeatherRecords = distinctrecords.Select(y => y.WeatherRecord).Cast<IWeatherRecord>().ToList();
+                WeatherRecords = stations.Select(y => y.WeatherRecord).Cast<IWeatherRecord>().ToList();
             });
             return WeatherRecords;
         }

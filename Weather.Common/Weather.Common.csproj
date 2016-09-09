@@ -48,9 +48,6 @@
     <Compile Include="EventArgs\DebugMessageArgs.cs" />
     <Compile Include="Interfaces\ISensorType.cs" />
     <Compile Include="Interfaces\IStationSensor.cs" />
-    <Compile Include="Units\Unit.cs" />
-    <Compile Include="Units\UnitType.cs" />
-    <Compile Include="Units\UnitTypes.cs" />
     <Compile Include="EventArgs\ImportEventArgs.cs" />
     <Compile Include="Interfaces\ISensorValue.cs" />
     <Compile Include="Interfaces\IWeatherRecord.cs" />
@@ -77,7 +74,12 @@
     <None Include="Entities\ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Weather.Units\Weather.Units.csproj">
+      <Project>{6f5f33c0-f021-43be-bc6d-6ba10b5fbe94}</Project>
+      <Name>Weather.Units</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
