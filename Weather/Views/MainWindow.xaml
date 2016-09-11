@@ -37,7 +37,6 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Setup">
-                <MenuItem Command="{Binding UnitsWindowCommand}" Header="Units" />
                 <MenuItem Command="{Binding SensorTypesWindowCommand}" Header="Sensor Types" />
                 <MenuItem Command="{Binding SensorsWindowCommand}" Header="Sensors" />
                 <MenuItem Command="{Binding WeatherStationsCommand}" Header="Weather Stations" />

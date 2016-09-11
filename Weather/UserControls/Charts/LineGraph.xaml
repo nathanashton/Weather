@@ -38,7 +38,7 @@
                 </DockPanel>
 
                 <DockPanel Grid.Column="1" HorizontalAlignment="Right">
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
                         <Label Content="Sensor 2" Padding="0,0,0,2" />
                         <Label Margin="5,0,0,0"
                                VerticalContentAlignment="Bottom"
