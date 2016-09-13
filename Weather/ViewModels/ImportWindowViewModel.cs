@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using LumenWorks.Framework.IO.Csv;
+using Microsoft.Win32;
 using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Entities;
@@ -102,24 +103,21 @@ namespace Weather.ViewModels
         public bool FileSelected { get; set; }
         public ObservableCollection<Record> DateRecord { get; set; }
         public ObservableCollection<ObservableCollection<Record>> DateRecords { get; set; }
+        public ObservableCollection<Record> Record { get; set; }
+        public ObservableCollection<ObservableCollection<Record>> Records { get; set; }
+        public ObservableCollection<Match> Matches { get; set; }
+        public ObservableCollection<ObservableCollection<Record>> FilteredRecords { get; set; }
+        public ObservableCollection<ObservableCollection<Record>> FilteredDateRecords { get; set; }
+        public ObservableCollection<ISensor> Sensors { get; set; }
 
         public Visibility TimeFieldVisible { get; set; }
         public int SelectedRecordIndex { get; set; }
         public int CurrentRecord { get; set; }
         public string CurrentRecordDisplay => "of " + RecordsCount;
-        public WeatherStation SelectedStation { get; set; }
+        public IWeatherStation SelectedStation { get; set; }
         public int RecordsCount { get; set; }
-        public ObservableCollection<Record> Record { get; set; }
-        public ObservableCollection<ObservableCollection<Record>> Records { get; set; }
-        public ObservableCollection<Match> Matches { get; set; }
 
-        public ObservableCollection<ObservableCollection<Record>> FilteredRecords { get; set; }
-        public ObservableCollection<ObservableCollection<Record>> FilteredDateRecords { get; set; }
-
-
-        public ObservableCollection<ISensor> Sensors { get; set; }
-
-
+        
 
         public Match SelectedMatch { get; set; }
         public Record SelectedRecordDate { get; set; }
@@ -143,6 +141,21 @@ namespace Weather.ViewModels
         public ICommand RemoveMatchCommand
         {
             get { return new RelayCommand(RemoveMatch, x => SelectedMatch != null); }
+        }
+
+        public ICommand ChooseFileCommand
+        {
+            get { return new RelayCommand(ChooseFile, x => true); }
+        }
+
+        private void ChooseFile(object obj)
+        {
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                ReadFile(openFileDialog.FileName);
+            }
+            DateRecord = DateRecords[0];
         }
 
         public bool Importing { get; set; }
@@ -171,7 +184,7 @@ namespace Weather.ViewModels
             importer.ImportChanged += Importer_ImportChanged;
             importer.ImportComplete += Importer_ImportComplete;
 
-            SelectedStation = (WeatherStation) selectedStation.WeatherStation;
+            SelectedStation = selectedStation.WeatherStation;
 
             Matches = new ObservableCollection<Match>();
             SingleChecked = true;
@@ -228,12 +241,12 @@ namespace Weather.ViewModels
 
             if (SingleChecked)
             {
-                _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index);
+              _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index);
             }
             if (MultipleChecked)
             {
-                _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index,
-                    SelectedRecordTime.Index);
+               _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index,
+                 SelectedRecordTime.Index);
             }
             _s.Start();
             _importer.Start();

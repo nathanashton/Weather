@@ -8,7 +8,7 @@ namespace Weather.Core.Interfaces
 {
     public interface IImporter
     {
-        void Import(string filePath, WeatherStation station, List<Tuple<ISensor, int>> data, int excludeLines,
+        void Import(string filePath, IWeatherStation station, List<Tuple<ISensor, int>> data, int excludeLines,
             params int[] timestamp);
 
         void Start();

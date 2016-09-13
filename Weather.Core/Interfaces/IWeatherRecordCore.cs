@@ -11,5 +11,8 @@ namespace Weather.Core.Interfaces
 
         Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId, DateTime startDate,
             DateTime endDate);
+
+        int Add(IWeatherRecord record);
+        int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId);
     }
 }

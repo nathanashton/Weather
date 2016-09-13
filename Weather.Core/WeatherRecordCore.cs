@@ -38,5 +38,15 @@ namespace Weather.Core
             var all = await _repository.GetAllForStation(weatherStationId, startDate, endDate);
             return all;
         }
+
+        public int Add(IWeatherRecord record)
+        {
+            return _repository.Add(record);
+        }
+
+        public int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId)
+        {
+            return _repository.AddWeatherRecordSensorValue(weatherRecordId, sensorValueId);
+        }
     }
 }

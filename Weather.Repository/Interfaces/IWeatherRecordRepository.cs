@@ -10,7 +10,9 @@ namespace Weather.Repository.Interfaces
     {
         List<IWeatherRecord> GetAll();
         Task<List<Join>> GetAllJoins();
-
         Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate, DateTime endDate);
+        int Add(IWeatherRecord record);
+        int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId);
+
     }
 }

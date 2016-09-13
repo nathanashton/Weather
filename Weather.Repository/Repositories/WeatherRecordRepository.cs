@@ -238,6 +238,72 @@ namespace Weather.Repository.Repositories
             });
             return WeatherRecords;
         }
+
+        public int Add(IWeatherRecord record)
+        {
+            _log.Debug("WeatherRecordRepository.Add();");
+
+            var sql = @"INSERT INTO WeatherRecords (Timestamp, WeatherStationId) VALUES (@Timestamp, @WeatherStationId)";
+            var sql2 = "SELECT last_insert_rowid();";
+            try
+            {
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Timestamp", record.TimeStamp);
+                            command.Parameters.AddWithValue("@WeatherStationId", record.WeatherStationId);
+
+                            command.ExecuteNonQuery();
+
+                            var command2 = new SQLiteCommand(sql2, connection);
+                            var id = command2.ExecuteScalar();
+                            return Convert.ToInt32(id);
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+        }
+
+        public int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId)
+        {
+            _log.Debug("WeatherRecordRepository.Add();");
+
+            var sql = @"INSERT INTO WeatherRecords_SensorValues (WeatherRecordId, SensorValueId) VALUES (@WeatherRecordId, @SensorValueId)";
+            var sql2 = "SELECT last_insert_rowid();";
+            try
+            {
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@WeatherRecordId", weatherRecordId);
+                            command.Parameters.AddWithValue("@SensorValueId", sensorValueId);
+
+                            command.ExecuteNonQuery();
+
+                            var command2 = new SQLiteCommand(sql2, connection);
+                            var id = command2.ExecuteScalar();
+                            return Convert.ToInt32(id);
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+        }
     }
 
     public class Join

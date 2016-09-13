@@ -14,21 +14,23 @@ namespace Weather.Core
     public class Importer : IImporter
     {
         private readonly ISensorCore _sensorCore;
-        private readonly IStationCore _stationCore;
+        private readonly IWeatherRecordCore _weatherRecordCore;
         private readonly BackgroundWorker _worker;
+        private ISensorValueCore _sensorValueCore;
 
         private readonly List<SensorValue> listSensorValues = new List<SensorValue>();
         private readonly List<WeatherRecord> listWeatherRecords = new List<WeatherRecord>();
         private List<Tuple<ISensor, int>> _data;
         private int _excludeLines;
         private string _filePath;
-        private WeatherStation _station;
+        private IWeatherStation _station;
         private int[] _timestamp;
 
-        public Importer(ISensorCore sensorCore, IStationCore stationCore)
+        public Importer(ISensorCore sensorCore, IWeatherRecordCore weatherRecordCore, ISensorValueCore sensorValueCore)
         {
+            _sensorValueCore = sensorValueCore;
             _sensorCore = sensorCore;
-            _stationCore = stationCore;
+            _weatherRecordCore = weatherRecordCore;
             _worker = new BackgroundWorker();
             _worker.DoWork += _worker_DoWork;
             _worker.ProgressChanged += _worker_ProgressChanged;
@@ -45,7 +47,7 @@ namespace Weather.Core
 
         public event EventHandler ImportComplete;
 
-        public void Import(string filePath, WeatherStation station, List<Tuple<ISensor, int>> data, int excludeLines,
+        public void Import(string filePath, IWeatherStation station, List<Tuple<ISensor, int>> data, int excludeLines,
             params int[] timestamp)
         {
             _filePath = filePath;
@@ -94,7 +96,7 @@ namespace Weather.Core
                             dt = DateTime.Parse(csv[_timestamp[0]] + " " + csv[_timestamp[1]]);
                         }
                         //    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
-                        var weatherrecord = new WeatherRecord {TimeStamp = dt};
+                        var weatherrecord = new WeatherRecord {TimeStamp = dt, SensorValues = new List<ISensorValue>()};
 
                         foreach (var d in _data)
                         {
@@ -102,31 +104,30 @@ namespace Weather.Core
                             var s = new SensorValue();
                             if (double.TryParse(csv[d.Item2], out value))
                             {
-                                //s.Sensor = d.Item1 as Sensor;
-                                //s.RawValue = value;
-                                //if (s.Sensor.Type == Enums.UnitType.Temperature)
-                                //{
-                                //    s.DisplayUnit = Units.Celsius;
-                                //}
-                                //if (s.Sensor.Type == Enums.UnitType.Humidity)
-                                //{
-                                //    s.DisplayUnit = Units.Humidity;
-                                //}
-                                //if (s.Sensor.Type == Enums.UnitType.Pressure)
-                                //{
-                                //    s.DisplayUnit = Units.Hectopascals;
-                                //}
-                                //if (s.Sensor.Type == Enums.UnitType.WindSpeed)
-                                //{
-                                //    s.DisplayUnit = Units.Kmh;
-                                //}
+                                s.Sensor = d.Item1 as ISensor;
+                                s.RawValue = value;
                             }
-                            //   _sensorCore.AddSensorValue(s);
-                            listSensorValues.Add(s); // Bulk insert
+
+
+                            // Add SensorValue to DB
+                         //   s.SensorValueId =_sensorValueCore.Add(s).SensorValueId;
+
+
                             weatherrecord.SensorValues.Add(s);
+                            weatherrecord.WeatherStationId = _station.WeatherStationId;
                         }
-                        //  _stationCore.AddWeatherRecord(weatherrecord);
-                        listWeatherRecords.Add(weatherrecord); // Bulk insert
+
+                        // Add Weather Refo
+                        weatherrecord.WeatherRecordId = _weatherRecordCore.Add(weatherrecord);
+
+                        foreach (var v in weatherrecord.SensorValues)
+                        {
+                            v.SensorValueId = _sensorValueCore.Add(v).SensorValueId;
+
+                            // Add record to WeatherRecords_SensorValues
+                            _weatherRecordCore.AddWeatherRecordSensorValue(weatherrecord.WeatherRecordId,
+                                v.SensorValueId);
+                        }
 
                         var pr = Utils.CalculatePercentage(csv.CurrentRecordIndex + 1, 0, lineCount);
                         _worker.ReportProgress(pr);

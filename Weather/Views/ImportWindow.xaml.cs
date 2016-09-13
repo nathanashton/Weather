@@ -20,15 +20,7 @@ namespace Weather.Views
             DataContext = _viewModel;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                _viewModel.ReadFile(openFileDialog.FileName);
-            }
-            _viewModel.DateRecord = _viewModel.DateRecords[0];
-        }
+     
 
         private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
