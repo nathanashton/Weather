@@ -32,7 +32,7 @@ namespace Weather.Repository.Repositories
                 Description = string.Empty,
                 SensorTypeId = 0,
                 SensorTypeSensorTypeId = 0,
-                Name = string.Empty,
+                Name = string.Empty
             }).ToList();
 
             var sql = @"SELECT

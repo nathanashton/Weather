@@ -14,6 +14,8 @@ namespace Weather.Repository.Interfaces
         int Add(ISensorValue sensorValue);
 
         void Delete(int id);
+        bool AnyRecordsUseSensor(ISensor sensor);
+
 
         void Update(ISensorValue sensorValue);
     }

@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Weather.UserControls.Container"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:Weather.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,19 +17,28 @@
             IsEnabled="{Binding SelectedStation.WeatherStation,
                                 Converter={StaticResource NullCount}}">
         <DockPanel VerticalAlignment="Stretch" Style="{DynamicResource Panel}">
+            <!--<Border Height="28"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,1"
+                    DockPanel.Dock="Top">-->
+
             <DockPanel Height="28"
-                       DockPanel.Dock="Top"
-                       Style="{DynamicResource Header}">
-                <Label Content="{Binding Content.ViewModel.Header}" Style="{DynamicResource HeaderLabel}" />
-                <ComboBox Margin="3"
+                       Background="Transparent"
+                       DockPanel.Dock="Top">
+                <Label Content="{Binding Content.ViewModel.Header}" FontWeight="Bold" />
+
+                <ComboBox Margin="2"
                           HorizontalAlignment="Right"
                           DisplayMemberPath="Name"
                           DockPanel.Dock="Right"
-                          IsEditable="False"
                           ItemsSource="{Binding Charts}"
-                          SelectedItem="{Binding Selected}" />
+                          SelectionChanged="ComboBox_SelectionChanged"
+                          Style="{DynamicResource ComboBoxTransparent}" />
             </DockPanel>
+            <!--</Border>-->
             <Grid>
+
+
                 <ProgressBar Width="100"
                              Height="25"
                              Margin="5"

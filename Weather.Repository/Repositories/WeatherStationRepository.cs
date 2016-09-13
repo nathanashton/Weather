@@ -33,7 +33,7 @@ namespace Weather.Repository.Repositories
                 Latitude = (double?) 0,
                 Longitude = (double?) 0,
                 SensorId = (int?) 0,
-                Correction = (double?) 0,
+                Correction = (double) 0,
                 Notes = string.Empty,
                 StationSensorId = (int?) 0
             }).ToList();
@@ -73,7 +73,7 @@ namespace Weather.Repository.Repositories
                                         Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
                                         Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
                                         SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
-                                        Correction = DbUtils.ParseDoubleNull(reader["Correction"].ToString()),
+                                        Correction =Convert.ToDouble(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
                                         StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
                                     });
@@ -115,7 +115,7 @@ namespace Weather.Repository.Repositories
                             Description = key.Description,
                             Latitude = key.Latitude,
                             Longitude = key.Longitude,
-                            Sensors = new List<IStationSensor>()
+                            Sensors = new System.Collections.ObjectModel.ObservableCollection<IStationSensor>()
                         }).ToList();
 
             var distinctStations = stations.GroupBy(x => x.WeatherStationId, (key, group) => group.First()).ToList();
@@ -155,7 +155,7 @@ namespace Weather.Repository.Repositories
                 Latitude = (double?) 0,
                 Longitude = (double?) 0,
                 SensorId = (int?) 0,
-                Correction = (double?) 0,
+                Correction = (double) 0,
                 Notes = string.Empty,
                 StationSensorId = (int?) 0
             }).ToList();
@@ -195,7 +195,7 @@ namespace Weather.Repository.Repositories
                                         Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
                                         Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
                                         SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
-                                        Correction = DbUtils.ParseDoubleNull(reader["Correction"].ToString()),
+                                        Correction =Convert.ToDouble(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
                                         StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
                                     });
@@ -237,7 +237,7 @@ namespace Weather.Repository.Repositories
                             Description = key.Description,
                             Latitude = key.Latitude,
                             Longitude = key.Longitude,
-                            Sensors = new List<IStationSensor>()
+                            Sensors = new System.Collections.ObjectModel.ObservableCollection<IStationSensor>()
                         }).ToList();
 
             var distinctStations = stations.GroupBy(x => x.WeatherStationId, (key, group) => group.First()).ToList();
@@ -404,7 +404,7 @@ namespace Weather.Repository.Repositories
                 Latitude = (double?) 0,
                 Longitude = (double?) 0,
                 SensorId = (int?) 0,
-                Correction = (double?) 0,
+                Correction = (double) 0,
                 Notes = string.Empty,
                 StationSensorId = (int?) 0
             }).ToList();
@@ -443,7 +443,7 @@ namespace Weather.Repository.Repositories
                                         Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
                                         Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
                                         SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
-                                        Correction = DbUtils.ParseDoubleNull(reader["Correction"].ToString()),
+                                        Correction = Convert.ToDouble(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
                                         StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
                                     });
@@ -485,7 +485,7 @@ namespace Weather.Repository.Repositories
                             Description = key.Description,
                             Latitude = key.Latitude,
                             Longitude = key.Longitude,
-                            Sensors = new List<IStationSensor>()
+                            Sensors = new System.Collections.ObjectModel.ObservableCollection<IStationSensor>()
                         }).ToList();
 
             var distinctStations = stations.GroupBy(x => x.WeatherStationId, (key, group) => group.First()).ToList();

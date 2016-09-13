@@ -21,7 +21,7 @@ namespace Weather.Common.Entities
                         return "Name is required";
                     }
                 }
-             
+
                 return null;
             }
         }
@@ -44,8 +44,8 @@ namespace Weather.Common.Entities
 
         private bool Validate()
         {
-           ;
-            return !IsNullOrEmpty(Name) && UnitType != null;
+            ;
+            return !IsNullOrEmpty(Name) && (UnitType != null);
         }
     }
 }

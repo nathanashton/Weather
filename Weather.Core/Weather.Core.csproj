@@ -54,7 +54,6 @@
     <Compile Include="Interfaces\ISensorValueCore.cs" />
     <Compile Include="Interfaces\IStationCore.cs" />
     <Compile Include="Interfaces\ISensorCore.cs" />
-    <Compile Include="Interfaces\ISelectedStation.cs" />
     <Compile Include="Interfaces\IWeatherRecordCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SensorCore.cs" />

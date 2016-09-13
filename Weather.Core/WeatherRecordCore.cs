@@ -18,7 +18,7 @@ namespace Weather.Core
 
 
         public WeatherRecordCore(IWeatherRecordRepository repository, ISensorValueRepository sv, ISensorRepository s,
-             ISensorTypeRepository st, IWeatherStationRepository ws)
+            ISensorTypeRepository st, IWeatherStationRepository ws)
         {
             _repository = repository;
             _sv = sv;

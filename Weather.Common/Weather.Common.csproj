@@ -42,10 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DescriptionAttribute.cs" />
+    <Compile Include="DisplayNameAttribute.cs" />
     <Compile Include="Entities\SensorType.cs" />
     <Compile Include="Entities\SensorValue.cs" />
     <Compile Include="Entities\StationSensor.cs" />
     <Compile Include="EventArgs\DebugMessageArgs.cs" />
+    <Compile Include="Interfaces\IChartCodeBehind.cs" />
+    <Compile Include="Interfaces\IChartViewModel.cs" />
+    <Compile Include="Interfaces\IPlugin.cs" />
+    <Compile Include="Interfaces\IPluginWrapper.cs" />
+    <Compile Include="Interfaces\ISelectedStation.cs" />
     <Compile Include="Interfaces\ISensorType.cs" />
     <Compile Include="Interfaces\IStationSensor.cs" />
     <Compile Include="EventArgs\ImportEventArgs.cs" />
@@ -62,6 +69,7 @@
     <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="MethodName.cs" />
     <Compile Include="NotifyBase.cs" />
+    <Compile Include="PluginWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SensorDataGridRow.cs" />

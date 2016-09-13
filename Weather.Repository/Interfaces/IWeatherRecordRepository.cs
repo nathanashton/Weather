@@ -11,7 +11,6 @@ namespace Weather.Repository.Interfaces
         List<IWeatherRecord> GetAll();
         Task<List<Join>> GetAllJoins();
 
-
         Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate, DateTime endDate);
     }
 }

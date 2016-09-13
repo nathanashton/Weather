@@ -70,5 +70,21 @@ namespace Weather.Views
 
             IntegerUpDown_ValueChanged(null, null);
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            OnMouseLeftButtonDown(e);
+            DragMove();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var t = "Denug";
+        }
     }
 }

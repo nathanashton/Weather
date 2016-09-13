@@ -53,9 +53,5 @@ namespace Weather.Core
             Update(sensorType);
             return sensorType;
         }
-
-
-
-  
     }
 }

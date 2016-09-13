@@ -6,7 +6,6 @@ using PropertyChanged;
 using Weather.Common;
 using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
-using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
 using Weather.Views;
@@ -201,7 +200,6 @@ namespace Weather.ViewModels
 
         private void UnitsWindowOpen(object obj)
         {
-          
         }
 
         private void StationsWindowOpen(object obj)

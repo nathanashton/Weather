@@ -1,11 +1,15 @@
-﻿using Weather.Common.Interfaces;
+﻿using System;
+using System.ComponentModel;
+using PropertyChanged;
+using Weather.Common.Interfaces;
 
 namespace Weather.Common.Entities
 {
+    [ImplementPropertyChanged]
     public class StationSensor : IStationSensor
     {
         public int StationSensorId { get; set; }
-        public double? Correction { get; set; }
+        public double Correction { get; set; }
         public string Notes { get; set; }
         public ISensor Sensor { get; set; }
 
@@ -13,5 +17,6 @@ namespace Weather.Common.Entities
         {
             return Sensor.ToString();
         }
+
     }
 }

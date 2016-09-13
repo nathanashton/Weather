@@ -1,7 +1,6 @@
 ﻿using System;
 using Weather.Common;
 using Weather.Common.Interfaces;
-using Weather.Core.Interfaces;
 
 namespace Weather.Core
 {

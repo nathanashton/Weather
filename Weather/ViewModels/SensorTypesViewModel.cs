@@ -1,14 +1,11 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
 using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
-using Weather.DependencyResolver;
 using Weather.Helpers;
 using Weather.Units.Interfaces;
 using Weather.Views;
@@ -55,7 +52,7 @@ namespace Weather.ViewModels
             }
         }
 
-    
+
         public ICommand AddCommand
         {
             get { return new RelayCommand(Add, x => true); }
@@ -72,7 +69,7 @@ namespace Weather.ViewModels
             UnitTypes = new ObservableCollection<IUnitType>(Units.UnitTypes.AllUnitTypes);
         }
 
-      
+
         public void GetSensorTypes()
         {
             SensorTypes = new ObservableCollection<ISensorType>(_sensorTypeCore.GetAll());
@@ -96,7 +93,7 @@ namespace Weather.ViewModels
                 GetSensorTypes();
             }
             Window.Name.Text = TempSelectedSensorType.Name;
-           
+
             Adding = false;
             SelectedSensorType = null;
             TempSelectedSensorType = null;
@@ -108,10 +105,6 @@ namespace Weather.ViewModels
             CheckDirty();
         }
 
-    
-        
-
-      
 
         private void Delete(object obj)
         {
@@ -148,7 +141,8 @@ namespace Weather.ViewModels
             {
                 return;
             }
-            if ((SelectedSensorType.Name != TempSelectedSensorType.Name || SelectedSensorType.UnitType != TempSelectedSensorType.UnitType))
+            if ((SelectedSensorType.Name != TempSelectedSensorType.Name) ||
+                (SelectedSensorType.UnitType != TempSelectedSensorType.UnitType))
             {
                 IsDirty = true;
             }

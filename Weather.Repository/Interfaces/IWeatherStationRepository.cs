@@ -8,7 +8,6 @@ namespace Weather.Repository.Interfaces
         List<IWeatherStation> GetAllWeatherStations();
 
 
-
         IWeatherStation GetById(int id);
 
         int Add(IWeatherStation station);

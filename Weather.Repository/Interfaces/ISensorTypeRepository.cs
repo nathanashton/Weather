@@ -15,7 +15,5 @@ namespace Weather.Repository.Interfaces
         void Delete(int id);
 
         void Update(ISensorType sensorType);
-
-   
     }
 }

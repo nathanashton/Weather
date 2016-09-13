@@ -166,6 +166,39 @@ namespace Weather.Repository.Repositories
             }
         }
 
+        public bool AnyRecordsUseSensor(ISensor sensor)
+        {
+            _log.Debug("SensorValueRepository.AnyRecordsUseSensor();");
+
+            var sql = @"SELECT * FROM SensorValues WHERE SensorId = @Id";
+            try
+            {
+                using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+                {
+                    connection.Open();
+                    {
+                        using (var command = new SQLiteCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Id", sensor.SensorId);
+                            using (var reader = command.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    return true;
+                                }
+   }
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _log.Error("", ex);
+                throw;
+            }
+            return false;
+        }
+
         public void Update(ISensorValue sensorValue)
         {
             _log.Debug("SensorValueRepository.Update();");

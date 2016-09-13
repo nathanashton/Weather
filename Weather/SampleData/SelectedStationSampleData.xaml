@@ -1,0 +1,5 @@
+﻿<Core:SelectedStation xmlns:Core="clr-namespace:Weather.Core;assembly=Weather.Core" xmlns:System="clr-namespace:System;assembly=mscorlib" EndDate="09/13/2016 12:56:27" StartDate="09/13/2016 12:56:27" TimeSpanWeek="False" TimeSpanMonth="True" TimeSpanYear="False" TimeSpanWords="Class aenean curae" TimeSpanDay="True">
+	<Core:SelectedStation.TimeSpan>
+		<System:TimeSpan/>
+	</Core:SelectedStation.TimeSpan>
+</Core:SelectedStation>

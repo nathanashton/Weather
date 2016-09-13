@@ -54,7 +54,6 @@ namespace Weather.Repository.Repositories
                                         SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
                                         Name = reader["Name"].ToString(),
                                         UnitId = DbUtils.ParseIntNull(reader["UnitTypeId"].ToString())
-                                     
                                     });
                                 }
                             }
@@ -82,7 +81,6 @@ namespace Weather.Repository.Repositories
             return sensorTypes.Cast<ISensorType>().ToList();
         }
 
-       
 
         //TODO
         public ISensorType GetById(int id)
@@ -215,11 +213,5 @@ namespace Weather.Repository.Repositories
                 throw;
             }
         }
-
-      
-
-     
-
-       
     }
 }

@@ -12,8 +12,8 @@ namespace Weather.Common.Interfaces
         double? Longitude { get; set; }
         string Description { get; set; }
         bool IsValid { get; }
-
-        IList<IStationSensor> Sensors { get; set; }
+        string ToString();
+        ObservableCollection<IStationSensor> Sensors { get; set; }
         ObservableCollection<IWeatherRecord> Records { get; set; }
     }
 }

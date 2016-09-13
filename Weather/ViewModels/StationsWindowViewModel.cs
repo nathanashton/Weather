@@ -135,6 +135,19 @@ namespace Weather.ViewModels
 
         private void DeleteSensor(object obj)
         {
+            var inuse = _stationCore.AnyRecordsUseSensor(SelectedSensor.Sensor);
+            if (inuse)
+            {
+                if (
+                    MessageBox.Show(
+                        "This sensor has records saved, deleting the sensor will also delete the records. Continue?",
+                        "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Stop) == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+
+
             var result = MessageBox.Show("Remove " + SelectedSensor.Sensor + " from this Station?", "Confirm",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result != MessageBoxResult.Yes)

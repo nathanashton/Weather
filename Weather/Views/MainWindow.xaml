@@ -71,12 +71,12 @@
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
 
-                <Label Margin="0,0,10,0"
+                <Label Margin="0,0,10,0" FontSize="16"
                        VerticalAlignment="Center"
                        Content="{Binding Path=SelectedStation.StartDate}"
                        ContentStringFormat="{}{0:dd MMM yyyy}"
                        Style="{DynamicResource HeaderLabel}" />
-                <Label Margin="0,0,10,0"
+                <Label Margin="0,0,10,0" FontSize="16"
                        VerticalAlignment="Center"
                        Content="{Binding Path=SelectedStation.EndDate}"
                        ContentStringFormat="{}{0:dd MMM yyyy}"
@@ -270,7 +270,7 @@
             <Grid Grid.Row="0"
                   Grid.RowSpan="2"
                   Grid.Column="1"
-                  Width="200"
+                  Width="250"
                   Margin="0,5,5,5"
                   Visibility="{Binding Path=SideBarVisible,
                                        Converter={StaticResource BoolVisConverter}}">

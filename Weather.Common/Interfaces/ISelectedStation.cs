@@ -1,7 +1,6 @@
 ﻿using System;
-using Weather.Common.Interfaces;
 
-namespace Weather.Core.Interfaces
+namespace Weather.Common.Interfaces
 {
     public interface ISelectedStation
     {

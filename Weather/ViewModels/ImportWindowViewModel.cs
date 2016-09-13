@@ -27,8 +27,6 @@ namespace Weather.ViewModels
             new Stopwatch();
 
         private bool _multipleChecked;
-
-        private readonly ISelectedStation _selectedStation;
         private bool _singleChecked;
 
         public bool SingleChecked
@@ -118,6 +116,11 @@ namespace Weather.ViewModels
         public ObservableCollection<ObservableCollection<Record>> FilteredRecords { get; set; }
         public ObservableCollection<ObservableCollection<Record>> FilteredDateRecords { get; set; }
 
+
+        public ObservableCollection<ISensor> Sensors { get; set; }
+
+
+
         public Match SelectedMatch { get; set; }
         public Record SelectedRecordDate { get; set; }
         public Record SelectedRecordTime { get; set; }
@@ -157,7 +160,6 @@ namespace Weather.ViewModels
 
         public ImportWindowViewModel(IImporter importer, ISelectedStation selectedStation)
         {
-            _selectedStation = selectedStation;
             Record = new ObservableCollection<Record>();
             Records = new ObservableCollection<ObservableCollection<Record>>();
             DateRecord = new ObservableCollection<Record>();
@@ -169,10 +171,17 @@ namespace Weather.ViewModels
             importer.ImportChanged += Importer_ImportChanged;
             importer.ImportComplete += Importer_ImportComplete;
 
-            SelectedStation = (WeatherStation) _selectedStation.WeatherStation;
+            SelectedStation = (WeatherStation) selectedStation.WeatherStation;
 
             Matches = new ObservableCollection<Match>();
             SingleChecked = true;
+            Sensors = new ObservableCollection<ISensor>();
+
+            if (SelectedStation.Sensors == null || SelectedStation.Sensors.Count == 0) return;
+            foreach (var sensor in SelectedStation.Sensors)
+            {
+                Sensors.Add(sensor.Sensor);
+            }
         }
 
         private void Importer_ImportComplete(object sender, EventArgs e)

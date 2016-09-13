@@ -16,7 +16,5 @@ namespace Weather.Core.Interfaces
         void Update(ISensorType sensorType);
 
         ISensorType AddOrUpdate(ISensorType sensorType);
-
-
     }
 }

@@ -18,6 +18,7 @@ namespace Weather.Views
         public StationsWindow(StationsWindowViewModel viewModel)
         {
             InitializeComponent();
+            //  DropShadowHelper.DropShadowToWindow
             _viewModel = viewModel;
             DataContext = _viewModel;
             _viewModel.Window = this;
@@ -27,7 +28,7 @@ namespace Weather.Views
 
         private void StationsWindow_Closing(object sender, CancelEventArgs e)
         {
-           _viewModel.SelectedStation.OnSelectedStationUpdated();
+            _viewModel.SelectedStation.OnSelectedStationUpdated();
         }
 
         private void StationsWindow_Loaded(object sender, RoutedEventArgs e)

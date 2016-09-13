@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Media;
 using Microsoft.Practices.Unity;
+using Weather.Common;
 using Weather.Common.Interfaces;
 using Weather.DependencyResolver;
 using Weather.UserControls;
-using Weather.UserControls.Charts;
 using Weather.ViewModels;
 using Weather.Views;
 
@@ -14,9 +18,13 @@ namespace Weather
 {
     internal static class Program
     {
+        public static ObservableCollection<IPluginWrapper> LoadedPlugins;
+
         [STAThread]
         private static void Main()
         {
+            LoadFromPath("Plugins", true);
+
             var container = new Resolver().Bootstrap();
             container.RegisterType<MainWindow>();
             container.RegisterType<MainWindowViewModel>();
@@ -29,7 +37,6 @@ namespace Weather
             container.RegisterType<ImportWindow>();
             container.RegisterType<ImportWindowViewModel>();
 
-   
 
             container.RegisterType<SensorTypesWindow>();
             container.RegisterType<SensorTypesViewModel>();
@@ -45,19 +52,12 @@ namespace Weather
 
             container.RegisterType<StationPanelViewModel>();
             container.RegisterType<StationSidePanel>();
+
             container.RegisterType<Container>();
             container.RegisterType<ContainerViewModel>();
 
-
-            // Charts
-            container.RegisterType<LineGraphViewModel>();
-
-            //container.RegisterType<AverageWindDirectionViewModel>();
-
-            //container.RegisterType<MinMaxViewModel>();
-
-            //container.RegisterType<AllRecordsViewModel>();
-
+            container.RegisterType<SelectStationWindow>();
+            container.RegisterType<SelectStationWindowViewModel>();
 
             container.RegisterType<StationMapWindow>();
 
@@ -69,6 +69,11 @@ namespace Weather
 
         private static void RunApplication(UnityContainer container, ILog log, ISettings settings)
         {
+            TextOptions.TextFormattingModeProperty.OverrideMetadata(typeof(Window),
+                new FrameworkPropertyMetadata(TextFormattingMode.Display,
+                    FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.Inherits));
+
             if (!Directory.Exists(settings.ApplicationPath))
             {
                 Directory.CreateDirectory(settings.ApplicationPath);
@@ -96,6 +101,7 @@ namespace Weather
             {
                 ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
             }
+
 
             application.Run(mainWindow);
         }
@@ -129,6 +135,73 @@ namespace Weather
             var resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+        }
+
+        public static void LoadFromPath(string path, bool includeSubdirectories = false)
+        {
+            var container = new Resolver().Bootstrap();
+            var station = container.Resolve<ISelectedStation>();
+
+            if (!Directory.Exists(path))
+            {
+                return;
+            }
+            var dllFileNames = Directory.GetFiles(path, "*.dll",
+                includeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+
+            ICollection<Assembly> assemblies = new List<Assembly>(dllFileNames.Length);
+            foreach (var dllFile in dllFileNames)
+            {
+                try
+                {
+                    var an = AssemblyName.GetAssemblyName(dllFile);
+                    var assembly = Assembly.Load(an);
+                    assemblies.Add(assembly);
+                }
+                catch (Exception)
+                {
+                    //TODO
+                }
+            }
+
+            var pluginType = typeof(IPlugin);
+            ICollection<Type> pluginTypes = new List<Type>();
+            foreach (var assembly in assemblies)
+            {
+                if (assembly == null)
+                {
+                    continue;
+                }
+                var types = assembly.GetTypes();
+
+                foreach (var t in types)
+                {
+                    if (t.IsInterface || t.IsAbstract)
+                    {
+                    }
+                    else
+                    {
+                        var n = t.GetInterface(pluginType.FullName);
+                        if (n != null)
+                        {
+                            pluginTypes.Add(t);
+                        }
+                    }
+                }
+            }
+
+            LoadedPlugins = new ObservableCollection<IPluginWrapper>();
+
+            foreach (var type in pluginTypes)
+            {
+                var plugin = Activator.CreateInstance(type, station);
+
+                var name = type.GetCustomAttributes(typeof(DisplayNameAttribute), false)[0].ToString();
+                var description = type.GetCustomAttributes(typeof(DescriptionAttribute), false)[0].ToString();
+
+                var wrappedPlugin = new PluginWrapper(plugin as IPlugin, name, description);
+                LoadedPlugins.Add(wrappedPlugin);
+            }
         }
     }
 }

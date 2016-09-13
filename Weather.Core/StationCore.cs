@@ -11,17 +11,25 @@ namespace Weather.Core
     {
         private readonly IStationSensorRepository _stationSensorRepository;
         private readonly IWeatherStationRepository _weatherStationRepository;
+        private readonly ISensorValueRepository _sensorvalueRepository;
+
 
         public StationCore(IWeatherStationRepository weatherStationRepository,
-            IStationSensorRepository stationSensorRepository)
+            IStationSensorRepository stationSensorRepository, ISensorValueRepository sensorValueRepository)
         {
             _weatherStationRepository = weatherStationRepository;
             _stationSensorRepository = stationSensorRepository;
+            _sensorvalueRepository = sensorValueRepository;
         }
 
         public List<IWeatherStation> GetAllStations()
         {
             return _weatherStationRepository.GetAllWeatherStations();
+        }
+
+        public bool AnyRecordsUseSensor(ISensor sensor)
+        {
+            return _sensorvalueRepository.AnyRecordsUseSensor(sensor);
         }
 
         public IWeatherStation AddOrUpdate(IWeatherStation station)

@@ -22,5 +22,7 @@ namespace Weather.Core.Interfaces
         bool AnyStationUsesSensor(ISensor sensor);
 
         void UpdateStationSensor(IStationSensor stationSensor);
+
+        bool AnyRecordsUseSensor(ISensor sensor);
     }
 }

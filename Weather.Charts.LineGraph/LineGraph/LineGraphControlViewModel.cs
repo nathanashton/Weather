@@ -5,22 +5,19 @@ using System.Linq;
 using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Interfaces;
-using Weather.Core.Interfaces;
+using Weather.Interfaces;
 
-namespace Weather.UserControls.Charts
+namespace Weather.Charts.LineGraph
 {
     [ImplementPropertyChanged]
-    public class LineGraphViewModel : NotifyBase
+    public class LineGraphControlViewModel : NotifyBase, IChartViewModel
     {
-        private readonly ILog _log;
         private IStationSensor _selectedSensor;
         private IStationSensor _selectedSensor2;
 
         private int _sensorId;
         private int _sensorId2;
 
-        public string Header => "Line Graph";
-        public ISelectedStation SelectedStation { get; set; }
         public ObservableCollection<GraphData> Data { get; set; }
         public ObservableCollection<GraphData> Data2 { get; set; }
 
@@ -39,7 +36,7 @@ namespace Weather.UserControls.Charts
                     _sensorId = 0;
                 }
                 _selectedSensor = value;
-                DrawGraph();
+                DrawChart();
                 OnPropertyChanged(() => SelectedSensor);
                 OnPropertyChanged(() => Title);
             }
@@ -50,19 +47,11 @@ namespace Weather.UserControls.Charts
             get { return _selectedSensor2; }
             set
             {
-                if (value != null)
-                {
-                    _sensorId2 = value.StationSensorId;
-                }
-                else
-                {
-                    _sensorId2 = 0;
-                }
+                _sensorId2 = value?.StationSensorId ?? 0;
                 _selectedSensor2 = value;
-                DrawGraph();
+                DrawChart();
                 OnPropertyChanged(() => SelectedSensor2);
                 OnPropertyChanged(() => Title);
-
             }
         }
 
@@ -70,15 +59,15 @@ namespace Weather.UserControls.Charts
         {
             get
             {
-                if (SelectedSensor != null && SelectedSensor2 == null)
+                if ((SelectedSensor != null) && (SelectedSensor2 == null))
                 {
                     return SelectedSensor.Sensor.SensorType.ToString();
                 }
-                if (SelectedSensor != null && SelectedSensor2 != null)
+                if ((SelectedSensor != null) && (SelectedSensor2 != null))
                 {
                     return SelectedSensor.Sensor.SensorType + " / " + SelectedSensor2.Sensor.SensorType;
                 }
-                if (SelectedSensor == null && SelectedSensor2 != null)
+                if ((SelectedSensor == null) && (SelectedSensor2 != null))
                 {
                     return SelectedSensor2.Sensor.ToString();
                 }
@@ -86,14 +75,18 @@ namespace Weather.UserControls.Charts
             }
         }
 
-        public LineGraphViewModel(ISelectedStation selectedStation, ILog log)
+        public LineGraphControlViewModel(ISelectedStation selectedStation)
         {
-            _log = log;
             SelectedStation = selectedStation;
         }
 
+        public string Header => "Line Graph";
 
-        public void SelectedStationRecordsSelectedStationRecordsUpdated(object sender, EventArgs e)
+
+        public ISelectedStation SelectedStation { get; set; }
+
+
+        public void SelectedStation_RecordsUpdated(object sender, EventArgs e)
         {
             if (SelectedStation?.WeatherStation != null)
             {
@@ -103,27 +96,25 @@ namespace Weather.UserControls.Charts
                     SelectedStation.WeatherStation.Sensors.FirstOrDefault(x => x.StationSensorId == _sensorId2);
             }
             OnPropertyChanged(() => Title);
-            DrawGraph();
+            DrawChart();
         }
 
         public void SelectedStation_GetRecordsCompleted(object sender, EventArgs e)
         {
-            DrawGraph();
-            if (SelectedStation.WeatherStation.Records != null && SelectedStation.WeatherStation.Records.Count > 1000)
-            {
-                var f = SelectedStation.WeatherStation.Records;
-
-            }
+            DrawChart();
         }
 
-        public void DrawGraph()
+        public void SelectedStation_SelectedStationChanged(object sender, EventArgs e)
         {
-            _log.Debug("Draw Graph");
+            //
+        }
+
+        public void DrawChart()
+        {
             if ((SelectedStation?.WeatherStation == null) && ((SelectedSensor == null) || (SelectedSensor2 == null)))
             {
                 Data = null;
                 Data2 = null;
-                _log.Debug("Null - do not Draw Graph");
 
                 return;
             }
@@ -183,11 +174,12 @@ namespace Weather.UserControls.Charts
                 }
 
 
-                var data2 = sensorValues.GroupBy(x => new { x.TimeStamp, x.SensorValue }, x => x, (key, g) => new GraphData
-                {
-                    Date = key.TimeStamp,
-                    Value = key.SensorValue.CorrectedValue
-                }).ToList().OrderBy(x => x.Date);
+                var data2 = sensorValues.GroupBy(x => new {x.TimeStamp, x.SensorValue}, x => x,
+                    (key, g) => new GraphData
+                    {
+                        Date = key.TimeStamp,
+                        Value = key.SensorValue.CorrectedValue
+                    }).ToList().OrderBy(x => x.Date);
 
 
                 Data2 = new ObservableCollection<GraphData>(data2);

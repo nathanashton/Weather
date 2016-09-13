@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using System.Windows.Input;
 using PropertyChanged;
 using Weather.Common;
-using Weather.Core.Interfaces;
-using Weather.UserControls.Charts;
+using Weather.Common.Interfaces;
+using Weather.Helpers;
 
 namespace Weather.ViewModels
 {
@@ -14,7 +16,9 @@ namespace Weather.ViewModels
         private Chart _selected;
         public bool Loading { get; set; }
         public bool LoadingInvert { get; set; }
-        public ObservableCollection<Chart> Charts { get; set; }
+
+        public ObservableCollection<IPluginWrapper> Charts { get; set; }
+        public List<MenuItem> MenuItems { get; set; }
 
         public Chart Selected
         {
@@ -30,6 +34,10 @@ namespace Weather.ViewModels
         public ContentControl Content { get; set; }
         public ISelectedStation SelectedStation { get; set; }
 
+        public ICommand GraphSelected
+        {
+            get { return new RelayCommand(G, x => true); }
+        }
 
         public ContainerViewModel(ISelectedStation selectedStation)
         {
@@ -40,30 +48,17 @@ namespace Weather.ViewModels
             SelectedStation.GetRecordsStarted += SelectedStation_GetRecordsStarted;
             SelectedStation.GetRecordsCompleted += SelectedStation_GetRecordsCompleted;
 
-            Charts = new ObservableCollection<Chart>
+            if ((Program.LoadedPlugins == null) || (Program.LoadedPlugins.Count == 0))
             {
-                //new Chart
-                //{
-                //    Name = "Average Wind Direction",
-                //    Content = new AverageWindDirection()
-                //},
-                //new Chart
-                //{
-                //    Name = "Min / Max",
-                //    Content = new MinMax()
-                //},
-                new Chart
-                {
-                    Name = "All Records",
-                    Content = new AllRecords()
-                },
-                new Chart
-                {
-                    Name = "Line Graph",
-                    Content = new LineGraph()
-                }
-            };
+                return;
+            }
+            Charts = new ObservableCollection<IPluginWrapper>();
+            foreach (var plugin in Program.LoadedPlugins)
+            {
+                Charts.Add(plugin);
+            }
         }
+
 
         private void SelectedStation_GetRecordsCompleted(object sender, EventArgs e)
         {
@@ -79,6 +74,12 @@ namespace Weather.ViewModels
             }
             Loading = true;
             LoadingInvert = false;
+        }
+
+        private void G(object obj)
+        {
+            var t = obj as UserControl;
+            Content = t;
         }
     }
 

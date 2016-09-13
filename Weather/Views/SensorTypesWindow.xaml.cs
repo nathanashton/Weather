@@ -27,7 +27,7 @@ namespace Weather.Views
 
         private void SensorTypesWindow_Closing(object sender, CancelEventArgs e)
         {
-            // _viewModel.SelectedStation.OnStationsChanged();
+            // ViewModel.SelectedStation.OnStationsChanged();
         }
 
         private void SensorTypesWindow_Loaded(object sender, RoutedEventArgs e)
@@ -54,7 +54,6 @@ namespace Weather.Views
                     UnitType = _viewModel.TempSelectedSensorType.UnitType
                 };
             }
-
         }
 
         public void SelectUnitInListBox(ISensorType sensorType)
@@ -62,7 +61,6 @@ namespace Weather.Views
             Lb.SelectedItem = sensorType;
         }
 
-       
 
         private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
