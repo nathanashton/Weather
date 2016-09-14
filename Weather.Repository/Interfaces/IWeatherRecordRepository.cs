@@ -13,6 +13,6 @@ namespace Weather.Repository.Interfaces
         Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate, DateTime endDate);
         int Add(IWeatherRecord record);
         int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId);
-
+        IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord);
     }
 }

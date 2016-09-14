@@ -48,5 +48,10 @@ namespace Weather.Core
         {
             return _repository.AddWeatherRecordSensorValue(weatherRecordId, sensorValueId);
         }
+
+        public IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

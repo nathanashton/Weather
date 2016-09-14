@@ -117,17 +117,22 @@ namespace Weather.Core
                             weatherrecord.WeatherStationId = _station.WeatherStationId;
                         }
 
-                        // Add Weather Refo
-                        weatherrecord.WeatherRecordId = _weatherRecordCore.Add(weatherrecord);
 
-                        foreach (var v in weatherrecord.SensorValues)
-                        {
-                            v.SensorValueId = _sensorValueCore.Add(v).SensorValueId;
 
-                            // Add record to WeatherRecords_SensorValues
-                            _weatherRecordCore.AddWeatherRecordSensorValue(weatherrecord.WeatherRecordId,
-                                v.SensorValueId);
-                        }
+                        weatherrecord = _weatherRecordCore.AddRecordAndSensorValues(weatherrecord);
+
+
+                        //// Add Weather Refo
+                        //weatherrecord.WeatherRecordId = _weatherRecordCore.Add(weatherrecord);
+
+                        //foreach (var v in weatherrecord.SensorValues)
+                        //{
+                        //    v.SensorValueId = _sensorValueCore.Add(v).SensorValueId;
+
+                        //    // Add record to WeatherRecords_SensorValues
+                        //    _weatherRecordCore.AddWeatherRecordSensorValue(weatherrecord.WeatherRecordId,
+                        //        v.SensorValueId);
+                        //}
 
                         var pr = Utils.CalculatePercentage(csv.CurrentRecordIndex + 1, 0, lineCount);
                         _worker.ReportProgress(pr);

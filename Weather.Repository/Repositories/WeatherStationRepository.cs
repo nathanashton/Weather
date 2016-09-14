@@ -404,7 +404,7 @@ namespace Weather.Repository.Repositories
                 Latitude = (double?) 0,
                 Longitude = (double?) 0,
                 SensorId = (int?) 0,
-                Correction = (double) 0,
+                Correction = (double?) 0,
                 Notes = string.Empty,
                 StationSensorId = (int?) 0
             }).ToList();
@@ -443,7 +443,7 @@ namespace Weather.Repository.Repositories
                                         Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
                                         Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
                                         SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
-                                        Correction = Convert.ToDouble(reader["Correction"].ToString()),
+                                        Correction = DbUtils.ParseDoubleNull(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
                                         StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
                                     });
@@ -500,7 +500,7 @@ namespace Weather.Repository.Repositories
                         var n = new StationSensor
                         {
                             Sensor = _sensorRepository.GetById((int) sensor.SensorId),
-                            Correction = sensor.Correction,
+                            Correction = (double) sensor.Correction,
                             Notes = sensor.Notes,
                             StationSensorId = (int) sensor.StationSensorId
                         };

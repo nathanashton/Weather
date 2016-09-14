@@ -14,5 +14,6 @@ namespace Weather.Core.Interfaces
 
         int Add(IWeatherRecord record);
         int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId);
+        IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord);
     }
 }

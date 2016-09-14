@@ -304,6 +304,40 @@ namespace Weather.Repository.Repositories
                 throw;
             }
         }
+
+        public IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord)
+        {
+            foreach (var sensorvalue in weatherrecord.SensorValues)
+            {
+                var sql = @"INSERT INTO SensorValues (RawValue, SensorId) VALUES (@RawValue, @SensorId)";
+                var sql2 = "SELECT last_insert_rowid();";
+               
+                    using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+                    {
+                        connection.Open();
+                        {
+                            using (var command = new SQLiteCommand(sql, connection))
+                            {
+                                command.Parameters.AddWithValue("@RawValue", sensorvalue.RawValue);
+                                command.Parameters.AddWithValue("@SensorId", sensorvalue.Sensor.SensorId);
+                                command.ExecuteNonQuery();
+
+                                var command2 = new SQLiteCommand(sql2, connection);
+                                var id = command2.ExecuteScalar();
+                                sensorvalue.SensorValueId = Convert.ToInt32(id);
+                            }
+                        }
+                    }
+                
+
+            }
+
+
+
+
+            return null;
+
+        }
     }
 
     public class Join
