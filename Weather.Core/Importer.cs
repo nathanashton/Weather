@@ -1,9 +1,10 @@
-﻿using System;
+﻿using LumenWorks.Framework.IO.Csv;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using LumenWorks.Framework.IO.Csv;
 using Weather.Common.Entities;
 using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
@@ -17,7 +18,7 @@ namespace Weather.Core
         private readonly IWeatherRecordCore _weatherRecordCore;
         private readonly BackgroundWorker _worker;
         private ISensorValueCore _sensorValueCore;
-
+        private Stopwatch stopwatch = new Stopwatch();
         private readonly List<SensorValue> listSensorValues = new List<SensorValue>();
         private readonly List<WeatherRecord> listWeatherRecords = new List<WeatherRecord>();
         private List<Tuple<ISensor, int>> _data;
@@ -36,10 +37,12 @@ namespace Weather.Core
             _worker.ProgressChanged += _worker_ProgressChanged;
             _worker.WorkerReportsProgress = true;
             _worker.RunWorkerCompleted += _worker_RunWorkerCompleted;
+            listWeatherRecords = new List<WeatherRecord>();
         }
 
         public void Start()
         {
+            stopwatch.Start();
             _worker.RunWorkerAsync();
         }
 
@@ -59,13 +62,13 @@ namespace Weather.Core
 
         private void OnChanged(int p)
         {
-            ImportChanged?.Invoke(this, new ImportEventArgs {Progress = p});
+            ImportChanged?.Invoke(this, new ImportEventArgs { Progress = p });
         }
 
         private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //_sensorCore.AddSensorValues(listSensorValues);
-            //   _stationCore.AddWeatherRecords(listWeatherRecords);
+            var records = listWeatherRecords.Cast<IWeatherRecord>().ToList();
+            records = _weatherRecordCore.AddRecordsAndSensorValues(records);
             ImportComplete?.Invoke(this, null);
         }
 
@@ -76,9 +79,6 @@ namespace Weather.Core
 
         private void _worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            //   var listSensorValues = new List<SensorValue>();
-            // var listWeatherRecords = new List<WeatherRecord>();
-
             var lineCount = File.ReadLines(_filePath).Count();
             using (var csv = new CachedCsvReader(new StreamReader(_filePath), false))
             {
@@ -96,7 +96,7 @@ namespace Weather.Core
                             dt = DateTime.Parse(csv[_timestamp[0]] + " " + csv[_timestamp[1]]);
                         }
                         //    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
-                        var weatherrecord = new WeatherRecord {TimeStamp = dt, SensorValues = new List<ISensorValue>()};
+                        var weatherrecord = new WeatherRecord { TimeStamp = dt, SensorValues = new List<ISensorValue>() };
 
                         foreach (var d in _data)
                         {
@@ -108,31 +108,10 @@ namespace Weather.Core
                                 s.RawValue = value;
                             }
 
-
-                            // Add SensorValue to DB
-                         //   s.SensorValueId =_sensorValueCore.Add(s).SensorValueId;
-
-
                             weatherrecord.SensorValues.Add(s);
                             weatherrecord.WeatherStationId = _station.WeatherStationId;
                         }
-
-
-
-                        weatherrecord = _weatherRecordCore.AddRecordAndSensorValues(weatherrecord);
-
-
-                        //// Add Weather Refo
-                        //weatherrecord.WeatherRecordId = _weatherRecordCore.Add(weatherrecord);
-
-                        //foreach (var v in weatherrecord.SensorValues)
-                        //{
-                        //    v.SensorValueId = _sensorValueCore.Add(v).SensorValueId;
-
-                        //    // Add record to WeatherRecords_SensorValues
-                        //    _weatherRecordCore.AddWeatherRecordSensorValue(weatherrecord.WeatherRecordId,
-                        //        v.SensorValueId);
-                        //}
+                        listWeatherRecords.Add(weatherrecord);
 
                         var pr = Utils.CalculatePercentage(csv.CurrentRecordIndex + 1, 0, lineCount);
                         _worker.ReportProgress(pr);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Weather.Common.Entities;
@@ -70,7 +71,6 @@ namespace Weather.Repository.Repositories
             return Joins;
         }
 
-
         public async Task<List<IWeatherRecord>> GetAllForStation(int weatherStationId, DateTime startDate,
             DateTime endDate)
         {
@@ -89,7 +89,7 @@ namespace Weather.Repository.Repositories
                 wrsvWeatherRecordId = 0,
                 wrsvSensorValueId = 0,
                 SensorValueId = 0,
-                RawValue = (double?) 0,
+                RawValue = (double?)0,
                 SensorId = 0,
                 sSensorId = 0,
                 Manufacturer = string.Empty,
@@ -171,7 +171,7 @@ namespace Weather.Repository.Repositories
             {
                 var sensors =
                     mappedReader.GroupBy(
-                        x => new {x.sSensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId}, x => x,
+                        x => new { x.sSensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId }, x => x,
                         (key, g) => new Sensor
                         {
                             SensorId = key.sSensorId,
@@ -182,15 +182,21 @@ namespace Weather.Repository.Repositories
                         }).ToList();
 
                 var sensorValues =
-                    mappedReader.GroupBy(x => new {x.SensorValueId, x.RawValue, x.SensorId}, x => x,
-                        (key, g) => new SensorValue
+                    mappedReader.GroupBy(x => new { x.SensorValueId, x.RawValue, x.SensorId, x.wrsvWeatherRecordId }, x => x,
+                        (key, g) => 
+                        new SensorValue
                         {
                             SensorValueId = key.SensorValueId,
                             RawValue = key.RawValue,
                             SensorId = key.SensorId,
                             Sensor = sensors.FirstOrDefault(x => x.SensorId == key.SensorId)
-                        }).ToList();
+                        
+                        
+                        
+                        });
 
+
+                // THis runs really slow
                 var stations = mappedReader
                     .GroupBy(
                         x =>
@@ -207,20 +213,20 @@ namespace Weather.Repository.Repositories
                             new
                             {
                                 key.WeatherRecordId,
+                                key.wrsvSensorValueId,
                                 WeatherRecord =
                                 new WeatherRecord
                                 {
                                     WeatherRecordId = key.WeatherRecordId,
                                     TimeStamp = key.Timestamp,
-                                    WeatherStation =
-                                        allWeatherStations.FirstOrDefault(
-                                            x => x.WeatherStationId == key.WeatherStationId),
-                                    SensorValues =
+                                    WeatherStation =allWeatherStations.FirstOrDefault(x => x.WeatherStationId == key.WeatherStationId),
+                                    SensorValues = 
                                         sensorValues.Where(x => x.SensorValueId == key.wrsvSensorValueId)
                                             .Cast<ISensorValue>()
                                             .ToList()
                                 }
                             }).ToList();
+
 
 
                 WeatherRecords =
@@ -235,6 +241,7 @@ namespace Weather.Repository.Repositories
                                 WeatherStationId = g.Select(x => x.WeatherStationId).First(),
                                 WeatherStation = g.Select(x => x.WeatherStation).First()
                             }).Cast<IWeatherRecord>().ToList();
+
             });
             return WeatherRecords;
         }
@@ -307,36 +314,161 @@ namespace Weather.Repository.Repositories
 
         public IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord)
         {
-            foreach (var sensorvalue in weatherrecord.SensorValues)
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var sql = @"INSERT INTO SensorValues (RawValue, SensorId) VALUES (@RawValue, @SensorId)";
+            var sql2 = "SELECT last_insert_rowid();";
+
+            using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
             {
-                var sql = @"INSERT INTO SensorValues (RawValue, SensorId) VALUES (@RawValue, @SensorId)";
-                var sql2 = "SELECT last_insert_rowid();";
-               
-                    using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
-                    {
-                        connection.Open();
+                connection.Open();
+                {
+                 
+                        // Insert every SensorValue
+                     
+                        using (var command = new SQLiteCommand(sql, connection))
                         {
-                            using (var command = new SQLiteCommand(sql, connection))
+                            using (var transaction2 = connection.BeginTransaction())
                             {
-                                command.Parameters.AddWithValue("@RawValue", sensorvalue.RawValue);
-                                command.Parameters.AddWithValue("@SensorId", sensorvalue.Sensor.SensorId);
+                                // Insert each SensorValue
+                                foreach (var sensorvalue in weatherrecord.SensorValues)
+                                {
+                                    command.Parameters.AddWithValue("@RawValue", sensorvalue.RawValue);
+                                    command.Parameters.AddWithValue("@SensorId", sensorvalue.Sensor.SensorId);
+                                    command.ExecuteNonQuery();
+
+                                    //var command2 = new SQLiteCommand(sql2, connection);
+                                    //var id = command2.ExecuteScalar();
+                                    //sensorvalue.SensorValueId = Convert.ToInt32(id);
+                                }
+
+                                ////Insert WeatherRecord
+                                //command.CommandText = @"INSERT INTO WeatherRecords (Timestamp, WeatherStationId) VALUES (@Timestamp, @WeatherStationId)";
+                                //command.Parameters.Clear();
+                                //command.Parameters.AddWithValue("@Timestamp", weatherrecord.TimeStamp);
+                                //command.Parameters.AddWithValue("@WeatherStationId", weatherrecord.WeatherStationId);
+                                //command.ExecuteNonQuery();
+
+                                //command.Parameters.Clear();
+                                //command.CommandText = @"SELECT last_insert_rowid();";
+                                //weatherrecord.WeatherRecordId = Convert.ToInt32(command.ExecuteScalar());
+
+
+
+
+
+                            transaction2.Commit();
+
+                            }
+
+
+
+                            
+
+                        }
+                        
+
+                        //// Inser the Weather Record
+                        //var sql3 = @"INSERT INTO WeatherRecords (Timestamp, WeatherStationId) VALUES (@Timestamp, @WeatherStationId)";
+                        //var sql4 = "SELECT last_insert_rowid();";
+
+                        //using (var command = new SQLiteCommand(sql3, connection))
+                        //{
+                        //    command.Parameters.AddWithValue("@Timestamp", weatherrecord.TimeStamp);
+                        //    command.Parameters.AddWithValue("@WeatherStationId", weatherrecord.WeatherStationId);
+
+                        //    command.ExecuteNonQuery();
+
+                        //    var command2 = new SQLiteCommand(sql4, connection);
+                        //    var id = command2.ExecuteScalar();
+                        //    weatherrecord.WeatherRecordId = Convert.ToInt32(id);
+                        //}
+
+                        //var sql5 = @"INSERT INTO WeatherRecords_SensorValues (WeatherRecordId, SensorValueId) VALUES (@WeatherRecordId, @SensorValueId)";
+
+                      
+                        //    using (var command = new SQLiteCommand(sql5, connection))
+                        //    {
+                        //        foreach (var sensorvalue in weatherrecord.SensorValues)
+                        //        {
+                        //            command.Parameters.AddWithValue("@WeatherRecordId", weatherrecord.WeatherRecordId);
+                        //            command.Parameters.AddWithValue("@SensorValueId", sensorvalue.SensorValueId);
+                        //            command.ExecuteNonQuery();
+                        //        }
+                        //    }
+                        
+
+
+                   
+                }
+            }
+            stopwatch.Stop();
+            var elapsed = stopwatch.ElapsedMilliseconds;
+            return weatherrecord;
+        }
+
+        public List<IWeatherRecord>  AddRecordsAndSensorValues(List<IWeatherRecord> weatherrecords)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var sql = @"INSERT INTO SensorValues (RawValue, SensorId) VALUES (@RawValue, @SensorId)";
+            var sql2 = "SELECT last_insert_rowid();";
+
+            using (var connection = new SQLiteConnection(_settings.DatabaseConnectionString))
+            {
+                connection.Open();
+                {
+                    using (var command = new SQLiteCommand(sql, connection))
+                    {
+                        using (var transaction = connection.BeginTransaction())
+                        {
+                            foreach (var record in weatherrecords)
+                            {
+                                // Insert each SensorValue
+                                foreach (var sensorvalue in record.SensorValues)
+                                {
+                                    command.CommandText = @"INSERT INTO SensorValues (RawValue, SensorId) VALUES (@RawValue, @SensorId)";
+                                    command.Parameters.Clear();
+                                    command.Parameters.AddWithValue("@RawValue", sensorvalue.RawValue);
+                                    command.Parameters.AddWithValue("@SensorId", sensorvalue.Sensor.SensorId);
+                                    command.ExecuteNonQuery();
+
+                                    command.CommandText = sql2;
+                                    var id = command.ExecuteScalar();
+                                    sensorvalue.SensorValueId = Convert.ToInt32(id);
+                                }
+
+                                //Insert each WeatherRecord
+                                command.Parameters.Clear();
+                                command.CommandText =  @"INSERT INTO WeatherRecords (Timestamp, WeatherStationId) VALUES (@Timestamp, @WeatherStationId)";
+
+                                command.Parameters.AddWithValue("@Timestamp", record.TimeStamp);
+                                command.Parameters.AddWithValue("@WeatherStationId", record.WeatherStationId);
                                 command.ExecuteNonQuery();
 
-                                var command2 = new SQLiteCommand(sql2, connection);
-                                var id = command2.ExecuteScalar();
-                                sensorvalue.SensorValueId = Convert.ToInt32(id);
+                                command.CommandText = sql2;
+                                record.WeatherRecordId = Convert.ToInt32(command.ExecuteScalar());
+
+                                //Insert WeatherRecord_SensorValue
+                                command.Parameters.Clear();
+                                command.CommandText = @"INSERT INTO WeatherRecords_SensorValues (WeatherRecordId, SensorValueId) VALUES (@WeatherRecordId, @SensorValueId)";
+
+                                foreach (var sensorvalue in record.SensorValues)
+                                {
+                                    command.Parameters.AddWithValue("@WeatherRecordId", record.WeatherRecordId);
+                                    command.Parameters.AddWithValue("@SensorValueId", sensorvalue.SensorValueId);
+                                    command.ExecuteNonQuery();
+                                }
                             }
+                            transaction.Commit();
                         }
                     }
-                
-
+                }
             }
-
-
-
-
-            return null;
-
+            stopwatch.Stop();
+            var elapsed = stopwatch.ElapsedMilliseconds;
+            return weatherrecords;
         }
     }
 

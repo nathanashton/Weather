@@ -51,7 +51,14 @@ namespace Weather.Core
 
         public IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord)
         {
-            throw new NotImplementedException();
+            weatherrecord = _repository.AddRecordAndSensorValues(weatherrecord);
+            return weatherrecord;
+        }
+
+        public List<IWeatherRecord> AddRecordsAndSensorValues(List<IWeatherRecord> weatherrecords)
+        {
+           weatherrecords = _repository.AddRecordsAndSensorValues(weatherrecords);
+            return weatherrecords;
         }
     }
 }
