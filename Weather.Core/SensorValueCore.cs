@@ -29,7 +29,7 @@ namespace Weather.Core
             return all;
         }
 
-        public ISensorValue GetById(int id)
+        public ISensorValue GetById(long id)
         {
             var allSensors = _sensorCore.GetAllSensors();
             var sensorValue = _repository.GetById(id);

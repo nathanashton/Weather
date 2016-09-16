@@ -5,7 +5,7 @@ namespace Weather.Common.Interfaces
 {
     public interface IWeatherStation
     {
-        int WeatherStationId { get; set; }
+        long WeatherStationId { get; set; }
         string Manufacturer { get; set; }
         string Model { get; set; }
         double? Latitude { get; set; }
@@ -15,5 +15,6 @@ namespace Weather.Common.Interfaces
         string ToString();
         ObservableCollection<IStationSensor> Sensors { get; set; }
         ObservableCollection<IWeatherRecord> Records { get; set; }
+        string FullName { get; }
     }
 }

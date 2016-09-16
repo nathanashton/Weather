@@ -8,10 +8,10 @@ namespace Weather.Common.Entities
     [ImplementPropertyChanged]
     public class WeatherRecord : IWeatherRecord
     {
-        public int WeatherRecordId { get; set; }
+        public long WeatherRecordId { get; set; }
         public DateTime TimeStamp { get; set; }
         public IWeatherStation WeatherStation { get; set; }
-        public int WeatherStationId { get; set; }
+        public long WeatherStationId { get; set; }
         public List<ISensorValue> SensorValues { get; set; }
     }
 }

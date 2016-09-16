@@ -15,8 +15,8 @@ namespace Weather.Charts.LineGraph
         private IStationSensor _selectedSensor;
         private IStationSensor _selectedSensor2;
 
-        private int _sensorId;
-        private int _sensorId2;
+        private long _sensorId;
+        private long _sensorId2;
 
         public ObservableCollection<GraphData> Data { get; set; }
         public ObservableCollection<GraphData> Data2 { get; set; }

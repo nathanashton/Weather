@@ -8,5 +8,6 @@ namespace Weather.Units.Interfaces
         UnitEnums.EnumUnitType Type { get; set; }
         string DisplayName { get; set; }
         List<IUnit> Units { get; set; }
+        IUnit SiUnit { get; set;}
     }
 }

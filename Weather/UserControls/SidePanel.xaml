@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="Weather.UserControls.SidePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Weather.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:domain="clr-namespace:Weather.Common.Entities;assembly=Weather.Common"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             TextElement.FontSize="13"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:StringVisibilityConverter x:Key="StringVis" />
+    </UserControl.Resources>
+    <materialDesign:Card Margin="10"
+                         VerticalAlignment="Stretch"
+                         Background="{DynamicResource PrimaryHueDarkBrush}"
+                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+        <DockPanel>
+            <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                <DatePicker Width="100"
+                            Margin="10 16 0 16"
+                            HorizontalAlignment="Left"
+                            materialDesign:HintAssist.Hint="Pick Date"
+                            DockPanel.Dock="Left"
+                            SelectedDate="{Binding SelectedStation.StartDate}"
+                            Style="{DynamicResource MaterialDesignFloatingHintDatePicker}" />
+                <DatePicker x:Name="FutureDatePicker"
+                            Width="100"
+                            Margin="0 16 10 16"  Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"
+                            HorizontalAlignment="Right"
+                            materialDesign:HintAssist.Hint="Future Date"
+                            DockPanel.Dock="Right"
+                            SelectedDate="{Binding SelectedStation.EndDate}" />
+            </DockPanel>
+
+            <StackPanel Margin="12,0,12,0"
+                        DockPanel.Dock="Top"
+                        Orientation="Vertical">
+
+                <DockPanel Margin="0,0,0,20">
+                    <materialDesign:PackIcon Width="30"
+                                             Height="30"
+                                             VerticalAlignment="Center"
+                                             Kind="Earth" />
+                    <StackPanel Margin="5,0,0,0" Orientation="Vertical">
+                        <TextBlock Margin="0,0,0,2"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding Selected.Latitude}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Selected.Longitude}" />
+                    </StackPanel>
+                </DockPanel>
+
+
+
+                <TextBlock Margin="0,0,0,20"
+                           DockPanel.Dock="Top"
+                           Text="{Binding Selected.Description}"
+                           TextWrapping="WrapWithOverflow" />
+            </StackPanel>
+
+
+
+
+
+            <ItemsControl Margin="12 5 12 20"
+                          Grid.IsSharedSizeScope="True"
+                          ItemsSource="{Binding Selected.Sensors}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type domain:StationSensor}">
+                        <Border x:Name="Border">
+
+                            <StackPanel Margin="0 0 0 0">
+
+                                <DockPanel>
+                                    <materialDesign:PackIcon Width="40"
+                                                             DockPanel.Dock="Left"
+                                                             Kind="WeatherWindy" />
+                                    <StackPanel Margin="10,0,0,0" Orientation="Vertical">
+                                        <TextBlock Margin="0,0,0,2"
+                                                   FontWeight="Bold"
+                                                   Text="{Binding Sensor.ShortName}" />
+                                        <TextBlock Margin="0,0,0,2"
+                                                   Text="{Binding Sensor.Description}"
+                                                   Visibility="{Binding Sensor.Description,
+                                                                        Converter={StaticResource StringVis}}" />
+                                        <DockPanel Margin="0,0,0,15">
+                                            <TextBlock DockPanel.Dock="Left" Text="{Binding Correction}" />
+                                            <TextBlock Margin="5,0,0,0" Text="{Binding Sensor.SensorType.UnitType.SiUnit.DisplayUnit}" />
+                                        </DockPanel>
+
+
+                                    </StackPanel>
+                                </DockPanel>
+
+                            </StackPanel>
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+
+        </DockPanel>
+    </materialDesign:Card>
+</UserControl>

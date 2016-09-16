@@ -21,21 +21,21 @@ namespace Weather.Repository.Repositories
             _sensorRepository = sensorRepository;
         }
 
-        public IWeatherStation GetById(int id)
+        public IWeatherStation GetById(long id)
         {
             _log.Debug("WeatherStationRepository.GetById();");
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                WeatherStationId = 0,
+                WeatherStationId = (long)0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
                 Latitude = (double?) 0,
                 Longitude = (double?) 0,
-                SensorId = (int?) 0,
+                SensorId = (long?) 0,
                 Correction = (double) 0,
                 Notes = string.Empty,
-                StationSensorId = (int?) 0
+                StationSensorId = (long?) 0
             }).ToList();
 
             var sql = @"SELECT
@@ -66,16 +66,16 @@ namespace Weather.Repository.Repositories
                                 {
                                     mappedReader.Add(new
                                     {
-                                        WeatherStationId = Convert.ToInt32(reader["WeatherStationId"].ToString()),
+                                        WeatherStationId = Convert.ToInt64(reader["WeatherStationId"].ToString()),
                                         Manufacturer = reader["Manufacturer"].ToString(),
                                         Model = reader["Model"].ToString(),
                                         Description = reader["Description"].ToString(),
                                         Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
                                         Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
-                                        SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
+                                        SensorId = DbUtils.ParseLongNull(reader["SensorId"].ToString()),
                                         Correction =Convert.ToDouble(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
-                                        StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
+                                        StationSensorId = DbUtils.ParseLongNull(reader["StationSensorId"].ToString())
                                     });
                                 }
                             }
@@ -143,21 +143,21 @@ namespace Weather.Repository.Repositories
         }
 
 
-        public IWeatherStation GetByIdShort(int id)
+        public IWeatherStation GetByIdShort(long id)
         {
             _log.Debug("WeatherStationRepository.GetById();");
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                WeatherStationId = 0,
+                WeatherStationId = (long)0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
                 Latitude = (double?) 0,
                 Longitude = (double?) 0,
-                SensorId = (int?) 0,
+                SensorId = (long?) 0,
                 Correction = (double) 0,
                 Notes = string.Empty,
-                StationSensorId = (int?) 0
+                StationSensorId = (long?) 0
             }).ToList();
 
             var sql = @"SELECT
@@ -188,16 +188,16 @@ namespace Weather.Repository.Repositories
                                 {
                                     mappedReader.Add(new
                                     {
-                                        WeatherStationId = Convert.ToInt32(reader["WeatherStationId"].ToString()),
+                                        WeatherStationId = Convert.ToInt64(reader["WeatherStationId"].ToString()),
                                         Manufacturer = reader["Manufacturer"].ToString(),
                                         Model = reader["Model"].ToString(),
                                         Description = reader["Description"].ToString(),
                                         Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
                                         Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
-                                        SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
+                                        SensorId = DbUtils.ParseLongNull(reader["SensorId"].ToString()),
                                         Correction =Convert.ToDouble(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
-                                        StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
+                                        StationSensorId = DbUtils.ParseLongNull(reader["StationSensorId"].ToString())
                                     });
                                 }
                             }
@@ -264,7 +264,7 @@ namespace Weather.Repository.Repositories
             return distinctStations.First();
         }
 
-        public int Add(IWeatherStation station)
+        public long Add(IWeatherStation station)
         {
             _log.Debug("WeatherStationRepository.Add();");
 
@@ -289,7 +289,7 @@ namespace Weather.Repository.Repositories
 
                             var command2 = new SQLiteCommand(sql2, connection);
                             var id = command2.ExecuteScalar();
-                            return Convert.ToInt32(id);
+                            return Convert.ToInt64(id);
                         }
                     }
                 }
@@ -365,7 +365,7 @@ namespace Weather.Repository.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             _log.Debug("WeatherStationRepository.Delete();");
 
@@ -397,16 +397,16 @@ namespace Weather.Repository.Repositories
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                WeatherStationId = 0,
+                WeatherStationId = (long)0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
                 Latitude = (double?) 0,
                 Longitude = (double?) 0,
-                SensorId = (int?) 0,
+                SensorId = (long?) 0,
                 Correction = (double?) 0,
                 Notes = string.Empty,
-                StationSensorId = (int?) 0
+                StationSensorId = (long?) 0
             }).ToList();
 
             var sql = @"SELECT
@@ -436,16 +436,16 @@ namespace Weather.Repository.Repositories
                                 {
                                     mappedReader.Add(new
                                     {
-                                        WeatherStationId = Convert.ToInt32(reader["WeatherStationId"].ToString()),
+                                        WeatherStationId = Convert.ToInt64(reader["WeatherStationId"].ToString()),
                                         Manufacturer = reader["Manufacturer"].ToString(),
                                         Model = reader["Model"].ToString(),
                                         Description = reader["Description"].ToString(),
                                         Latitude = DbUtils.ParseDoubleNull(reader["Latitude"].ToString()),
                                         Longitude = DbUtils.ParseDoubleNull(reader["Longitude"].ToString()),
-                                        SensorId = DbUtils.ParseIntNull(reader["SensorId"].ToString()),
+                                        SensorId = DbUtils.ParseLongNull(reader["SensorId"].ToString()),
                                         Correction = DbUtils.ParseDoubleNull(reader["Correction"].ToString()),
                                         Notes = reader["Notes"].ToString(),
-                                        StationSensorId = DbUtils.ParseIntNull(reader["StationSensorId"].ToString())
+                                        StationSensorId = DbUtils.ParseLongNull(reader["StationSensorId"].ToString())
                                     });
                                 }
                             }
@@ -502,7 +502,8 @@ namespace Weather.Repository.Repositories
                             Sensor = _sensorRepository.GetById((int) sensor.SensorId),
                             Correction = (double) sensor.Correction,
                             Notes = sensor.Notes,
-                            StationSensorId = (int) sensor.StationSensorId
+                            StationSensorId = (int) sensor.StationSensorId,
+                            
                         };
                         station.Sensors.Add(n);
                     }

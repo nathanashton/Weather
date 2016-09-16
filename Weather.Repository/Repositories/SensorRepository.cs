@@ -5,6 +5,7 @@ using System.Linq;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Repository.Interfaces;
+using Weather.Units;
 
 namespace Weather.Repository.Repositories
 {
@@ -20,19 +21,20 @@ namespace Weather.Repository.Repositories
             _settings = settings;
         }
 
-        public ISensor GetById(int id)
+        public ISensor GetById(long id)
         {
             _log.Debug("SensorRepository.GetById();");
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                SensorId = 0,
+                SensorId = (long)0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
-                SensorTypeId = 0,
-                SensorTypeSensorTypeId = 0,
-                Name = string.Empty
+                SensorTypeId = (long)0,
+                SensorTypeSensorTypeId = (long)0,
+                Name = string.Empty,
+                UnitTypeId = 0
             }).ToList();
 
             var sql = @"SELECT
@@ -42,8 +44,9 @@ namespace Weather.Repository.Repositories
                         s.[Description] as Description,
                         s.[SensorTypeId] as SensorTypeId,
                         st.[SensorTypeId] as SensorTypeSensorTypeId,
-                        st.[Name] as Name
-                        FROM [Sensors] s
+                        st.[Name] as Name,
+                         st.[UnitTypeId] as UnitTypeId
+                         FROM [Sensors] s
                         LEFT JOIN SensorTypes st ON s.SensorTypeId = st.SensorTypeId WHERE s.SensorId = @Id";
 
             try
@@ -62,13 +65,15 @@ namespace Weather.Repository.Repositories
                                 {
                                     mappedReader.Add(new
                                     {
-                                        SensorId = Convert.ToInt32(reader["SensorId"]),
+                                        SensorId = Convert.ToInt64(reader["SensorId"]),
                                         Manufacturer = reader["Manufacturer"].ToString(),
                                         Model = reader["Model"].ToString(),
                                         Description = reader["Description"].ToString(),
-                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
-                                        SensorTypeSensorTypeId = Convert.ToInt32(reader["SensorTypeSensorTypeId"]),
-                                        Name = reader["Name"].ToString()
+                                        SensorTypeId = Convert.ToInt64(reader["SensorTypeId"]),
+                                        SensorTypeSensorTypeId = Convert.ToInt64(reader["SensorTypeSensorTypeId"]),
+                                        Name = reader["Name"].ToString(),
+                                        UnitTypeId = Convert.ToInt32(reader["UnitTypeId"])
+                                        
                                     });
                                 }
                             }
@@ -83,7 +88,7 @@ namespace Weather.Repository.Repositories
             }
 
             var sensorTypes = mappedReader
-                .GroupBy(x => new {x.SensorTypeSensorTypeId, x.Name}, x => x, (key, g) =>
+                .GroupBy(x => new {x.SensorTypeSensorTypeId, x.Name, x.UnitTypeId}, x => x, (key, g) =>
                     new
                     {
                         key.SensorTypeSensorTypeId,
@@ -91,7 +96,8 @@ namespace Weather.Repository.Repositories
                         new SensorType
                         {
                             SensorTypeId = key.SensorTypeSensorTypeId,
-                            Name = key.Name
+                            Name = key.Name,
+                            UnitType = UnitTypes.GetUnitTypeById(key.UnitTypeId)
                         }
                     }).ToList();
 
@@ -104,7 +110,9 @@ namespace Weather.Repository.Repositories
                             Manufacturer = key.Manufacturer,
                             Model = key.Model,
                             Description = key.Description,
-                            SensorType = sensorTypes.First(x => x.SensorTypeSensorTypeId == key.SensorTypeId).SensorType
+                            SensorType = sensorTypes.First(x => x.SensorTypeSensorTypeId == key.SensorTypeId).SensorType,
+
+
                         }).ToList();
 
             return sensors.Cast<ISensor>().First();
@@ -132,7 +140,7 @@ namespace Weather.Repository.Repositories
                                 {
                                     var sensor = new Sensor
                                     {
-                                        SensorId = Convert.ToInt32(reader["SensorId"]),
+                                        SensorId = Convert.ToInt64(reader["SensorId"]),
                                         Manufacturer = reader["Manufacturer"].ToString(),
                                         Model = reader["Model"].ToString(),
                                         Description = reader["Description"].ToString(),
@@ -164,13 +172,14 @@ namespace Weather.Repository.Repositories
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                SensorId = 0,
+                SensorId = (long)0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
-                SensorTypeId = 0,
-                SensorTypeSensorTypeId = 0,
-                Name = string.Empty
+                SensorTypeId = (long)0,
+                SensorTypeSensorTypeId = (long)0,
+                Name = string.Empty,
+                UnitTypeId = 0
             }).ToList();
 
             var sql = @"SELECT
@@ -180,7 +189,8 @@ namespace Weather.Repository.Repositories
                         s.[Description] as Description,
                         s.[SensorTypeId] as SensorTypeId,
                         st.[SensorTypeId] as SensorTypeSensorTypeId,
-                        st.[Name] as Name
+                        st.[Name] as Name,
+                        st.[UnitTypeId] as UnitTypeId
                         FROM [Sensors] s
                         LEFT JOIN SensorTypes st ON s.SensorTypeId = st.SensorTypeId";
 
@@ -198,13 +208,14 @@ namespace Weather.Repository.Repositories
                                 {
                                     mappedReader.Add(new
                                     {
-                                        SensorId = Convert.ToInt32(reader["SensorId"]),
+                                        SensorId = Convert.ToInt64(reader["SensorId"]),
                                         Manufacturer = reader["Manufacturer"].ToString(),
                                         Model = reader["Model"].ToString(),
                                         Description = reader["Description"].ToString(),
-                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
-                                        SensorTypeSensorTypeId = Convert.ToInt32(reader["SensorTypeSensorTypeId"]),
-                                        Name = reader["Name"].ToString()
+                                        SensorTypeId = Convert.ToInt64(reader["SensorTypeId"]),
+                                        SensorTypeSensorTypeId = Convert.ToInt64(reader["SensorTypeSensorTypeId"]),
+                                        Name = reader["Name"].ToString(),
+                                        UnitTypeId = Convert.ToInt32(reader["UnitTypeId"])
                                     });
                                 }
                             }
@@ -219,7 +230,7 @@ namespace Weather.Repository.Repositories
             }
 
             var sensorTypes = mappedReader
-                .GroupBy(x => new {x.SensorTypeSensorTypeId, x.Name}, x => x, (key, g) =>
+                .GroupBy(x => new {x.SensorTypeSensorTypeId, x.Name, x.UnitTypeId}, x => x, (key, g) =>
                     new
                     {
                         key.SensorTypeSensorTypeId,
@@ -227,7 +238,8 @@ namespace Weather.Repository.Repositories
                         new SensorType
                         {
                             SensorTypeId = key.SensorTypeSensorTypeId,
-                            Name = key.Name
+                            Name = key.Name,
+                            UnitType = UnitTypes.GetUnitTypeById(key.UnitTypeId)
                         }
                     }).ToList();
 
@@ -246,7 +258,7 @@ namespace Weather.Repository.Repositories
             return sensors.Cast<ISensor>().ToList();
         }
 
-        public int Add(ISensor sensor)
+        public long Add(ISensor sensor)
         {
             _log.Debug("SensorRepository.Add();");
 
@@ -269,7 +281,7 @@ namespace Weather.Repository.Repositories
 
                             var command2 = new SQLiteCommand(sql2, connection);
                             var id = command2.ExecuteScalar();
-                            return Convert.ToInt32(id);
+                            return Convert.ToInt64(id);
                         }
                     }
                 }
@@ -313,7 +325,7 @@ namespace Weather.Repository.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             _log.Debug("SensorRepository.Delete();");
 

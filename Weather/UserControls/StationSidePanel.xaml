@@ -7,13 +7,13 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
     <Border BorderBrush="DarkGray" BorderThickness="1">
-        <DockPanel Style="{DynamicResource Panel}">
+        <DockPanel Style="{StaticResource Panel}">
             <Border Height="28"
                     BorderBrush="DarkGray"
                     BorderThickness="0,0,0,1"
                     DockPanel.Dock="Top">
-                <DockPanel Style="{DynamicResource Header}">
-                    <Label Content="Station Details" Style="{DynamicResource HeaderLabel}" />
+                <DockPanel Style="{StaticResource Header}">
+                    <Label Content="Station Details" Style="{StaticResource HeaderLabel}" />
                     <Button Width="20"
                             Margin="4"
                             HorizontalAlignment="Right"

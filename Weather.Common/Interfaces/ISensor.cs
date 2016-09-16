@@ -4,12 +4,12 @@ namespace Weather.Common.Interfaces
 {
     public interface ISensor
     {
-        int SensorId { get; set; }
+        long SensorId { get; set; }
         string Manufacturer { get; set; }
         string Model { get; set; }
         string Description { get; set; }
         ISensorType SensorType { get; set; }
-        int SensorTypeId { get; set; }
+        long SensorTypeId { get; set; }
         IList<ISensorValue> SensorValues { get; set; }
         bool IsValid { get; }
         string FullName { get; }

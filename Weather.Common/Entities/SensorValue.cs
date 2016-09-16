@@ -5,7 +5,7 @@ namespace Weather.Common.Entities
 {
     public class SensorValue : ISensorValue
     {
-        public int SensorValueId { get; set; }
+        public long SensorValueId { get; set; }
 
         public double? RawValue { get; set; }
 
@@ -29,8 +29,8 @@ namespace Weather.Common.Entities
         public ISensor Sensor { get; set; }
 
         public IWeatherStation Station { get; set; }
-        public int StationId { get; set; }
-        public int SensorId { get; set; }
+        public long StationId { get; set; }
+        public long SensorId { get; set; }
 
         public override string ToString()
         {

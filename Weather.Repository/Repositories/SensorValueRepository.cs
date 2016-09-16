@@ -42,9 +42,9 @@ namespace Weather.Repository.Repositories
                                 {
                                     var sensorValue = new SensorValue
                                     {
-                                        SensorValueId = Convert.ToInt32(reader["SensorValueId"]),
+                                        SensorValueId = Convert.ToInt64(reader["SensorValueId"]),
                                         RawValue = DbUtils.ParseDoubleNull(reader["RawValue"].ToString()),
-                                        SensorId = Convert.ToInt32(reader["SensorId"].ToString())
+                                        SensorId = Convert.ToInt64(reader["SensorId"].ToString())
                                     };
                                     sensorValues.Add(sensorValue);
                                 }
@@ -67,7 +67,7 @@ namespace Weather.Repository.Repositories
         }
 
 
-        public ISensorValue GetById(int id)
+        public ISensorValue GetById(long id)
         {
             _log.Debug("SensorValueRepository.GetById();");
 
@@ -89,9 +89,9 @@ namespace Weather.Repository.Repositories
                                 {
                                     sensorValue = new SensorValue
                                     {
-                                        SensorValueId = Convert.ToInt32(reader["SensorValueId"]),
+                                        SensorValueId = Convert.ToInt64(reader["SensorValueId"]),
                                         RawValue = DbUtils.ParseDoubleNull(reader["RawValue"].ToString()),
-                                        SensorId = Convert.ToInt32(reader["SensorId"].ToString())
+                                        SensorId = Convert.ToInt64(reader["SensorId"].ToString())
                                     };
                                 }
                             }
@@ -108,7 +108,7 @@ namespace Weather.Repository.Repositories
         }
 
 
-        public int Add(ISensorValue sensorValue)
+        public long Add(ISensorValue sensorValue)
         {
             _log.Debug("SensorValueRepository.Add();");
 
@@ -128,7 +128,7 @@ namespace Weather.Repository.Repositories
 
                             var command2 = new SQLiteCommand(sql2, connection);
                             var id = command2.ExecuteScalar();
-                            return Convert.ToInt32(id);
+                            return Convert.ToInt64(id);
                         }
                     }
                 }
@@ -140,7 +140,7 @@ namespace Weather.Repository.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             _log.Debug("SensorValueRepository.Delete();");
 

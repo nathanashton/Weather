@@ -22,7 +22,7 @@ namespace Weather.Core
             return _repository.GetAll();
         }
 
-        public ISensorType GetById(int id)
+        public ISensorType GetById(long id)
         {
             return _repository.GetById(id);
         }

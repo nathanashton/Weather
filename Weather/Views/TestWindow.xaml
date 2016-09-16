@@ -1,0 +1,98 @@
+﻿<Window x:Class="Weather.Views.TestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:domain="clr-namespace:Weather.Common.Entities;assembly=Weather.Common"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Weather.ViewModels"
+        Title="TestWindow"
+        Width="601.079" WindowState="Maximized"
+        Height="382.014"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        TextElement.FontSize="13"
+        TextElement.FontWeight="Regular"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        mc:Ignorable="d">
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            
+            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}">
+                <Setter Property="Margin" Value="0 8 0 8" />
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+    </Window.Resources>
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel MinWidth="212">
+                    <ToggleButton Margin="16"
+                                  HorizontalAlignment="Right"
+                                  DockPanel.Dock="Top"
+                                  IsChecked="{Binding ElementName=MenuToggleButton,
+                                                      Path=IsChecked,
+                                                      Mode=TwoWay}"
+                                  Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                    <ListBox x:Name="DemoItemsListBox"
+                             Margin="0 16 0 16"
+                             ItemsSource="{Binding MenuStuff}"
+                             PreviewMouseLeftButtonUp="DemoItemsListBox_PreviewMouseLeftButtonUp"
+                             SelectedItem="{Binding SelectedMenuStuff}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="viewModels:MenuStuff">
+                                <TextBlock Margin="32 0 32 0" Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+                <materialDesign:ColorZone materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                          DockPanel.Dock="Top"
+                                          Mode="PrimaryMid"
+                                          Padding="16">
+                    <DockPanel>
+                        <ToggleButton x:Name="MenuToggleButton"
+                                      IsChecked="False"
+                                      Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+
+                        <materialDesign:PopupBox DockPanel.Dock="Right"
+                                                 PlacementMode="BottomAndAlignRightEdges"
+                                                 StaysOpen="False">
+
+                            <ListBox ItemsSource="{Binding Stations}" SelectedItem="{Binding Selected}" />
+                        </materialDesign:PopupBox>
+                        <TextBlock Margin="0,0,20,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   FontSize="22"
+                                   Text="{Binding Selected.FullName}" />
+                    </DockPanel>
+                </materialDesign:ColorZone>
+
+
+
+
+                <ContentControl Margin="0" Content="{Binding Content}" />
+
+
+
+
+
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+</Window>

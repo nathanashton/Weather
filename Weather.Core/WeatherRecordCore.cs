@@ -32,19 +32,19 @@ namespace Weather.Core
             return _repository.GetAll();
         }
 
-        public async Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId,
+        public async Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId,
             DateTime startDate, DateTime endDate)
         {
             var all = await _repository.GetAllForStation(weatherStationId, startDate, endDate);
             return all;
         }
 
-        public int Add(IWeatherRecord record)
+        public long Add(IWeatherRecord record)
         {
             return _repository.Add(record);
         }
 
-        public int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId)
+        public long AddWeatherRecordSensorValue(long weatherRecordId, long sensorValueId)
         {
             return _repository.AddWeatherRecordSensorValue(weatherRecordId, sensorValueId);
         }

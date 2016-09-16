@@ -8,11 +8,11 @@ namespace Weather.Repository.Interfaces
         List<ISensorType> GetAll();
 
 
-        ISensorType GetById(int id);
+        ISensorType GetById(long id);
 
-        int Add(ISensorType sensorType);
+        long Add(ISensorType sensorType);
 
-        void Delete(int id);
+        void Delete(long id);
 
         void Update(ISensorType sensorType);
     }

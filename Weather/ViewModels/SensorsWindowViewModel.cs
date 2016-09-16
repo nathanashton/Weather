@@ -10,6 +10,7 @@ using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
+using Weather.UserControls;
 using Weather.Views;
 
 namespace Weather.ViewModels
@@ -22,7 +23,8 @@ namespace Weather.ViewModels
         private readonly IStationCore _stationCore;
         public ISelectedStation SelectedStation;
 
-        public SensorsWindow Window { get; set; }
+        public Sensors Window { get; set; }
+
         public ObservableCollection<ISensor> Sensors { get; set; }
         public ISensor SelectedSensor { get; set; }
         public ISensor TempSelectedSensor { get; set; }
@@ -76,16 +78,16 @@ namespace Weather.ViewModels
 
         private void SensorTypesWindowOpen(object obj)
         {
-            var id2 = SelectedSensor.SensorId;
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<SensorTypesWindow>();
-            window.ShowDialog();
+            //var id2 = SelectedSensor.SensorId;
+            //var container = new Resolver().Bootstrap();
+            //var window = container.Resolve<SensorTypesWindow>();
+            //window.ShowDialog();
 
-            GetAllSensors();
-            GetAllSensorTypes();
+            //GetAllSensors();
+            //GetAllSensorTypes();
 
-            SelectedSensor = Sensors.First(x => x.SensorId == id2);
-            Window.SelectSensorInListBox(SelectedSensor);
+            //SelectedSensor = Sensors.First(x => x.SensorId == id2);
+            //Window.SelectSensorInListBox(SelectedSensor);
         }
 
         private void Save(object obj)

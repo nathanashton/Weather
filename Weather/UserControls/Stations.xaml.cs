@@ -1,45 +1,52 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using Microsoft.Practices.Unity;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
+using Weather.DependencyResolver;
 using Weather.ViewModels;
 
-namespace Weather.Views
+namespace Weather.UserControls
 {
     /// <summary>
-    ///     Interaction logic for StationsWindow.xaml
+    /// Interaction logic for Stations.xaml
     /// </summary>
-    public partial class StationsWindow
+    public partial class Stations : UserControl
     {
-        private readonly StationsWindowViewModel _viewModel;
 
-        public StationsWindow(StationsWindowViewModel viewModel)
+        private StationsWindowViewModel _viewModel;
+
+        public Stations()
         {
             InitializeComponent();
-            //  DropShadowHelper.DropShadowToWindow
-            _viewModel = viewModel;
+            Loaded += Stations_Loaded;
+        }
+
+        private void Stations_Loaded(object sender, RoutedEventArgs e)
+        {
+            var container = new Resolver().Bootstrap();
+            _viewModel = container.Resolve<StationsWindowViewModel>();
             DataContext = _viewModel;
             _viewModel.Window = this;
-            Loaded += StationsWindow_Loaded;
-            Closing += StationsWindow_Closing;
-        }
-
-        private void StationsWindow_Closing(object sender, CancelEventArgs e)
-        {
-            _viewModel.SelectedStation.OnSelectedStationUpdated();
-        }
-
-        private void StationsWindow_Loaded(object sender, RoutedEventArgs e)
-        {
             _viewModel.GetAllStations();
             _viewModel.RegisterDirtyHandlers();
         }
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = ((ListBox) e.Source).SelectedItem;
+            var selection = ((ListBox)e.Source).SelectedItem;
             if (selection == null)
             {
                 return;
@@ -64,18 +71,6 @@ namespace Weather.Views
         public void SelectStationInListBox(IWeatherStation station)
         {
             Lb.SelectedItem = station;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-
-        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            OnMouseLeftButtonDown(e);
-            DragMove();
         }
     }
 }

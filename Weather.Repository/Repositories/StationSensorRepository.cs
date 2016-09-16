@@ -15,7 +15,7 @@ namespace Weather.Repository.Repositories
             _settings = settings;
         }
 
-        public IStationSensor GetById(int id)
+        public IStationSensor GetById(long id)
         {
             return null;
         }

@@ -2,7 +2,7 @@
 {
     public interface IStationSensor
     {
-        int StationSensorId { get; set; }
+        long StationSensorId { get; set; }
         ISensor Sensor { get; set; }
 
         double Correction { get; set; }

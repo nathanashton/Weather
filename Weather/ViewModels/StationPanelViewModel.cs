@@ -41,26 +41,7 @@ namespace Weather.ViewModels
                 OnPropertyChanged(() => SelectedStation);
             }
         }
-
-        public ICommand SelectStationCommand
-        {
-            get { return new RelayCommand(SelectStationsWindow, x => true); }
-        }
-
-        private void SelectStationsWindow(object obj)
-        {
-            var container = new Resolver().Bootstrap();
-            var window = container.Resolve<SelectStationWindow>();
-            window.ShowDialog();
-
-            var selected = window.ViewModel.SelectedStation;
-            if (selected != null)
-            {
-                Selected = selected;
-            }
-
-        }
-
+      
         public IWeatherStation Selected
         {
             get { return _selected; }
@@ -87,7 +68,7 @@ namespace Weather.ViewModels
 
         private void SelectedStation_SelectedStationUpdated(object sender, EventArgs e)
         {
-            var id = 0;
+            long id = 0;
             if ((SelectedStation != null) && (SelectedStation.WeatherStation != null))
             {
                 id = SelectedStation.WeatherStation.WeatherStationId;
@@ -104,6 +85,7 @@ namespace Weather.ViewModels
         {
             // Stations may have changed so update
             // GetAllStations();
+            Selected = SelectedStation.WeatherStation;
         }
 
         private async void SelectedStationRecordsSelectedStationRecordsUpdated(object sender, EventArgs e)
@@ -113,6 +95,12 @@ namespace Weather.ViewModels
 
         private async Task GetRecords()
         {
+            if (SelectedStation.StartDate == null || SelectedStation.EndDate == null)
+            {
+                return;
+            }
+
+
             if (_selectedStation?.WeatherStation == null)
             {
                 return;
@@ -121,8 +109,8 @@ namespace Weather.ViewModels
 
             SelectedStation.WeatherStation.Records = new ObservableCollection<IWeatherRecord>(await
                 _weatherRecordCore.GetAllRecordsForStationBetweenDates(
-                    SelectedStation.WeatherStation.WeatherStationId, SelectedStation.StartDate,
-                    SelectedStation.EndDate).ConfigureAwait(true));
+                    SelectedStation.WeatherStation.WeatherStationId, (DateTime) SelectedStation.StartDate,
+                    (DateTime)SelectedStation.EndDate).ConfigureAwait(true));
             SelectedStation.OnGetRecordsCompleted();
         }
 

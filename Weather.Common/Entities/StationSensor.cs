@@ -8,7 +8,7 @@ namespace Weather.Common.Entities
     [ImplementPropertyChanged]
     public class StationSensor : IStationSensor
     {
-        public int StationSensorId { get; set; }
+        public long StationSensorId { get; set; }
         public double Correction { get; set; }
         public string Notes { get; set; }
         public ISensor Sensor { get; set; }

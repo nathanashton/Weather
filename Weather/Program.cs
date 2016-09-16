@@ -26,29 +26,22 @@ namespace Weather
             LoadFromPath("Plugins", true);
 
             var container = new Resolver().Bootstrap();
-            container.RegisterType<MainWindow>();
-            container.RegisterType<MainWindowViewModel>();
-
+          
             container.RegisterType<SensorsWindowViewModel>();
 
             container.RegisterType<SensorSelectWindowViewModel>();
-            container.RegisterType<SensorSelectWindow>();
 
             container.RegisterType<ImportWindow>();
             container.RegisterType<ImportWindowViewModel>();
 
 
-            container.RegisterType<SensorTypesWindow>();
             container.RegisterType<SensorTypesViewModel>();
 
-            container.RegisterType<StationsWindow>();
             container.RegisterType<StationsWindowViewModel>();
 
             container.RegisterType<UnhandledExceptionWindow>();
             container.RegisterType<UnhandledExceptionWindowViewModel>();
 
-            container.RegisterType<OptionsWindow>();
-            container.RegisterType<OptionsWindowViewModel>();
 
             container.RegisterType<StationPanelViewModel>();
             container.RegisterType<StationSidePanel>();
@@ -56,10 +49,16 @@ namespace Weather
             container.RegisterType<Container>();
             container.RegisterType<ContainerViewModel>();
 
-            container.RegisterType<SelectStationWindow>();
             container.RegisterType<SelectStationWindowViewModel>();
 
             container.RegisterType<StationMapWindow>();
+
+            container.RegisterType<SensorTypes>();
+
+            container.RegisterType<PaletteSelectorViewModel>();
+
+            container.RegisterType<TestWindow>();
+            container.RegisterType<TestViewModel>();
 
             var log = container.Resolve<ILog>();
             var settings = container.Resolve<ISettings>();
@@ -89,18 +88,18 @@ namespace Weather
             var application = new App();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var mainWindow = container.Resolve<MainWindow>();
+            var mainWindow = container.Resolve<TestWindow>();
             application.InitializeComponent();
 
             settings.Load();
-            if (settings.Skin == "Dark")
-            {
-                ChangeTheme(new Uri("/Skins/Dark.xaml", UriKind.Relative));
-            }
-            else if (settings.Skin == "Light")
-            {
-                ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
-            }
+            //if (settings.Skin == "Dark")
+            //{
+            //    ChangeTheme(new Uri("/Skins/Dark.xaml", UriKind.Relative));
+            //}
+            //else if (settings.Skin == "Light")
+            //{
+            //    ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
+            //}
 
 
             application.Run(mainWindow);

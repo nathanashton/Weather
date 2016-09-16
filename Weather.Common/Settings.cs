@@ -25,7 +25,7 @@ namespace Weather.Common
         public string SettingsFile => Path.Combine(ApplicationPath, "settings.xml");
 
         [XmlIgnore]
-        public string DatabaseConnectionString => @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=true;";
+        public string DatabaseConnectionString => @"Data Source=..\..\..\Weather.Repository\weather.sqlite;Version=3;foreign keys=false;";
 
         [XmlIgnore]
         public string ApplicationPath

@@ -4,7 +4,7 @@ namespace Weather.Repository.Interfaces
 {
     public interface IStationSensorRepository
     {
-        IStationSensor GetById(int id);
+        IStationSensor GetById(long id);
 
         void Update(IStationSensor stationSensor);
     }

@@ -9,11 +9,11 @@ namespace Weather.Repository.Interfaces
 
         List<ISensorValue> GetAllTest();
 
-        ISensorValue GetById(int id);
+        ISensorValue GetById(long id);
 
-        int Add(ISensorValue sensorValue);
+        long Add(ISensorValue sensorValue);
 
-        void Delete(int id);
+        void Delete(long id);
         bool AnyRecordsUseSensor(ISensor sensor);
 
 

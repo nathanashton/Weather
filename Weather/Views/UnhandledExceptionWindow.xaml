@@ -18,12 +18,12 @@
     </Window.Resources>
     <Border BorderBrush="White" BorderThickness="1">
 
-        <Border Style="{DynamicResource WindowBorder}">
+        <Border Style="{StaticResource WindowBorder}">
             <DockPanel Background="#F8F8F8">
                 <DockPanel Height="20"
                            DockPanel.Dock="Top"
                            MouseLeftButtonDown="DockPanel_MouseLeftButtonDown"
-                           Style="{DynamicResource Header}">
+                           Style="{StaticResource Header}">
                     <Image Margin="5,2,0,2"
                            HorizontalAlignment="Left"
                            DockPanel.Dock="Left"
@@ -36,7 +36,7 @@
                             BorderThickness="0"
                             Click="Button_Click_1"
                             DockPanel.Dock="Right">
-                        <Image DockPanel.Dock="Left" Style="{DynamicResource CloseButton}" />
+                        <Image DockPanel.Dock="Left" Style="{StaticResource CloseButton}" />
                     </Button>
                 </DockPanel>
                 <DockPanel Background="#F0F0F0" DockPanel.Dock="Bottom">

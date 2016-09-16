@@ -8,6 +8,7 @@ using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.Helpers;
 using Weather.Units.Interfaces;
+using Weather.UserControls;
 using Weather.Views;
 
 namespace Weather.ViewModels
@@ -21,7 +22,7 @@ namespace Weather.ViewModels
         public ISelectedStation SelectedStation;
 
         public ObservableCollection<IUnitType> UnitTypes { get; set; }
-        public SensorTypesWindow Window { get; set; }
+        public SensorTypes Window { get; set; }
         public ObservableCollection<ISensorType> SensorTypes { get; set; }
 
         public bool IsDirty { get; set; }

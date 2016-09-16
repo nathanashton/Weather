@@ -50,7 +50,8 @@ namespace Weather.Common.Entities
         public string Model { get; set; }
         public ObservableCollection<IStationSensor> Sensors { get; set; }
         public ObservableCollection<IWeatherRecord> Records { get; set; } = new ObservableCollection<IWeatherRecord>();
-        public int WeatherStationId { get; set; }
+        public string FullName => ToString();
+        public long WeatherStationId { get; set; }
         public bool IsValid => Validate();
 
         public override string ToString()

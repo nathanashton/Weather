@@ -44,12 +44,12 @@ namespace Weather.Common.Entities
             get { throw new NotImplementedException(); }
         }
 
-        public int SensorId { get; set; }
+        public long SensorId { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string Description { get; set; }
         public ISensorType SensorType { get; set; }
-        public int SensorTypeId { get; set; }
+        public long SensorTypeId { get; set; }
         public IList<ISensorValue> SensorValues { get; set; } = new List<ISensorValue>();
 
         public string FullName => ToString() + " (" + SensorType.Name + ")";

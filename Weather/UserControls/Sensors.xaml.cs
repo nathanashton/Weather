@@ -1,36 +1,35 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using Microsoft.Practices.Unity;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
+using Weather.DependencyResolver;
 using Weather.ViewModels;
 
-namespace Weather.Views
+namespace Weather.UserControls
 {
     /// <summary>
-    ///     Interaction logic for SensorsWindow.xaml
+    /// Interaction logic for Sensors.xaml
     /// </summary>
-    public partial class SensorsWindow
+    ///
+    ///
+    ///
+    ///
+    public partial class Sensors : UserControl
     {
-        private readonly SensorsWindowViewModel _viewModel;
+        private SensorsWindowViewModel _viewModel;
 
-        public SensorsWindow(SensorsWindowViewModel viewModel)
+        public Sensors()
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            _viewModel.Window = this;
+            var container = new Resolver().Bootstrap();
+            _viewModel = container.Resolve<SensorsWindowViewModel>();
             DataContext = _viewModel;
-            Loaded += SensorsWindow_Loaded;
-            Closing += SensorsWindow_Closing;
+            _viewModel.Window = this;
+            Loaded += Sensors_Loaded;
         }
 
-        private void SensorsWindow_Closing(object sender, CancelEventArgs e)
-        {
-            // ViewModel.SelectedStation.OnStationsChanged();
-        }
-
-        private void SensorsWindow_Loaded(object sender, RoutedEventArgs e)
+        private void Sensors_Loaded(object sender, RoutedEventArgs e)
         {
             _viewModel.GetAllSensors();
             _viewModel.GetAllSensorTypes();
@@ -39,7 +38,7 @@ namespace Weather.Views
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = ((ListBox) e.Source).SelectedItem;
+            var selection = ((ListBox)e.Source).SelectedItem;
             if (selection == null)
             {
                 return;
@@ -65,7 +64,10 @@ namespace Weather.Views
             Lb.SelectedItem = sensor;
         }
 
-        public void SelectSiUnitInComboBox(ISensorType unit)
+        public
+        void SelectSiUnitInComboBox
+        (ISensorType
+        unit)
         {
             foreach (var item in SensorType.Items)
             {
@@ -75,17 +77,6 @@ namespace Weather.Views
                     SensorType.SelectedItem = item;
                 }
             }
-        }
-
-        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            OnMouseLeftButtonDown(e);
-            DragMove();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

@@ -4,10 +4,10 @@ namespace Weather.Repository
 {
     internal static class DbUtils
     {
-        internal static int? ParseIntNull(string input)
+        internal static long? ParseLongNull(string input)
         {
-            int value;
-            if (int.TryParse(input, out value))
+            long value;
+            if (Int64.TryParse(input, out value))
             {
                 return value;
             }

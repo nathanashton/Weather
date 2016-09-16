@@ -10,6 +10,7 @@ using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.DependencyResolver;
 using Weather.Helpers;
+using Weather.UserControls;
 using Weather.Views;
 
 namespace Weather.ViewModels
@@ -19,7 +20,7 @@ namespace Weather.ViewModels
     {
         private readonly IStationCore _stationCore;
 
-        public StationsWindow Window { get; set; }
+        public Stations Window { get; set; }
         public ObservableCollection<IWeatherStation> WeatherStations { get; set; }
         public IWeatherStation SelectedWeatherStation { get; set; }
         public IWeatherStation TempSelectedWeatherStation { get; set; }

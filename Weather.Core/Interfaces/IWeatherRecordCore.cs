@@ -9,11 +9,11 @@ namespace Weather.Core.Interfaces
     {
         List<IWeatherRecord> GetAllRecords();
 
-        Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(int weatherStationId, DateTime startDate,
+        Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId, DateTime startDate,
             DateTime endDate);
 
-        int Add(IWeatherRecord record);
-        int AddWeatherRecordSensorValue(int weatherRecordId, int sensorValueId);
+        long Add(IWeatherRecord record);
+        long AddWeatherRecordSensorValue(long weatherRecordId, long sensorValueId);
 
         IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord);
         List<IWeatherRecord> AddRecordsAndSensorValues(List<IWeatherRecord> weatherrecords);

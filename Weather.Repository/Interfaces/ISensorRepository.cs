@@ -10,13 +10,13 @@ namespace Weather.Repository.Interfaces
         List<ISensor> GetAllSensorsTest();
 
 
-        int Add(ISensor sensor);
+        long Add(ISensor sensor);
 
         void Update(ISensor sensor);
 
-        void Delete(int id);
+        void Delete(long id);
 
-        ISensor GetById(int id);
+        ISensor GetById(long id);
 
         bool AnySensorUsesSensorType(ISensorType sensorType);
     }

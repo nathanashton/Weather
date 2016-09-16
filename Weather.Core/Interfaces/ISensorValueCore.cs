@@ -7,7 +7,7 @@ namespace Weather.Core.Interfaces
     {
         List<ISensorValue> GetAll();
 
-        ISensorValue GetById(int id);
+        ISensorValue GetById(long id);
 
         ISensorValue Add(ISensorValue sensorValue);
 

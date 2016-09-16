@@ -26,9 +26,9 @@ namespace Weather.Repository.Repositories
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                SensorTypeId = 0,
+                SensorTypeId = (long)0,
                 Name = string.Empty,
-                UnitId = (int?) null
+                UnitId = (long?) null
             }).ToList();
 
             var sql = @"SELECT
@@ -51,9 +51,9 @@ namespace Weather.Repository.Repositories
                                 {
                                     mappedReader.Add(new
                                     {
-                                        SensorTypeId = Convert.ToInt32(reader["SensorTypeId"]),
+                                        SensorTypeId = Convert.ToInt64(reader["SensorTypeId"]),
                                         Name = reader["Name"].ToString(),
-                                        UnitId = DbUtils.ParseIntNull(reader["UnitTypeId"].ToString())
+                                        UnitId = DbUtils.ParseLongNull(reader["UnitTypeId"].ToString())
                                     });
                                 }
                             }
@@ -83,7 +83,7 @@ namespace Weather.Repository.Repositories
 
 
         //TODO
-        public ISensorType GetById(int id)
+        public ISensorType GetById(long id)
         {
             _log.Debug("SensorTypeRepository.GetById();");
 
@@ -126,7 +126,7 @@ namespace Weather.Repository.Repositories
             //return sensorType;
         }
 
-        public int Add(ISensorType sensorType)
+        public long Add(ISensorType sensorType)
         {
             _log.Debug("SensorTypeRepository.Add();");
 
@@ -147,7 +147,7 @@ namespace Weather.Repository.Repositories
 
                             var command2 = new SQLiteCommand(sql2, connection);
                             var id = command2.ExecuteScalar();
-                            return Convert.ToInt32(id);
+                            return Convert.ToInt64(id);
                         }
                     }
                 }
@@ -159,7 +159,7 @@ namespace Weather.Repository.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             _log.Debug("SensorTypeRepository.Delete();");
 

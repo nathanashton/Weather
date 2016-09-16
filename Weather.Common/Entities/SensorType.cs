@@ -31,7 +31,7 @@ namespace Weather.Common.Entities
             get { throw new NotImplementedException(); }
         }
 
-        public int SensorTypeId { get; set; }
+        public long SensorTypeId { get; set; }
         public string Name { get; set; }
         public IUnitType UnitType { get; set; }
 

@@ -8,13 +8,13 @@ namespace Weather.Repository.Interfaces
         List<IWeatherStation> GetAllWeatherStations();
 
 
-        IWeatherStation GetById(int id);
+        IWeatherStation GetById(long id);
 
-        int Add(IWeatherStation station);
+        long Add(IWeatherStation station);
 
         void AddSensorToStation(IStationSensor sensor, IWeatherStation station);
 
-        void Delete(int id);
+        void Delete(long id);
 
         void RemoveSensorFromStation(IStationSensor sensor, IWeatherStation station);
 
@@ -22,6 +22,6 @@ namespace Weather.Repository.Interfaces
 
         bool AnyStationUsesSensor(ISensor sensor);
 
-        IWeatherStation GetByIdShort(int id);
+        IWeatherStation GetByIdShort(long id);
     }
 }

@@ -9,5 +9,6 @@ namespace Weather.Units
         public UnitEnums.EnumUnitType Type { get; set; }
         public string DisplayName { get; set; }
         public List<IUnit> Units { get; set; }
+        public IUnit SiUnit { get; set; }
     }
 }
