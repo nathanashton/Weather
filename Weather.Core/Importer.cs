@@ -108,7 +108,7 @@ namespace Weather.Core
                                 s.RawValue = value;
                             }
 
-                            weatherrecord.SensorValues.Add(s);
+                         //   weatherrecord.SensorValues.Add(s);
                             weatherrecord.WeatherStationId = _station.WeatherStationId;
                         }
                         listWeatherRecords.Add(weatherrecord);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
@@ -32,7 +33,7 @@ namespace Weather.Core
             return _repository.GetAll();
         }
 
-        public async Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId,
+        public async Task<ObservableCollection<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId,
             DateTime startDate, DateTime endDate)
         {
             var all = await _repository.GetAllForStation(weatherStationId, startDate, endDate);

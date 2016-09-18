@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Interfaces;
@@ -80,13 +81,18 @@ namespace Weather.Charts.LineGraph
             SelectedStation = selectedStation;
         }
 
+        //private System.Threading.Tasks.Task SelectedStation_RecordsUpdated(object sender, EventArgs e)
+        //{
+           
+        //}
+
         public string Header => "Line Graph";
 
 
         public ISelectedStation SelectedStation { get; set; }
 
 
-        public void SelectedStation_RecordsUpdated(object sender, EventArgs e)
+        public Task SelectedStation_RecordsUpdated(object sender, EventArgs e)
         {
             if (SelectedStation?.WeatherStation != null)
             {
@@ -97,6 +103,7 @@ namespace Weather.Charts.LineGraph
             }
             OnPropertyChanged(() => Title);
             DrawChart();
+            return null;
         }
 
         public void SelectedStation_GetRecordsCompleted(object sender, EventArgs e)

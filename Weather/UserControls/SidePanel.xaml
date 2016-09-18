@@ -23,6 +23,7 @@
                          Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
         <DockPanel>
             <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                <Button Content="Test" DockPanel.Dock="Top" Click="ButtonBase_OnClick"/>
                 <DatePicker Width="100"
                             Margin="10 16 0 16"
                             HorizontalAlignment="Left"

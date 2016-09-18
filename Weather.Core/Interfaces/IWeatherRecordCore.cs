@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Weather.Common.Interfaces;
 
@@ -9,7 +10,7 @@ namespace Weather.Core.Interfaces
     {
         List<IWeatherRecord> GetAllRecords();
 
-        Task<List<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId, DateTime startDate,
+        Task<ObservableCollection<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId, DateTime startDate,
             DateTime endDate);
 
         long Add(IWeatherRecord record);

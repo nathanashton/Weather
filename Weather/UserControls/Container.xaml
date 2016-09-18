@@ -42,15 +42,15 @@
             <Grid>
 
 
-                <ProgressBar Width="25"
-                             Height="25"
+                <ProgressBar Width="100"
+                             Height="50"
                              Margin="5"
                              Panel.ZIndex="2000"
                              IsIndeterminate="True"
                              Opacity="1"
                              Visibility="{Binding Loading,
                                                   Converter={StaticResource boolvis}}"
-                             Value="0" />
+                          />
 
                 <Grid Panel.ZIndex="1000"
                       Background="Black"

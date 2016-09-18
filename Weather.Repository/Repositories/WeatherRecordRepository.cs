@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Linq;
@@ -71,9 +72,11 @@ namespace Weather.Repository.Repositories
             return Joins;
         }
 
-        public async Task<List<IWeatherRecord>> GetAllForStation(long weatherStationId, DateTime startDate,
+        public async Task<ObservableCollection<IWeatherRecord>> GetAllForStation(long weatherStationId, DateTime startDate,
             DateTime endDate)
         {
+            var joins = await GetAllJoins();
+            var t = new ObservableCollection<IWeatherRecord>();
             var weatherRecords = new List<IWeatherRecord>();
             var allWeatherStations = _weatherStationRepository.GetAllWeatherStations();
             var allSensorTypes = _sensorTypeRepository.GetAll();
@@ -167,84 +170,72 @@ namespace Weather.Repository.Repositories
                 throw;
             }
 
-
             await Task.Run(() =>
             {
                 // Get all Sensors
-                var sensors =
-                    mappedReader.GroupBy(
-                        x => new {x.sSensorId, x.Manufacturer, x.Model, x.Description, x.SensorTypeId}, x => x,
-                        (key, g) => new Sensor
-                        {
-                            SensorId = key.sSensorId,
-                            Manufacturer = key.Manufacturer,
-                            Model = key.Model,
-                            Description = key.Description,
-                            SensorType = allSensorTypes.FirstOrDefault(x => x.SensorTypeId == key.SensorTypeId)
-                        });
 
-                var sensorValues =
-                    mappedReader.GroupBy(x => new {x.SensorValueId, x.RawValue, x.SensorId, x.wrsvWeatherRecordId},
-                        x => x,
-                        (key, g) =>
+                var sensors = new Dictionary<long, ISensor>();
+            for (int index = 0; index < mappedReader.Count; index++)
+            {
+                var value = mappedReader[index];
+                var sensor = new Sensor
+                {
+                    SensorId = value.sSensorId,
+                    Manufacturer = value.Manufacturer,
+                    Model = value.Model,
+                    Description = value.Description,
+                    SensorType = allSensorTypes.FirstOrDefault(x => x.SensorTypeId == value.SensorTypeId)
+                };
+                if (!sensors.ContainsKey(sensor.SensorId))
+                {
+                    sensors.Add(sensor.SensorId, sensor);
+                }
+            }
 
-                            new SensorValue
-                            {
-                                SensorValueId = key.SensorValueId,
-                                RawValue = key.RawValue,
-                                SensorId = key.SensorId,
-                                Sensor = sensors.FirstOrDefault(x => x.SensorId == key.SensorId)
+            var sensorValuesList = new Dictionary<long, ISensorValue>();
+            for (int index = 0; index < mappedReader.Count; index++)
+            {
+                var value = mappedReader[index];
+                var sensorvalue = new SensorValue
+                {
+                    SensorValueId = value.SensorValueId,
+                    RawValue = value.RawValue,
+                    SensorId = value.SensorId,
+                    Sensor = sensors.FirstOrDefault(x => x.Key == value.SensorId).Value
+                };
+                if (!sensorValuesList.ContainsKey(sensorvalue.SensorValueId))
+                {
+                    sensorValuesList.Add(sensorvalue.SensorValueId, sensorvalue);
+                }
+            }
 
-                            }).ToHashSet<SensorValue>();
+            var stationsList = new Dictionary<long, IWeatherRecord>();
+            for (int index = 0; index < mappedReader.Count; index++)
+            {
+                var value = mappedReader[index];
+                var joinRecord = joins.Where(x => x.WeatherRecordId == value.WeatherRecordId);
+                var sensorValues = joinRecord.Select(j => sensorValuesList.FirstOrDefault(x => x.Key == j.SensorValueId).Value);
 
+                var record = new WeatherRecord
+                {
+                    WeatherRecordId = value.WeatherRecordId,
+                    TimeStamp = value.Timestamp,
+                    WeatherStation =
+                        allWeatherStations.FirstOrDefault(
+                            x => x.WeatherStationId == value.WeatherStationId),
+                    SensorValues = sensorValues
+                };
 
-                // THis runs really slow
-                var stations = mappedReader
-                        .GroupBy(
-                            x =>
-                                new
-                                {
-                                    x.WeatherRecordId,
-                                    x.Timestamp,
-                                    x.WeatherStationId,
-                                    x.Id,
-                                    x.wrsvWeatherRecordId,
-                                    x.wrsvSensorValueId
-                                }, x => x,
-                            (key, g) =>
-                                new
-                                {
-                                    key.WeatherRecordId,
-                                    key.wrsvSensorValueId,
-                                    WeatherRecord =
-                                    new WeatherRecord
-                                    {
-                                        WeatherRecordId = key.WeatherRecordId,
-                                        TimeStamp = key.Timestamp,
-                                        WeatherStation =
-                                            allWeatherStations.FirstOrDefault(
-                                                x => x.WeatherStationId == key.WeatherStationId),
-                                        SensorValues = sensorValues.Where(x=> x.SensorValueId == key.wrsvSensorValueId).Cast<ISensorValue>().ToList()
-                                    }
-                                }).ToList();
+                if (!stationsList.ContainsKey(record.WeatherRecordId))
+                {
+                    stationsList.Add(record.WeatherRecordId, record);
+                }
+            }
 
-
-              
-
-                weatherRecords =
-                    stations.GroupBy(x =>
-                                x.WeatherRecordId, x => x.WeatherRecord,
-                        (key, g) =>
-                            new WeatherRecord
-                            {
-                                WeatherRecordId = key,
-                                SensorValues = g.SelectMany(ff => ff.SensorValues).Distinct().ToList(),
-                                TimeStamp = g.Select(x => x.TimeStamp).First(),
-                                WeatherStationId = g.Select(x => x.WeatherStationId).First(),
-                                WeatherStation = g.Select(x => x.WeatherStation).First()
-                            }).Cast<IWeatherRecord>().ToList();
+            weatherRecords = stationsList.Values.ToList();
+             t = new ObservableCollection<IWeatherRecord>(weatherRecords);
             });
-            return weatherRecords;
+            return t;
         }
 
         public long Add(IWeatherRecord record)

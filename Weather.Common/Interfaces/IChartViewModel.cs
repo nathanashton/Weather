@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Weather.Common.Interfaces;
 
 namespace Weather.Interfaces
@@ -8,7 +9,7 @@ namespace Weather.Interfaces
         string Header { get; }
         ISelectedStation SelectedStation { get; set; }
 
-        void SelectedStation_RecordsUpdated(object sender, EventArgs e);
+        Task SelectedStation_RecordsUpdated(object sender, EventArgs e);
 
         void SelectedStation_GetRecordsCompleted(object sender, EventArgs e);
 

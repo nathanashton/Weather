@@ -1,6 +1,10 @@
 ﻿using System;
 using Weather.Common;
 using Weather.Common.Interfaces;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Threading;
+using System.Threading.Tasks;
 
 namespace Weather.Core
 {
@@ -29,19 +33,7 @@ namespace Weather.Core
         public event EventHandler SelectedStationUpdated;
         public event EventHandler SelectedStationChanged;
 
-        public event EventHandler SelectedStationRecordsUpdated;
-
-       
-
-      
-
-       
-
-     
-
-
-
-
+        public event EventHandlers.AsyncEventHandler SelectedStationRecordsUpdated;
 
 
         private DateTime? _endDate;
@@ -53,7 +45,7 @@ namespace Weather.Core
             set
             {
                 _startDate = value;
-                OnPropertyChanged(() => StartDate);
+                
                 if (EndDate == null)
                 {
                     EndDate = StartDate + new TimeSpan(1, 0, 0, 0, 0);
@@ -62,6 +54,8 @@ namespace Weather.Core
                 {
                     StartDate = EndDate;
                 }
+                OnPropertyChanged(() => StartDate);
+                OnSelectedStationRecordsUpdated();
             }
         }
 
@@ -71,7 +65,6 @@ namespace Weather.Core
             set
             {
                 _endDate = value;
-                OnPropertyChanged(() => EndDate);
                 if (StartDate == null)
                 {
                     StartDate = StartDate - new TimeSpan(1, 0, 0, 0, 0);
@@ -80,15 +73,10 @@ namespace Weather.Core
                 {
                     EndDate = StartDate;
                 }
+                OnPropertyChanged(() => EndDate);
+                OnSelectedStationRecordsUpdated();
             }
         }
-
-
-
-
-
-
-
 
 
         public void OnSelectedStationRecordsUpdated()

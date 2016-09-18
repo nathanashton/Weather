@@ -42,5 +42,10 @@ namespace Weather.UserControls
                 _viewModel.GetAllStations();
             }
         }
+
+        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+        _viewModel.Start();
+        }
     }
 }

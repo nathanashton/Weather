@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -38,6 +40,7 @@ namespace Weather.ViewModels
             set
             {
                 _selectedStation = value;
+
                 OnPropertyChanged(() => SelectedStation);
             }
         }
@@ -49,9 +52,15 @@ namespace Weather.ViewModels
             {
                 _selected = value;
                 SelectedStation.WeatherStation = value;
-                Dispatcher.CurrentDispatcher.InvokeAsync(async () => await GetRecords());
+                Dispatcher.CurrentDispatcher.InvokeAsync(async() => await GetRecords());
+
                 OnPropertyChanged(() => Selected);
             }
+        }
+
+        public void Start()
+        {
+            Dispatcher.CurrentDispatcher.InvokeAsync(async () => await GetRecords());
         }
 
         public StationPanelViewModel(IStationCore stationCore, ISelectedStation selectedStation,
@@ -61,11 +70,17 @@ namespace Weather.ViewModels
             SelectedStation = selectedStation;
             _stationCore = stationCore;
 
-            SelectedStation.SelectedStationRecordsUpdated += SelectedStationRecordsSelectedStationRecordsUpdated;
+            SelectedStation.SelectedStationRecordsUpdated += SelectedStation_SelectedStationRecordsUpdated1;
             SelectedStation.SelectedStationChanged += SelectedStation_SelectedStationChanged;
             SelectedStation.SelectedStationUpdated += SelectedStation_SelectedStationUpdated;
         }
 
+        private async Task SelectedStation_SelectedStationRecordsUpdated1(object sender, EventArgs e)
+        {
+            await GetRecords();
+        }
+
+     
         private void SelectedStation_SelectedStationUpdated(object sender, EventArgs e)
         {
             long id = 0;
@@ -88,39 +103,56 @@ namespace Weather.ViewModels
             Selected = SelectedStation.WeatherStation;
         }
 
-        private async void SelectedStationRecordsSelectedStationRecordsUpdated(object sender, EventArgs e)
-        {
-            await GetRecords();
-        }
 
-        private async Task GetRecords()
+
+        public async Task GetRecords()
         {
             if (SelectedStation.StartDate == null || SelectedStation.EndDate == null)
             {
                 return;
             }
 
-
             if (_selectedStation?.WeatherStation == null)
             {
                 return;
             }
+
             SelectedStation.OnGetRecordsStarted();
 
-            SelectedStation.WeatherStation.Records = new ObservableCollection<IWeatherRecord>(await
-                _weatherRecordCore.GetAllRecordsForStationBetweenDates(
-                    SelectedStation.WeatherStation.WeatherStationId, (DateTime) SelectedStation.StartDate,
-                    (DateTime)SelectedStation.EndDate).ConfigureAwait(true));
-            SelectedStation.OnGetRecordsCompleted();
+            var s = SelectedStation.StartDate;
+            var e = SelectedStation.EndDate;
+
+
+            BackgroundWorker backgroundWorker = new BackgroundWorker();
+            backgroundWorker.DoWork += async delegate
+            {
+                SelectedStation.WeatherStation.Records = await _weatherRecordCore.GetAllRecordsForStationBetweenDates(
+                      SelectedStation.WeatherStation.WeatherStationId, (DateTime)s, (DateTime)e);
+            };
+            backgroundWorker.RunWorkerCompleted += (sender, g) =>
+            {
+                SelectedStation.OnGetRecordsCompleted();
+            };
+            backgroundWorker.RunWorkerAsync();
+
+
+
+          
+
         }
 
         public void GetAllStations()
         {
             Stations = new ObservableCollection<IWeatherStation>(_stationCore.GetAllStations());
-            if (Stations.Count == 1)
+            if (Stations.Count == 2)
             {
                 Selected = Stations.First();
+              
             }
+
+       
         }
+
+     
     }
 }

@@ -12,6 +12,6 @@ namespace Weather.Common.Entities
         public DateTime TimeStamp { get; set; }
         public IWeatherStation WeatherStation { get; set; }
         public long WeatherStationId { get; set; }
-        public List<ISensorValue> SensorValues { get; set; }
+        public IEnumerable<ISensorValue> SensorValues { get; set; } = new HashSet<ISensorValue>();
     }
 }

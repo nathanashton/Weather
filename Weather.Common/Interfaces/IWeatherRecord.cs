@@ -8,7 +8,7 @@ namespace Weather.Common.Interfaces
     {
         long WeatherRecordId { get; set; }
         DateTime TimeStamp { get; set; }
-        List<ISensorValue> SensorValues { get; set; }
+        IEnumerable<ISensorValue> SensorValues { get; set; }
         IWeatherStation WeatherStation { get; set; }
         long WeatherStationId { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Weather.Common.Interfaces
 {
@@ -19,7 +20,8 @@ namespace Weather.Common.Interfaces
 
         event EventHandler SelectedStationUpdated;
         event EventHandler SelectedStationChanged;
-        event EventHandler SelectedStationRecordsUpdated;
+        event EventHandlers.AsyncEventHandler SelectedStationRecordsUpdated;
+
 
         void OnSelectedStationRecordsUpdated();
         void OnSelectedStationChanged();
@@ -28,7 +30,11 @@ namespace Weather.Common.Interfaces
 
         void OnGetRecordsStarted();
         void OnGetRecordsCompleted();
-
-
     }
+
+    public class EventHandlers
+    {
+        public delegate Task AsyncEventHandler(object sender, System.EventArgs e);
+    }
+
 }
