@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace Weather.Common.Interfaces
 {
@@ -12,9 +11,9 @@ namespace Weather.Common.Interfaces
         double? Longitude { get; set; }
         string Description { get; set; }
         bool IsValid { get; }
-        string ToString();
         ObservableCollection<IStationSensor> Sensors { get; set; }
         ObservableCollection<IWeatherRecord> Records { get; set; }
         string FullName { get; }
+        string ToString();
     }
 }

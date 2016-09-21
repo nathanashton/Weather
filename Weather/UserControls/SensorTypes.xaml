@@ -34,29 +34,16 @@
                     HorizontalAlignment="Left"
                     BorderThickness="0"
                     Command="{Binding AddCommand}"
-                    DockPanel.Dock="Left">
-                <DockPanel Background="Transparent">
-                    <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/plus_48px.png" />
-                    <Label VerticalContentAlignment="Center"
-                           Background="Transparent"
-                           Content="Add"
-                           Padding="0" />
-                </DockPanel>
-            </Button>
+                    Content="Add"
+                    DockPanel.Dock="Left" />
+
             <Button Margin="2,7,7,7"
                     HorizontalAlignment="Left"
                     BorderThickness="0"
                     Command="{Binding DeleteCommand}"
-                    DockPanel.Dock="Left">
-                <DockPanel Background="Transparent">
-                    <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/minus_48px.png" />
+                    Content="Delete"
+                    DockPanel.Dock="Left" />
 
-                    <Label VerticalContentAlignment="Center"
-                           Background="Transparent"
-                           Content="Delete"
-                           Padding="0" />
-                </DockPanel>
-            </Button>
 
         </DockPanel>
 
@@ -72,25 +59,9 @@
             <Button Margin="5"
                     HorizontalAlignment="Right"
                     BorderBrush="#A0A0A0"
-                    Command="{Binding SaveCommand}">
-                <DockPanel Background="Transparent">
-                    <Image DockPanel.Dock="Left" Source="pack://application:,,,/Resources/Icons/checkmark_48px.png">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity" Value="0.3" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <Label VerticalContentAlignment="Center"
-                           Background="Transparent"
-                           Content="Save"
-                           Padding="0" />
-                </DockPanel>
-            </Button>
+                    Command="{Binding SaveCommand}"
+                    Content="Save" />
+
         </DockPanel>
         <DockPanel Margin="10">
             <DockPanel>

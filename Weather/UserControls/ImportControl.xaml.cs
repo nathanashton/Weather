@@ -1,25 +1,35 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Controls;
+using Microsoft.Practices.Unity;
+using Weather.DependencyResolver;
 using Weather.ViewModels;
 
-namespace Weather.Views
+namespace Weather.UserControls
 {
     /// <summary>
-    ///     Interaction logic for ImportWindow.xaml
+    ///     Interaction logic for ImportControl.xaml
     /// </summary>
-    public partial class ImportWindow
+    public partial class ImportControl : UserControl
     {
         private readonly ImportWindowViewModel _viewModel;
 
-        public ImportWindow(ImportWindowViewModel viewModel)
+
+        public ImportControl()
         {
             InitializeComponent();
-            _viewModel = viewModel;
+            var container = new Resolver().Bootstrap();
+            _viewModel = container.Resolve<ImportWindowViewModel>();
             DataContext = _viewModel;
+            Loaded += ImportControl_Loaded;
         }
 
+        private void ImportControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.GetSensors();
+
+        }
 
         private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -61,17 +71,5 @@ namespace Weather.Views
 
             IntegerUpDown_ValueChanged(null, null);
         }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            OnMouseLeftButtonDown(e);
-            DragMove();
-        }
-
     }
 }

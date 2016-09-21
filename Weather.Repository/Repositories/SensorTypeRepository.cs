@@ -26,7 +26,7 @@ namespace Weather.Repository.Repositories
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                SensorTypeId = (long)0,
+                SensorTypeId = (long) 0,
                 Name = string.Empty,
                 UnitId = (long?) null
             }).ToList();

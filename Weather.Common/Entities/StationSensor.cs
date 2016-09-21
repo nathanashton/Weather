@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using PropertyChanged;
+﻿using PropertyChanged;
 using Weather.Common.Interfaces;
 
 namespace Weather.Common.Entities
@@ -17,6 +15,5 @@ namespace Weather.Common.Entities
         {
             return Sensor.ToString();
         }
-
     }
 }

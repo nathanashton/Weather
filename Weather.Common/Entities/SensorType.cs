@@ -44,7 +44,6 @@ namespace Weather.Common.Entities
 
         private bool Validate()
         {
-            ;
             return !IsNullOrEmpty(Name) && (UnitType != null);
         }
     }

@@ -6,7 +6,7 @@
              xmlns:domain="clr-namespace:Weather.Common.Entities;assembly=Weather.Common"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Background="{DynamicResource MaterialDesignPaper}"
+             Background="Transparent"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              TextElement.FontSize="13"
              TextElement.FontWeight="Regular"
@@ -15,30 +15,53 @@
              TextOptions.TextRenderingMode="Auto"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <converters:StringVisibilityConverter x:Key="StringVis" />
+
+        <ResourceDictionary>
+            <converters:StringVisibilityConverter x:Key="StringVis" />
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <materialDesign:Card Margin="10"
                          VerticalAlignment="Stretch"
                          Background="{DynamicResource PrimaryHueDarkBrush}"
                          Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
         <DockPanel>
-            <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
-                <Button Content="Test" DockPanel.Dock="Top" Click="ButtonBase_OnClick"/>
+            <DockPanel Margin="0,20,0,0"
+                       HorizontalAlignment="Stretch"
+                       DockPanel.Dock="Top">
+
+
                 <DatePicker Width="100"
                             Margin="10 16 0 16"
                             HorizontalAlignment="Left"
-                            materialDesign:HintAssist.Hint="Pick Date"
+                            materialDesign:HintAssist.Hint="Start Date"
                             DockPanel.Dock="Left"
                             SelectedDate="{Binding SelectedStation.StartDate}"
                             Style="{DynamicResource MaterialDesignFloatingHintDatePicker}" />
                 <DatePicker x:Name="FutureDatePicker"
                             Width="100"
-                            Margin="0 16 10 16"  Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"
+                            Margin="0 16 10 16"
                             HorizontalAlignment="Right"
-                            materialDesign:HintAssist.Hint="Future Date"
+                            materialDesign:HintAssist.Hint="End Date"
                             DockPanel.Dock="Right"
-                            SelectedDate="{Binding SelectedStation.EndDate}" />
+                            SelectedDate="{Binding SelectedStation.EndDate}"
+                            Style="{DynamicResource MaterialDesignFloatingHintDatePicker}" />
             </DockPanel>
+
+            <TextBlock Margin="12,20,0,20"
+                       DockPanel.Dock="Top"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Text="STATION" />
+
 
             <StackPanel Margin="12,0,12,0"
                         DockPanel.Dock="Top"
@@ -49,7 +72,7 @@
                                              Height="30"
                                              VerticalAlignment="Center"
                                              Kind="Earth" />
-                    <StackPanel Margin="5,0,0,0" Orientation="Vertical">
+                    <StackPanel Margin="15,0,0,0" Orientation="Vertical">
                         <TextBlock Margin="0,0,0,2"
                                    VerticalAlignment="Center"
                                    Text="{Binding Selected.Latitude}" />
@@ -58,16 +81,17 @@
                 </DockPanel>
 
 
-
-                <TextBlock Margin="0,0,0,20"
+                <TextBlock Margin="0,10,0,20"
                            DockPanel.Dock="Top"
                            Text="{Binding Selected.Description}"
                            TextWrapping="WrapWithOverflow" />
             </StackPanel>
 
-
-
-
+            <TextBlock Margin="12,20,0,20"
+                       DockPanel.Dock="Top"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Text="SENSORS" />
 
             <ItemsControl Margin="12 5 12 20"
                           Grid.IsSharedSizeScope="True"
@@ -79,7 +103,8 @@
                             <StackPanel Margin="0 0 0 0">
 
                                 <DockPanel>
-                                    <materialDesign:PackIcon Width="40"
+                                    <materialDesign:PackIcon Width="30"
+                                                             Height="30"
                                                              DockPanel.Dock="Left"
                                                              Kind="WeatherWindy" />
                                     <StackPanel Margin="10,0,0,0" Orientation="Vertical">
@@ -105,6 +130,8 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
+
 
 
         </DockPanel>

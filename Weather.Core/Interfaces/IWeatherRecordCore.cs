@@ -10,7 +10,8 @@ namespace Weather.Core.Interfaces
     {
         List<IWeatherRecord> GetAllRecords();
 
-        Task<ObservableCollection<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId, DateTime startDate,
+        Task<ObservableCollection<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId,
+            DateTime startDate,
             DateTime endDate);
 
         long Add(IWeatherRecord record);
@@ -18,6 +19,5 @@ namespace Weather.Core.Interfaces
 
         IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord);
         List<IWeatherRecord> AddRecordsAndSensorValues(List<IWeatherRecord> weatherrecords);
-
     }
 }

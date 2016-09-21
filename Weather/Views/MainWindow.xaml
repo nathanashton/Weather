@@ -1,13 +1,13 @@
-﻿<Window x:Class="Weather.Views.TestWindow"
+﻿<Window x:Class="Weather.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:Weather.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:domain="clr-namespace:Weather.Common.Entities;assembly=Weather.Common"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Weather.ViewModels"
-        Title="TestWindow"
-        Width="601.079" WindowState="Maximized"
+        Title="MainWindow"
+        Width="601.079"
         Height="382.014"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
@@ -16,12 +16,13 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+        WindowState="Maximized"
         mc:Ignorable="d">
     <Window.Resources>
 
         <ResourceDictionary>
+            <converters:ToStringConverter x:Key="ToStringConverter" />
 
-            
             <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}">
                 <Setter Property="Margin" Value="0 8 0 8" />
                 <Setter Property="Foreground" Value="White" />
@@ -73,23 +74,19 @@
                                                  PlacementMode="BottomAndAlignRightEdges"
                                                  StaysOpen="False">
 
-                            <ListBox ItemsSource="{Binding Stations}" SelectedItem="{Binding Selected}" />
+                            <ListBox ItemsSource="{Binding Stations}" SelectedItem="{Binding Selected, Mode=TwoWay}" />
                         </materialDesign:PopupBox>
                         <TextBlock Margin="0,0,20,0"
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center"
                                    FontSize="22"
-                                   Text="{Binding Selected.FullName}" />
+                                   Text="{Binding Selected,
+                                                  Converter={StaticResource ToStringConverter}}" />
                     </DockPanel>
                 </materialDesign:ColorZone>
 
 
-
-
                 <ContentControl Margin="0" Content="{Binding Content}" />
-
-
-
 
 
             </DockPanel>

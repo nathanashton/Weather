@@ -1,6 +1,4 @@
-﻿using Weather.Interfaces;
-
-namespace Weather.Common.Interfaces
+﻿namespace Weather.Common.Interfaces
 {
     public interface IPlugin
     {

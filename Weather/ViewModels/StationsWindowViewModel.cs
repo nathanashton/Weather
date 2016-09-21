@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 using Weather.Common.Entities;
@@ -19,6 +20,10 @@ namespace Weather.ViewModels
     public class StationsWindowViewModel
     {
         private readonly IStationCore _stationCore;
+
+
+        private int _tempUnitCount;
+        public ContentControl Dialog { get; set; }
 
         public Stations Window { get; set; }
         public ObservableCollection<IWeatherStation> WeatherStations { get; set; }
@@ -80,34 +85,56 @@ namespace Weather.ViewModels
             get { return new RelayCommand(Map, x => true); }
         }
 
+        public TabsViewModel TabsViewModel { get; set; }
+
+        public DialogHost DialogHost { get; set; }
+
+
+        public DialogClosingEventHandler DialogClosing { get; set; }
+
+
+        private SelectSensor SelectSensor { get; set; }
+
         public StationsWindowViewModel(IStationCore stationCore, ISelectedStation selectedStation)
         {
             _stationCore = stationCore;
             SelectedStation = selectedStation;
+            var container = new Resolver().Bootstrap();
+            TabsViewModel = container.Resolve<TabsViewModel>();
         }
 
         private void EditSensor(object obj)
         {
+            DialogClosing = DialogClosingEditSensor;
             var container = new Resolver().Bootstrap();
-            var window = container.Resolve<SensorSelectWindow>();
+            var vm = container.Resolve<SensorSelectWindowViewModel>();
+            vm.WeatherStation = SelectedWeatherStation;
+            SelectSensor = new SelectSensor(vm) {ViewModel = vm};
+            SelectSensor.ViewModel.DialogHost = DialogHost;
+            Dialog = SelectSensor;
+            SelectSensor.ViewModel.Editing = true;
 
-            window.ViewModel.Editing = true;
+            SelectSensor.ViewModel.WeatherStation = SelectedWeatherStation;
+            SelectSensor.ViewModel.StationSensor = SelectedSensor;
+            SelectSensor.ViewModel.SelectedSensor = SelectedSensor.Sensor;
+            DialogHost.IsOpen = true;
+        }
 
-            window.ViewModel.WeatherStation = SelectedWeatherStation;
-            window.ViewModel.StationSensor = SelectedSensor;
-            window.ViewModel.SelectedSensor = SelectedSensor.Sensor;
 
-            window.ShowDialog();
-
-            var s = window.ViewModel.StationSensor;
-            _stationCore.UpdateStationSensor(s);
-
+        public void DialogClosingEditSensor(object sender, DialogClosingEventArgs e)
+        {
+            if ((string) e.Parameter != "cancel")
+            {
+                var s = SelectSensor.ViewModel.StationSensor;
+                _stationCore.UpdateStationSensor(s);
+            }
             var id = SelectedWeatherStation.WeatherStationId;
             CheckDirty();
             GetAllStations();
             SelectedWeatherStation = WeatherStations.First(x => x.WeatherStationId == id);
             Window.SelectStationInListBox(SelectedWeatherStation);
         }
+
 
         private void Save(object obj)
         {
@@ -168,15 +195,23 @@ namespace Weather.ViewModels
 
         private void AddSensor(object obj)
         {
-            var tempUnitCount = SelectedWeatherStation.Sensors.Count;
+            DialogClosing = DialogClosingAddSensor;
+            _tempUnitCount = SelectedWeatherStation.Sensors.Count;
             var container = new Resolver().Bootstrap();
-            var window = container.Resolve<SensorSelectWindow>();
-            window.ViewModel.WeatherStation = SelectedWeatherStation;
-            window.ShowDialog();
+            var vm = container.Resolve<SensorSelectWindowViewModel>();
+            vm.WeatherStation = SelectedWeatherStation;
+            var s = new SelectSensor(vm) {ViewModel = vm};
+            s.ViewModel.DialogHost = DialogHost;
+            Dialog = s;
+            DialogHost.IsOpen = true;
+        }
 
-            //// Get Unit that was added from the above dialog.
+
+        public void DialogClosingAddSensor(object sender, DialogClosingEventArgs e)
+        {
+            // Get Unit that was added from the above dialog.
             var unit = SelectedWeatherStation.Sensors.Count;
-            if (tempUnitCount == unit)
+            if (_tempUnitCount == unit)
             {
                 return;
             }
@@ -191,6 +226,7 @@ namespace Weather.ViewModels
             SelectedWeatherStation = WeatherStations.First(x => x.WeatherStationId == id);
             Window.SelectStationInListBox(SelectedWeatherStation);
         }
+
 
         private void Cancel(object obj)
         {

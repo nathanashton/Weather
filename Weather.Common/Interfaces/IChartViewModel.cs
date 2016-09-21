@@ -1,20 +1,31 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Weather.Common.Interfaces;
 
-namespace Weather.Interfaces
+namespace Weather.Common.Interfaces
 {
     public interface IChartViewModel
     {
         string Header { get; }
+
         ISelectedStation SelectedStation { get; set; }
 
-        Task SelectedStation_RecordsUpdated(object sender, EventArgs e);
+        bool OptionsOpened { get; set; }
 
-        void SelectedStation_GetRecordsCompleted(object sender, EventArgs e);
+        void ChangesMadeToSelectedStation(object sender, System.EventArgs e);
 
-        void SelectedStation_SelectedStationChanged(object sender, EventArgs e);
+        void RecordsUpdatedForSelectedStation(object sender, System.EventArgs e);
+
+        void SelectedStation_GetRecordsCompleted(object sender, System.EventArgs e);
+
+        void SelectedStation_SelectedStationChanged(object sender, System.EventArgs e);
 
         void DrawChart();
+
+        event EventHandler ChartDone;
+
+        void OnChartDone();
+
+        void SavePosition();
+
+        void LoadPosition();
     }
 }

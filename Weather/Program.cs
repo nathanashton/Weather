@@ -19,6 +19,7 @@ namespace Weather
     internal static class Program
     {
         public static ObservableCollection<IPluginWrapper> LoadedPlugins;
+        public static TabsViewModel TabsViewModel = new TabsViewModel();
 
         [STAThread]
         private static void Main()
@@ -26,7 +27,7 @@ namespace Weather
             LoadFromPath("Plugins", true);
 
             var container = new Resolver().Bootstrap();
-          
+
             container.RegisterType<SensorsWindowViewModel>();
 
             container.RegisterType<SensorSelectWindowViewModel>();
@@ -43,11 +44,14 @@ namespace Weather
             container.RegisterType<UnhandledExceptionWindowViewModel>();
 
 
-            container.RegisterType<StationPanelViewModel>();
-            container.RegisterType<StationSidePanel>();
+            container.RegisterType<SidePanelViewModel>();
 
             container.RegisterType<Container>();
             container.RegisterType<ContainerViewModel>();
+
+
+            container.RegisterInstance<ITabsViewModel>(TabsViewModel);
+
 
             container.RegisterType<SelectStationWindowViewModel>();
 
@@ -57,8 +61,8 @@ namespace Weather
 
             container.RegisterType<PaletteSelectorViewModel>();
 
-            container.RegisterType<TestWindow>();
-            container.RegisterType<TestViewModel>();
+            container.RegisterType<MainWindow>();
+            container.RegisterType<MainViewModel>();
 
             var log = container.Resolve<ILog>();
             var settings = container.Resolve<ISettings>();
@@ -88,20 +92,10 @@ namespace Weather
             var application = new App();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var mainWindow = container.Resolve<TestWindow>();
+            var mainWindow = container.Resolve<MainWindow>();
             application.InitializeComponent();
 
             settings.Load();
-            //if (settings.Skin == "Dark")
-            //{
-            //    ChangeTheme(new Uri("/Skins/Dark.xaml", UriKind.Relative));
-            //}
-            //else if (settings.Skin == "Light")
-            //{
-            //    ChangeTheme(new Uri("/Skins/Light.xaml", UriKind.Relative));
-            //}
-
-
             application.Run(mainWindow);
         }
 

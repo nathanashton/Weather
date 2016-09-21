@@ -29,7 +29,9 @@ namespace Weather.UserControls
             {
                 return;
             }
-            _viewModel.Content = selectedItem.Plugin.View as UserControl;
+            var t = selectedItem.Plugin.View;
+            _viewModel.ContentVm = t.ViewModel;
+            _viewModel.Content = t as UserControl;
         }
     }
 }

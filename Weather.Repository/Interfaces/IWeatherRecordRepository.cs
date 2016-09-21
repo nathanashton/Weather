@@ -11,11 +11,13 @@ namespace Weather.Repository.Interfaces
     {
         List<IWeatherRecord> GetAll();
         Task<List<Join>> GetAllJoins();
-        Task<ObservableCollection<IWeatherRecord>> GetAllForStation(long weatherStationId, DateTime startDate, DateTime endDate);
+
+        Task<ObservableCollection<IWeatherRecord>> GetAllForStation(long weatherStationId, DateTime startDate,
+            DateTime endDate);
+
         long Add(IWeatherRecord record);
         long AddWeatherRecordSensorValue(long weatherRecordId, long sensorValueId);
         IWeatherRecord AddRecordAndSensorValues(IWeatherRecord weatherrecord);
         List<IWeatherRecord> AddRecordsAndSensorValues(List<IWeatherRecord> weatherrecords);
-
     }
 }

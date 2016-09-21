@@ -1,10 +1,10 @@
-﻿using LumenWorks.Framework.IO.Csv;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using LumenWorks.Framework.IO.Csv;
 using Weather.Common.Entities;
 using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
@@ -17,13 +17,13 @@ namespace Weather.Core
         private readonly ISensorCore _sensorCore;
         private readonly IWeatherRecordCore _weatherRecordCore;
         private readonly BackgroundWorker _worker;
-        private ISensorValueCore _sensorValueCore;
-        private Stopwatch stopwatch = new Stopwatch();
         private readonly List<SensorValue> listSensorValues = new List<SensorValue>();
         private readonly List<WeatherRecord> listWeatherRecords = new List<WeatherRecord>();
+        private readonly Stopwatch stopwatch = new Stopwatch();
         private List<Tuple<ISensor, int>> _data;
         private int _excludeLines;
         private string _filePath;
+        private ISensorValueCore _sensorValueCore;
         private IWeatherStation _station;
         private int[] _timestamp;
 
@@ -62,7 +62,7 @@ namespace Weather.Core
 
         private void OnChanged(int p)
         {
-            ImportChanged?.Invoke(this, new ImportEventArgs { Progress = p });
+            ImportChanged?.Invoke(this, new ImportEventArgs {Progress = p});
         }
 
         private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -96,7 +96,7 @@ namespace Weather.Core
                             dt = DateTime.Parse(csv[_timestamp[0]] + " " + csv[_timestamp[1]]);
                         }
                         //    var weatherrecord = new WeatherRecord {TimeStamp = dt, Station = _station};
-                        var weatherrecord = new WeatherRecord { TimeStamp = dt, SensorValues = new List<ISensorValue>() };
+                        var weatherrecord = new WeatherRecord {TimeStamp = dt, SensorValues = new List<ISensorValue>()};
 
                         foreach (var d in _data)
                         {
@@ -104,11 +104,11 @@ namespace Weather.Core
                             var s = new SensorValue();
                             if (double.TryParse(csv[d.Item2], out value))
                             {
-                                s.Sensor = d.Item1 as ISensor;
+                                s.Sensor = d.Item1;
                                 s.RawValue = value;
                             }
 
-                         //   weatherrecord.SensorValues.Add(s);
+                            //   weatherrecord.SensorValues.Add(s);
                             weatherrecord.WeatherStationId = _station.WeatherStationId;
                         }
                         listWeatherRecords.Add(weatherrecord);

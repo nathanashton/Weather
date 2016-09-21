@@ -27,12 +27,12 @@ namespace Weather.Repository.Repositories
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                SensorId = (long)0,
+                SensorId = (long) 0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
-                SensorTypeId = (long)0,
-                SensorTypeSensorTypeId = (long)0,
+                SensorTypeId = (long) 0,
+                SensorTypeSensorTypeId = (long) 0,
                 Name = string.Empty,
                 UnitTypeId = 0
             }).ToList();
@@ -73,7 +73,6 @@ namespace Weather.Repository.Repositories
                                         SensorTypeSensorTypeId = Convert.ToInt64(reader["SensorTypeSensorTypeId"]),
                                         Name = reader["Name"].ToString(),
                                         UnitTypeId = Convert.ToInt32(reader["UnitTypeId"])
-                                        
                                     });
                                 }
                             }
@@ -110,9 +109,7 @@ namespace Weather.Repository.Repositories
                             Manufacturer = key.Manufacturer,
                             Model = key.Model,
                             Description = key.Description,
-                            SensorType = sensorTypes.First(x => x.SensorTypeSensorTypeId == key.SensorTypeId).SensorType,
-
-
+                            SensorType = sensorTypes.First(x => x.SensorTypeSensorTypeId == key.SensorTypeId).SensorType
                         }).ToList();
 
             return sensors.Cast<ISensor>().First();
@@ -122,7 +119,7 @@ namespace Weather.Repository.Repositories
         public List<ISensor> GetAllSensorsTest()
         {
             _log.Debug("SensorRepository.GetAllSensors();");
-            var Sensors = new List<ISensor>();
+            var sensors = new List<ISensor>();
 
             var sql = @"SELECT * FROM Sensors";
 
@@ -148,7 +145,7 @@ namespace Weather.Repository.Repositories
                                         SensorValues = null,
                                         SensorTypeId = Convert.ToInt32(reader["SensorTypeId"])
                                     };
-                                    Sensors.Add(sensor);
+                                    sensors.Add(sensor);
                                 }
                             }
                         }
@@ -162,7 +159,7 @@ namespace Weather.Repository.Repositories
             }
 
 
-            return Sensors;
+            return sensors;
         }
 
 
@@ -172,12 +169,12 @@ namespace Weather.Repository.Repositories
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                SensorId = (long)0,
+                SensorId = (long) 0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
-                SensorTypeId = (long)0,
-                SensorTypeSensorTypeId = (long)0,
+                SensorTypeId = (long) 0,
+                SensorTypeSensorTypeId = (long) 0,
                 Name = string.Empty,
                 UnitTypeId = 0
             }).ToList();

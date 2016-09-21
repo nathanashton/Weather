@@ -17,6 +17,9 @@ namespace Weather.ViewModels
         public bool Loading { get; set; }
         public bool LoadingInvert { get; set; }
 
+        public IChartViewModel ContentVm { get; set; }
+
+
         public ObservableCollection<IPluginWrapper> Charts { get; set; }
         public List<MenuItem> MenuItems { get; set; }
 
@@ -39,6 +42,12 @@ namespace Weather.ViewModels
             get { return new RelayCommand(G, x => true); }
         }
 
+        public ICommand ShowOptionsCommand
+        {
+            get { return new RelayCommand(ShowOptions, x => ContentVm != null); }
+        }
+
+
         public ContainerViewModel(ISelectedStation selectedStation)
         {
             Loading = false;
@@ -57,6 +66,12 @@ namespace Weather.ViewModels
             {
                 Charts.Add(plugin);
             }
+        }
+
+
+        private void ShowOptions(object obj)
+        {
+            ContentVm.OptionsOpened = !ContentVm.OptionsOpened;
         }
 
 

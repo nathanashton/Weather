@@ -1,4 +1,4 @@
-﻿namespace Weather.Interfaces
+﻿namespace Weather.Common.Interfaces
 {
     public interface IChartCodeBehind
     {

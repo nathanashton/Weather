@@ -1,17 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
 using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
-using Weather.DependencyResolver;
 using Weather.Helpers;
 using Weather.UserControls;
-using Weather.Views;
 
 namespace Weather.ViewModels
 {

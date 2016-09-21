@@ -34,7 +34,7 @@ namespace Weather.Repository.Repositories
 
         public async Task<List<Join>> GetAllJoins()
         {
-            var Joins = new List<Join>();
+            var joins = new List<Join>();
 
             var sql = @"SELECT * FROM WeatherRecords_SensorValues";
 
@@ -56,7 +56,7 @@ namespace Weather.Repository.Repositories
                                         WeatherRecordId = Convert.ToInt32(reader["WeatherRecordId"]),
                                         SensorValueId = Convert.ToInt32(reader["SensorValueId"])
                                     };
-                                    Joins.Add(record);
+                                    joins.Add(record);
                                 }
                             }
                         }
@@ -69,15 +69,15 @@ namespace Weather.Repository.Repositories
                 throw;
             }
 
-            return Joins;
+            return joins;
         }
 
-        public async Task<ObservableCollection<IWeatherRecord>> GetAllForStation(long weatherStationId, DateTime startDate,
+        public async Task<ObservableCollection<IWeatherRecord>> GetAllForStation(long weatherStationId,
+            DateTime startDate,
             DateTime endDate)
         {
             var joins = await GetAllJoins();
-            var t = new ObservableCollection<IWeatherRecord>();
-            var weatherRecords = new List<IWeatherRecord>();
+            // var t = new ObservableCollection<IWeatherRecord>();
             var allWeatherStations = _weatherStationRepository.GetAllWeatherStations();
             var allSensorTypes = _sensorTypeRepository.GetAll();
 
@@ -85,20 +85,20 @@ namespace Weather.Repository.Repositories
 
             var mappedReader = Enumerable.Empty<object>().Select(r => new
             {
-                WeatherRecordId = (long)0,
+                WeatherRecordId = (long) 0,
                 Timestamp = new DateTime(),
-                WeatherStationId = (long)0,
-                Id = (long)0,
-                wrsvWeatherRecordId = (long)0,
-                wrsvSensorValueId = (long)0,
-                SensorValueId = (long)0,
-                RawValue = (double?)0,
-                SensorId = (long)0,
-                sSensorId = (long)0,
+                WeatherStationId = (long) 0,
+                Id = (long) 0,
+                wrsvWeatherRecordId = (long) 0,
+                wrsvSensorValueId = (long) 0,
+                SensorValueId = (long) 0,
+                RawValue = (double?) 0,
+                SensorId = (long) 0,
+                sSensorId = (long) 0,
                 Manufacturer = string.Empty,
                 Model = string.Empty,
                 Description = string.Empty,
-                SensorTypeId = (long)0
+                SensorTypeId = (long) 0
             }).ToList();
 
             var ss = startDate.ToString("yyyy-MM-dd HH:mm:ss");
@@ -170,72 +170,71 @@ namespace Weather.Repository.Repositories
                 throw;
             }
 
-            await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 // Get all Sensors
 
                 var sensors = new Dictionary<long, ISensor>();
-            for (int index = 0; index < mappedReader.Count; index++)
-            {
-                var value = mappedReader[index];
-                var sensor = new Sensor
+                for (var index = 0; index < mappedReader.Count; index++)
                 {
-                    SensorId = value.sSensorId,
-                    Manufacturer = value.Manufacturer,
-                    Model = value.Model,
-                    Description = value.Description,
-                    SensorType = allSensorTypes.FirstOrDefault(x => x.SensorTypeId == value.SensorTypeId)
-                };
-                if (!sensors.ContainsKey(sensor.SensorId))
-                {
-                    sensors.Add(sensor.SensorId, sensor);
+                    var value = mappedReader[index];
+                    var sensor = new Sensor
+                    {
+                        SensorId = value.sSensorId,
+                        Manufacturer = value.Manufacturer,
+                        Model = value.Model,
+                        Description = value.Description,
+                        SensorType = allSensorTypes.FirstOrDefault(x => x.SensorTypeId == value.SensorTypeId)
+                    };
+                    if (!sensors.ContainsKey(sensor.SensorId))
+                    {
+                        sensors.Add(sensor.SensorId, sensor);
+                    }
                 }
-            }
 
-            var sensorValuesList = new Dictionary<long, ISensorValue>();
-            for (int index = 0; index < mappedReader.Count; index++)
-            {
-                var value = mappedReader[index];
-                var sensorvalue = new SensorValue
+                var sensorValuesList = new Dictionary<long, ISensorValue>();
+                for (var index = 0; index < mappedReader.Count; index++)
                 {
-                    SensorValueId = value.SensorValueId,
-                    RawValue = value.RawValue,
-                    SensorId = value.SensorId,
-                    Sensor = sensors.FirstOrDefault(x => x.Key == value.SensorId).Value
-                };
-                if (!sensorValuesList.ContainsKey(sensorvalue.SensorValueId))
-                {
-                    sensorValuesList.Add(sensorvalue.SensorValueId, sensorvalue);
+                    var value = mappedReader[index];
+                    var sensorvalue = new SensorValue
+                    {
+                        SensorValueId = value.SensorValueId,
+                        RawValue = value.RawValue,
+                        SensorId = value.SensorId,
+                        Sensor = sensors.FirstOrDefault(x => x.Key == value.SensorId).Value
+                    };
+                    if (!sensorValuesList.ContainsKey(sensorvalue.SensorValueId))
+                    {
+                        sensorValuesList.Add(sensorvalue.SensorValueId, sensorvalue);
+                    }
                 }
-            }
 
-            var stationsList = new Dictionary<long, IWeatherRecord>();
-            for (int index = 0; index < mappedReader.Count; index++)
-            {
-                var value = mappedReader[index];
-                var joinRecord = joins.Where(x => x.WeatherRecordId == value.WeatherRecordId);
-                var sensorValues = joinRecord.Select(j => sensorValuesList.FirstOrDefault(x => x.Key == j.SensorValueId).Value);
-
-                var record = new WeatherRecord
+                var stationsList = new Dictionary<long, IWeatherRecord>();
+                for (var index = 0; index < mappedReader.Count; index++)
                 {
-                    WeatherRecordId = value.WeatherRecordId,
-                    TimeStamp = value.Timestamp,
-                    WeatherStation =
-                        allWeatherStations.FirstOrDefault(
-                            x => x.WeatherStationId == value.WeatherStationId),
-                    SensorValues = sensorValues
-                };
+                    var value = mappedReader[index];
+                    var joinRecord = joins.Where(x => x.WeatherRecordId == value.WeatherRecordId);
+                    var sensorValues =
+                        joinRecord.Select(j => sensorValuesList.FirstOrDefault(x => x.Key == j.SensorValueId).Value);
 
-                if (!stationsList.ContainsKey(record.WeatherRecordId))
-                {
-                    stationsList.Add(record.WeatherRecordId, record);
+                    var record = new WeatherRecord
+                    {
+                        WeatherRecordId = value.WeatherRecordId,
+                        TimeStamp = value.Timestamp,
+                        WeatherStation =
+                            allWeatherStations.FirstOrDefault(
+                                x => x.WeatherStationId == value.WeatherStationId),
+                        SensorValues = sensorValues
+                    };
+
+                    if (!stationsList.ContainsKey(record.WeatherRecordId))
+                    {
+                        stationsList.Add(record.WeatherRecordId, record);
+                    }
                 }
-            }
 
-            weatherRecords = stationsList.Values.ToList();
-             t = new ObservableCollection<IWeatherRecord>(weatherRecords);
+                return new ObservableCollection<IWeatherRecord>(stationsList.Values.ToList());
             });
-            return t;
         }
 
         public long Add(IWeatherRecord record)
@@ -275,7 +274,8 @@ namespace Weather.Repository.Repositories
         {
             _log.Debug("WeatherRecordRepository.Add();");
 
-            var sql = @"INSERT INTO WeatherRecords_SensorValues (WeatherRecordId, SensorValueId) VALUES (@WeatherRecordId, @SensorValueId)";
+            var sql =
+                @"INSERT INTO WeatherRecords_SensorValues (WeatherRecordId, SensorValueId) VALUES (@WeatherRecordId, @SensorValueId)";
             var sql2 = "SELECT last_insert_rowid();";
             try
             {
@@ -368,7 +368,8 @@ namespace Weather.Repository.Repositories
                                 // Insert each SensorValue
                                 foreach (var sensorvalue in record.SensorValues)
                                 {
-                                    command.CommandText = @"INSERT INTO SensorValues (RawValue, SensorId) VALUES (@RawValue, @SensorId)";
+                                    command.CommandText =
+                                        @"INSERT INTO SensorValues (RawValue, SensorId) VALUES (@RawValue, @SensorId)";
                                     command.Parameters.Clear();
                                     command.Parameters.AddWithValue("@RawValue", sensorvalue.RawValue);
                                     command.Parameters.AddWithValue("@SensorId", sensorvalue.Sensor.SensorId);
@@ -381,7 +382,8 @@ namespace Weather.Repository.Repositories
 
                                 //Insert each WeatherRecord
                                 command.Parameters.Clear();
-                                command.CommandText = @"INSERT INTO WeatherRecords (Timestamp, WeatherStationId) VALUES (@Timestamp, @WeatherStationId)";
+                                command.CommandText =
+                                    @"INSERT INTO WeatherRecords (Timestamp, WeatherStationId) VALUES (@Timestamp, @WeatherStationId)";
 
                                 command.Parameters.AddWithValue("@Timestamp", record.TimeStamp);
                                 command.Parameters.AddWithValue("@WeatherStationId", record.WeatherStationId);
@@ -392,7 +394,8 @@ namespace Weather.Repository.Repositories
 
                                 //Insert WeatherRecord_SensorValue
                                 command.Parameters.Clear();
-                                command.CommandText = @"INSERT INTO WeatherRecords_SensorValues (WeatherRecordId, SensorValueId) VALUES (@WeatherRecordId, @SensorValueId)";
+                                command.CommandText =
+                                    @"INSERT INTO WeatherRecords_SensorValues (WeatherRecordId, SensorValueId) VALUES (@WeatherRecordId, @SensorValueId)";
 
                                 foreach (var sensorvalue in record.SensorValues)
                                 {
@@ -425,7 +428,7 @@ namespace Weather.Repository.Repositories
     {
         public static HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable)
         {
-            HashSet<T> hashSet = new HashSet<T>();
+            var hashSet = new HashSet<T>();
 
             foreach (var en in enumerable)
             {

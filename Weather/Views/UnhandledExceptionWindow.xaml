@@ -18,12 +18,11 @@
     </Window.Resources>
     <Border BorderBrush="White" BorderThickness="1">
 
-        <Border >
+        <Border>
             <DockPanel Background="#F8F8F8">
                 <DockPanel Height="20"
                            DockPanel.Dock="Top"
-                           MouseLeftButtonDown="DockPanel_MouseLeftButtonDown"
-                          >
+                           MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                     <Image Margin="5,2,0,2"
                            HorizontalAlignment="Left"
                            DockPanel.Dock="Left"

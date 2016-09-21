@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using PropertyChanged;
@@ -16,11 +11,16 @@ namespace Weather.ViewModels
     [ImplementPropertyChanged]
     public class SelectStationWindowViewModel
     {
+        private readonly IStationCore _stationCore;
         public Window Window { get; set; }
         public IWeatherStation SelectedStation { get; set; }
         public ObservableCollection<IWeatherStation> Stations { get; set; }
-        private readonly IStationCore _stationCore;
         public ISelectedStation SStation { get; set; }
+
+        public ICommand SelectCommand
+        {
+            get { return new RelayCommand(Selected, x => SelectedStation != null); }
+        }
 
         public SelectStationWindowViewModel(IStationCore stationCore, ISelectedStation selectedStation)
         {
@@ -32,15 +32,10 @@ namespace Weather.ViewModels
         {
             Stations = new ObservableCollection<IWeatherStation>(_stationCore.GetAllStations());
         }
-        public ICommand SelectCommand
-        {
-            get { return new RelayCommand(Selected, x => SelectedStation != null); }
-        }
 
         private void Selected(object obj)
         {
             Window.Close();
         }
-
     }
 }

@@ -6,7 +6,11 @@
         string ApplicationPath { get; }
         string ErrorPath { get; }
         string DatabasePath { get; }
-        string Skin { get; set; }
+
+        string PrimaryColor { get; set; }
+        string AccentColor { get; set; }
+        bool IsDark { get; set; }
+
         string SettingsFile { get; }
         string DatabaseConnectionString { get; }
 

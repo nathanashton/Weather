@@ -7,7 +7,7 @@ namespace Weather.Repository
         internal static long? ParseLongNull(string input)
         {
             long value;
-            if (Int64.TryParse(input, out value))
+            if (long.TryParse(input, out value))
             {
                 return value;
             }

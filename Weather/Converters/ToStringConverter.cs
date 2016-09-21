@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Weather.Converters
 {
-    public class StringVisibilityConverter : IValueConverter
+    public class ToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = value as string;
-            if (!string.IsNullOrEmpty(v))
-            {
-                return Visibility.Visible;
-            }
-            return Visibility.Collapsed;
+            return value != null ? value.ToString() : string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

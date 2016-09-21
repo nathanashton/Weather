@@ -59,23 +59,4 @@
 
 
 
-
-
-
-    <!--<materialDesign:PopupBox Grid.Row="1"
-                                 Grid.Column="2"
-                                 Margin="0 0 48 0"
-                                 PlacementMode="TopAndAlignCentres"
-                                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}"
-                                 ToolTip="PopupBox, Style MaterialDesignMultiFloatingActionAccentPopupBox">
-            <materialDesign:PopupBox.ToggleCheckedContent>
-                <materialDesign:PackIcon Width="24"
-                                         Height="24"
-                                         Kind="Pencil" />
-            </materialDesign:PopupBox.ToggleCheckedContent>
-            <StackPanel>
-                <Button ToolTip="One">Import</Button>
-            </StackPanel>
-        </materialDesign:PopupBox>-->
-
 </UserControl>

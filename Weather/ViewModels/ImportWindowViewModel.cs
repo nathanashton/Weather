@@ -114,10 +114,12 @@ namespace Weather.ViewModels
         public int SelectedRecordIndex { get; set; }
         public int CurrentRecord { get; set; }
         public string CurrentRecordDisplay => "of " + RecordsCount;
+
+
+        public ISelectedStation Sel { get; set;}
         public IWeatherStation SelectedStation { get; set; }
         public int RecordsCount { get; set; }
 
-        
 
         public Match SelectedMatch { get; set; }
         public Record SelectedRecordDate { get; set; }
@@ -148,16 +150,6 @@ namespace Weather.ViewModels
             get { return new RelayCommand(ChooseFile, x => true); }
         }
 
-        private void ChooseFile(object obj)
-        {
-            var openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                ReadFile(openFileDialog.FileName);
-            }
-            DateRecord = DateRecords[0];
-        }
-
         public bool Importing { get; set; }
 
         public ICommand ImportCommand
@@ -184,17 +176,47 @@ namespace Weather.ViewModels
             importer.ImportChanged += Importer_ImportChanged;
             importer.ImportComplete += Importer_ImportComplete;
 
+            Sel = selectedStation;
+            Sel.SelectedStationChanged += Sel_SelectedStationChanged;
             SelectedStation = selectedStation.WeatherStation;
+
 
             Matches = new ObservableCollection<Match>();
             SingleChecked = true;
             Sensors = new ObservableCollection<ISensor>();
 
-            if (SelectedStation.Sensors == null || SelectedStation.Sensors.Count == 0) return;
-            foreach (var sensor in SelectedStation.Sensors)
+        }
+
+        private void Sel_SelectedStationChanged(object sender, EventArgs e)
+        {
+            SelectedStation = Sel.WeatherStation;
+            GetSensors();
+        }
+
+        public void GetSensors()
+        {
+            Sensors = new ObservableCollection<ISensor>();
+            if (SelectedStation != null)
             {
-                Sensors.Add(sensor.Sensor);
+                if ((SelectedStation.Sensors == null) || (SelectedStation.Sensors.Count == 0))
+                {
+                    return;
+                }
+                foreach (var sensor in SelectedStation.Sensors)
+                {
+                    Sensors.Add(sensor.Sensor);
+                }
             }
+        }
+
+        private void ChooseFile(object obj)
+        {
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                ReadFile(openFileDialog.FileName);
+            }
+            DateRecord = DateRecords[0];
         }
 
         private void Importer_ImportComplete(object sender, EventArgs e)
@@ -241,12 +263,12 @@ namespace Weather.ViewModels
 
             if (SingleChecked)
             {
-              _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index);
+                _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index);
             }
             if (MultipleChecked)
             {
-               _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index,
-                 SelectedRecordTime.Index);
+                _importer.Import(FilePath, SelectedStation, data, ExcludeLineCount, SelectedRecordDate.Index,
+                    SelectedRecordTime.Index);
             }
             _s.Start();
             _importer.Start();

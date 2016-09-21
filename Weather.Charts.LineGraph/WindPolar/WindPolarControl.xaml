@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Weather.Charts.LineGraph.LineGraphControl"
+﻿<UserControl x:Class="Weather.Charts.WindPolar.WindPolarControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:chart="http://schemas.syncfusion.com/wpf"
@@ -17,6 +17,15 @@
              TextOptions.TextRenderingMode="Auto"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <Style x:Key="LineStyle" TargetType="Line">
+            <Setter Property="Stroke" Value="Gray" />
+            <Setter Property="StrokeThickness" Value="1" />
+        </Style>
+
+        <DataTemplate x:Key="LabelTemplate">
+            <TextBlock FontSize="11" Text="{Binding LabelContent}" />
+        </DataTemplate>
+
         <converters:NullCountConverter x:Key="NullCountConverter" />
         <converters:NullCountVisibilityConverter x:Key="NullCountVisibilityConverter" />
         <converters:NullCountVisibilityConverterInvert x:Key="NullCountVisibilityInvertConverter" />
@@ -35,7 +44,7 @@
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="130" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -59,33 +68,33 @@
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            FontSize="12"
-                           Text="Sensor 1" />
+                           Text="Wind Speed Sensor" />
                 <ComboBox Name="SelectedSensor1"
                           Grid.Row="1"
                           Grid.Column="1"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Center"
                           FontSize="12"
-                          IsEnabled="{Binding SelectedStation.WeatherStation.Sensors,
+                          IsEnabled="{Binding WindSpeedSensors,
                                               Converter={StaticResource NullCountConverter}}"
-                          ItemsSource="{Binding SelectedStation.WeatherStation.Sensors}"
-                          SelectedItem="{Binding SelectedSensor,
+                          ItemsSource="{Binding WindSpeedSensors}"
+                          SelectedItem="{Binding WindSpeedSensor,
                                                  Mode=TwoWay}" />
                 <TextBlock Grid.Row="2"
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            FontSize="12"
-                           Text="Sensor 2" />
+                           Text="Wind Direction Sensor" />
                 <ComboBox Name="SelectedSensor2"
                           Grid.Row="2"
                           Grid.Column="1"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Center"
                           FontSize="12"
-                          IsEnabled="{Binding SelectedStation.WeatherStation.Sensors,
+                          IsEnabled="{Binding WindDirectionSensors,
                                               Converter={StaticResource NullCountConverter}}"
-                          ItemsSource="{Binding SelectedStation.WeatherStation.Sensors}"
-                          SelectedItem="{Binding SelectedSensor2,
+                          ItemsSource="{Binding WindDirectionSensors}"
+                          SelectedItem="{Binding WindDirectionSensor,
                                                  Mode=TwoWay}" />
 
                 <Button Grid.Row="3"
@@ -114,90 +123,48 @@
                    Visibility="{Binding SelectedStation.WeatherStation.Sensors,
                                         Converter={StaticResource NullCountVisibilityInvertConverter}}" />
 
-            <chart:SfChart BorderThickness="0"
-                           FontSize="12"
-                           Visibility="{Binding SelectedStation.WeatherStation.Sensors,
-                                                Converter={StaticResource NullCountVisibilityConverter}}">
+            <chart:SfChart AreaBorderThickness="0" Visibility="{Binding SelectedStation.WeatherStation.Sensors, Converter={StaticResource NullCountVisibilityConverter}}">
 
-                <chart:SfChart.Legend>
-                    <chart:ChartLegend />
-                </chart:SfChart.Legend>
-
-                <chart:SfChart.Behaviors>
-                    <chart:ChartTrackBallBehavior>
-                        <chart:ChartTrackBallBehavior.LineStyle>
-                            <Style TargetType="Line">
-                                <Setter Property="Stroke" Value="{DynamicResource PrimaryHueDarkBrush}" />
-                                <Setter Property="StrokeDashArray" Value="5,5" />
-                                <Setter Property="StrokeThickness" Value="1" />
-                            </Style>
-                        </chart:ChartTrackBallBehavior.LineStyle>
-                    </chart:ChartTrackBallBehavior>
-
-                </chart:SfChart.Behaviors>
                 <chart:SfChart.PrimaryAxis>
-                    <chart:DateTimeAxis FontSize="11"
-                                        Header="Date"
-                                        ShowGridLines="True"
+                    <chart:CategoryAxis AxisLineStyle="{StaticResource LineStyle}"
+                                        EdgeLabelsDrawingMode="Fit"
+                                        IsHitTestVisible="False"
+                                        LabelTemplate="{StaticResource LabelTemplate}"
+                                        MajorGridLineStyle="{StaticResource LineStyle}"
+                                        MajorTickLineStyle="{StaticResource LineStyle}"
+                                        MinorGridLineStyle="{StaticResource LineStyle}"
+                                        MinorTickLineStyle="{StaticResource LineStyle}"
                                         ShowTrackBallInfo="True"
-                                        SmallTicksPerInterval="1">
-                        <chart:DateTimeAxis.MajorGridLineStyle>
-                            <Style TargetType="Line">
-                                <Setter Property="StrokeThickness" Value="1" />
-                                <Setter Property="Stroke" Value="DarkGray" />
-                                <Setter Property="StrokeDashArray" Value="4,4" />
-                                <Setter Property="Opacity" Value="0.3" />
-                            </Style>
-                        </chart:DateTimeAxis.MajorGridLineStyle>
-                        <chart:DateTimeAxis.MinorGridLineStyle>
-                            <Style TargetType="Line">
-                                <Setter Property="StrokeThickness" Value="1" />
-                                <Setter Property="Stroke" Value="DarkGray" />
-                                <Setter Property="Opacity" Value="0.3" />
-                                <Setter Property="StrokeDashArray" Value="2,2" />
-                            </Style>
-                        </chart:DateTimeAxis.MinorGridLineStyle>
-                    </chart:DateTimeAxis>
+                                        TickLineSize="10" />
                 </chart:SfChart.PrimaryAxis>
 
                 <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis FontSize="11"
-                                         Header="{Binding SelectedSensor}"
-                                         ShowGridLines="False"
-                                         ShowTrackBallInfo="True">
-                        <chart:NumericalAxis.MajorGridLineStyle>
-                            <Style TargetType="Line">
-                                <Setter Property="StrokeThickness" Value="1" />
-                                <Setter Property="Stroke" Value="Gray" />
-                                <Setter Property="StrokeDashArray" Value="2,2" />
-                            </Style>
-                        </chart:NumericalAxis.MajorGridLineStyle>
-                    </chart:NumericalAxis>
+                    <chart:NumericalAxis AxisLineStyle="{StaticResource LineStyle}"
+                                         EdgeLabelsDrawingMode="Fit"
+                                         LabelTemplate="{StaticResource LabelTemplate}"
+                                         MajorGridLineStyle="{StaticResource LineStyle}"
+                                         MajorTickLineStyle="{StaticResource LineStyle}"
+                                         MinorGridLineStyle="{StaticResource LineStyle}"
+                                         MinorTickLineStyle="{StaticResource LineStyle}"
+                                         SmallTickLineSize="6"
+                                         SmallTicksPerInterval="1"
+                                         TickLineSize="10" />
                 </chart:SfChart.SecondaryAxis>
 
-                <chart:FastLineSeries AnimationDuration="00:00:02"
-                                      EnableAnimation="True"
-                                      Interior="{DynamicResource PrimaryHueDarkBrush}"
-                                      ItemsSource="{Binding Data}"
-                                      Label="{Binding SelectedSensor.Sensor.SensorType.Name}"
-                                      XBindingPath="Date"
-                                      YBindingPath="Value" />
+                <chart:PolarSeries AnimationDuration="00:00:02"
+                                   DrawType="Area"
+                                   EnableAnimation="True"
+                                   Interior="{DynamicResource PrimaryHueDarkBrush}"
+                                   IsClosed="True"
+                                   ItemsSource="{Binding Data}"
+                                   Label="Amount Spent"
+                                   Opacity="0.5"
+                                   ShowTooltip="True"
+                                   StrokeThickness="2"
+                                   XBindingPath="Direction"
+                                   YBindingPath="Tree" />
 
-                <chart:FastLineSeries AnimationDuration="00:00:02"
-                                      EnableAnimation="True"
-                                      Interior="{DynamicResource SecondaryAccentBrush}"
-                                      ItemsSource="{Binding Data2}"
-                                      Label="{Binding SelectedSensor2.Sensor.SensorType.Name}"
-                                      XBindingPath="Date"
-                                      YBindingPath="Value">
-                    <chart:FastLineSeries.YAxis>
-                        <chart:NumericalAxis FontSize="11"
-                                             Header="{Binding SelectedSensor2}"
-                                             OpposedPosition="True"
-                                             ShowGridLines="False"
-                                             ShowTrackBallInfo="True" />
-                    </chart:FastLineSeries.YAxis>
-                </chart:FastLineSeries>
+
             </chart:SfChart>
 
         </DockPanel>

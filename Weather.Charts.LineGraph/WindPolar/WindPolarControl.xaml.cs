@@ -1,39 +1,35 @@
 ﻿using System.Windows;
-using PropertyChanged;
 using Weather.Common.Interfaces;
 
-namespace Weather.Charts.LineGraph
+namespace Weather.Charts.WindPolar
 {
     /// <summary>
-    ///     Interaction logic for LineGraphControl.xaml
+    ///     Interaction logic for WindPolarControl.xaml
     /// </summary>
-    [ImplementPropertyChanged]
-    public partial class LineGraphControl : IChartCodeBehind
+    public partial class WindPolarControl : IChartCodeBehind
     {
-        private string S { get; set; }
-
-        public LineGraphControl(ISelectedStation selectedStation)
+        public WindPolarControl(ISelectedStation selectedStation)
         {
             InitializeComponent();
-            ViewModel = new LineGraphControlViewModel(selectedStation);
+            ViewModel = new WindPolarControlViewModel(selectedStation);
             DataContext = ViewModel;
-            Loaded += MinMax_Loaded;
-            Unloaded += MinMax_Unloaded;
+            Loaded += WindPolarControl_Loaded;
+            Unloaded += WindPolarControl_Unloaded;
         }
 
         public IChartViewModel ViewModel { get; set; }
 
-        private void MinMax_Unloaded(object sender, RoutedEventArgs e)
+        private void WindPolarControl_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectedStation.RecordsUpdatedForSelectedStation -= ViewModel.RecordsUpdatedForSelectedStation;
             ViewModel.SelectedStation.GetRecordsCompleted -= ViewModel.SelectedStation_GetRecordsCompleted;
             ViewModel.SelectedStation.SelectedStationChanged -= ViewModel.SelectedStation_SelectedStationChanged;
             ViewModel.SelectedStation.ChangesMadeToSelectedStation -= ViewModel.ChangesMadeToSelectedStation;
+
             ViewModel.SavePosition();
         }
 
-
-        private void MinMax_Loaded(object sender, RoutedEventArgs e)
+        private void WindPolarControl_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectedStation.RecordsUpdatedForSelectedStation += ViewModel.RecordsUpdatedForSelectedStation;
             ViewModel.SelectedStation.GetRecordsCompleted += ViewModel.SelectedStation_GetRecordsCompleted;

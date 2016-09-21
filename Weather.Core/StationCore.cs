@@ -9,9 +9,9 @@ namespace Weather.Core
     [ImplementPropertyChanged]
     public class StationCore : IStationCore
     {
+        private readonly ISensorValueRepository _sensorvalueRepository;
         private readonly IStationSensorRepository _stationSensorRepository;
         private readonly IWeatherStationRepository _weatherStationRepository;
-        private readonly ISensorValueRepository _sensorvalueRepository;
 
 
         public StationCore(IWeatherStationRepository weatherStationRepository,

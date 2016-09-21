@@ -9,7 +9,6 @@ using Weather.Core.Interfaces;
 using Weather.Helpers;
 using Weather.Units.Interfaces;
 using Weather.UserControls;
-using Weather.Views;
 
 namespace Weather.ViewModels
 {

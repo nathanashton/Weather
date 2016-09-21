@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="DbUtils.cs" />
     <Compile Include="Interfaces\ISensorTypeRepository.cs" />
-    <Compile Include="Properties\ISensorValueRepository.cs" />
+    <Compile Include="Interfaces\ISensorValueRepository.cs" />
     <Compile Include="Interfaces\IStationSensorRepository.cs" />
     <Compile Include="Interfaces\IWeatherRecordRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,36 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Microsoft.Practices.Unity;
 using PropertyChanged;
 using Weather.Common;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
-using Weather.DependencyResolver;
-using Weather.Helpers;
-using Weather.Views;
 
 namespace Weather.ViewModels
 {
     [ImplementPropertyChanged]
-    public class StationPanelViewModel : NotifyBase
+    public class SidePanelViewModel : NotifyBase
     {
-
         private readonly IStationCore _stationCore;
-
         private readonly IWeatherRecordCore _weatherRecordCore;
-
         private IWeatherStation _selected;
-
         private ISelectedStation _selectedStation;
-
-        private List<IWeatherRecord> all;
 
         public ObservableCollection<IWeatherStation> Stations { get; set; }
 
@@ -44,44 +31,56 @@ namespace Weather.ViewModels
                 OnPropertyChanged(() => SelectedStation);
             }
         }
-      
-        public IWeatherStation Selected
+
+        public ICommand FloatingActionDemoCommand { get; }
+
+        public bool Loading { get; set; }
+
+        public IWeatherStation Selected // TODO
         {
             get { return _selected; }
             set
             {
                 _selected = value;
                 SelectedStation.WeatherStation = value;
-                Dispatcher.CurrentDispatcher.InvokeAsync(async() => await GetRecords());
+                Dispatcher.CurrentDispatcher.InvokeAsync(async () => await GetRecords());
 
                 OnPropertyChanged(() => Selected);
             }
         }
 
-        public void Start()
-        {
-            Dispatcher.CurrentDispatcher.InvokeAsync(async () => await GetRecords());
-        }
-
-        public StationPanelViewModel(IStationCore stationCore, ISelectedStation selectedStation,
+        public SidePanelViewModel(IStationCore stationCore, ISelectedStation selectedStation,
             IWeatherRecordCore weatherRecordCore)
         {
             _weatherRecordCore = weatherRecordCore;
             SelectedStation = selectedStation;
             _stationCore = stationCore;
-
-            SelectedStation.SelectedStationRecordsUpdated += SelectedStation_SelectedStationRecordsUpdated1;
+            
+            SelectedStation.RecordsUpdatedForSelectedStation += RecordsUpdatedForSelectedStation;
             SelectedStation.SelectedStationChanged += SelectedStation_SelectedStationChanged;
-            SelectedStation.SelectedStationUpdated += SelectedStation_SelectedStationUpdated;
+            SelectedStation.ChangesMadeToSelectedStation += ChangesMadeToSelectedStation;
+            SelectedStation.GetRecordsStarted += SelectedStation_GetRecordsStarted;
+            SelectedStation.GetRecordsCompleted += SelectedStation_GetRecordsCompleted;
+            
         }
 
-        private async Task SelectedStation_SelectedStationRecordsUpdated1(object sender, EventArgs e)
+        private void SelectedStation_GetRecordsCompleted(object sender, EventArgs e)
+        {
+            Loading = false;
+        }
+
+        private void SelectedStation_GetRecordsStarted(object sender, EventArgs e)
+        {
+            Loading = true;
+        }
+
+      
+        private async void RecordsUpdatedForSelectedStation(object sender, EventArgs e)
         {
             await GetRecords();
         }
 
-     
-        private void SelectedStation_SelectedStationUpdated(object sender, EventArgs e)
+        private void ChangesMadeToSelectedStation(object sender, EventArgs e)
         {
             long id = 0;
             if ((SelectedStation != null) && (SelectedStation.WeatherStation != null))
@@ -98,16 +97,13 @@ namespace Weather.ViewModels
 
         private void SelectedStation_SelectedStationChanged(object sender, EventArgs e)
         {
-            // Stations may have changed so update
-            // GetAllStations();
             Selected = SelectedStation.WeatherStation;
         }
 
 
-
         public async Task GetRecords()
         {
-            if (SelectedStation.StartDate == null || SelectedStation.EndDate == null)
+            if ((SelectedStation.StartDate == null) || (SelectedStation.EndDate == null))
             {
                 return;
             }
@@ -117,42 +113,28 @@ namespace Weather.ViewModels
                 return;
             }
 
-            SelectedStation.OnGetRecordsStarted();
 
             var s = SelectedStation.StartDate;
             var e = SelectedStation.EndDate;
+            SelectedStation.OnGetRecordsStarted();
 
-
-            BackgroundWorker backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += async delegate
-            {
-                SelectedStation.WeatherStation.Records = await _weatherRecordCore.GetAllRecordsForStationBetweenDates(
-                      SelectedStation.WeatherStation.WeatherStationId, (DateTime)s, (DateTime)e);
-            };
-            backgroundWorker.RunWorkerCompleted += (sender, g) =>
-            {
-                SelectedStation.OnGetRecordsCompleted();
-            };
-            backgroundWorker.RunWorkerAsync();
-
-
-
-          
-
+            await
+                Task.Run(
+                    async () =>
+                    {
+                        SelectedStation.WeatherStation.Records =
+                            await
+                                _weatherRecordCore.GetAllRecordsForStationBetweenDates(
+                                        SelectedStation.WeatherStation.WeatherStationId, (DateTime) s, (DateTime) e)
+                                    .ConfigureAwait(true);
+                    });
+            SelectedStation.OnGetRecordsCompleted();
         }
 
         public void GetAllStations()
         {
             Stations = new ObservableCollection<IWeatherStation>(_stationCore.GetAllStations());
-            if (Stations.Count == 2)
-            {
-                Selected = Stations.First();
-              
-            }
-
-       
+            SelectedStation.OnSelectedStationChanged();
         }
-
-     
     }
 }

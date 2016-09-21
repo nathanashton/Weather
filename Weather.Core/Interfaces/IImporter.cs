@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Weather.Common.Entities;
 using Weather.Common.EventArgs;
 using Weather.Common.Interfaces;
 

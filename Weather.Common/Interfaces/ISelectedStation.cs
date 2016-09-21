@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace Weather.Common.Interfaces
 {
@@ -8,33 +7,27 @@ namespace Weather.Common.Interfaces
         IWeatherStation WeatherStation { get; set; }
 
 
-
         DateTime? StartDate { get; set; }
         DateTime? EndDate { get; set; }
-
-
 
 
         event EventHandler GetRecordsStarted;
         event EventHandler GetRecordsCompleted;
 
-        event EventHandler SelectedStationUpdated;
+
+        event EventHandler ChangesMadeToSelectedStation;
+
         event EventHandler SelectedStationChanged;
-        event EventHandlers.AsyncEventHandler SelectedStationRecordsUpdated;
 
+        event EventHandler RecordsUpdatedForSelectedStation;
 
-        void OnSelectedStationRecordsUpdated();
         void OnSelectedStationChanged();
-        void OnSelectedStationUpdated();
+
+        void OnRecordsUpdatedForSelectedStation();
+        void OnChangesMadeToSelectedStation();
 
 
         void OnGetRecordsStarted();
         void OnGetRecordsCompleted();
     }
-
-    public class EventHandlers
-    {
-        public delegate Task AsyncEventHandler(object sender, System.EventArgs e);
-    }
-
 }

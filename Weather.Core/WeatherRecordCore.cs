@@ -33,11 +33,11 @@ namespace Weather.Core
             return _repository.GetAll();
         }
 
-        public async Task<ObservableCollection<IWeatherRecord>> GetAllRecordsForStationBetweenDates(long weatherStationId,
+        public async Task<ObservableCollection<IWeatherRecord>> GetAllRecordsForStationBetweenDates(
+            long weatherStationId,
             DateTime startDate, DateTime endDate)
         {
-            var all = await _repository.GetAllForStation(weatherStationId, startDate, endDate);
-            return all;
+            return await _repository.GetAllForStation(weatherStationId, startDate, endDate);
         }
 
         public long Add(IWeatherRecord record)
@@ -58,7 +58,7 @@ namespace Weather.Core
 
         public List<IWeatherRecord> AddRecordsAndSensorValues(List<IWeatherRecord> weatherrecords)
         {
-           weatherrecords = _repository.AddRecordsAndSensorValues(weatherrecords);
+            weatherrecords = _repository.AddRecordsAndSensorValues(weatherrecords);
             return weatherrecords;
         }
     }

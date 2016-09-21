@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 using Weather.Common.Entities;
 using Weather.Common.Interfaces;
@@ -15,6 +16,19 @@ namespace Weather.ViewModels
     {
         private readonly ISensorCore _sensorCore;
 
+        public string ButtonText
+        {
+            get
+            {
+                if (Editing)
+                {
+                    return "Save";
+                }
+                return "Add";
+            }
+        }
+
+        public DialogHost DialogHost { get; set; }
         public bool Editing { get; set; }
         public Window Window { get; set; }
         public ObservableCollection<ISensor> Sensors { get; set; }
@@ -62,7 +76,7 @@ namespace Weather.ViewModels
             {
                 StationSensor = sensor;
             }
-            Window.Close();
+            DialogHost.CloseDialogCommand.Execute(null, null);
         }
     }
 }

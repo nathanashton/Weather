@@ -1,20 +1,17 @@
 ﻿using System;
 using Weather.Common;
 using Weather.Common.Interfaces;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Threading;
-using System.Threading.Tasks;
 
 namespace Weather.Core
 {
     public class SelectedStation : NotifyBase, ISelectedStation
     {
+        private DateTime? _endDate;
+        private DateTime? _startDate;
 
 
         private IWeatherStation _weatherStation;
 
-     
 
         public IWeatherStation WeatherStation
         {
@@ -27,17 +24,13 @@ namespace Weather.Core
             }
         }
 
-      
+
         public event EventHandler GetRecordsStarted;
         public event EventHandler GetRecordsCompleted;
-        public event EventHandler SelectedStationUpdated;
+        public event EventHandler ChangesMadeToSelectedStation;
         public event EventHandler SelectedStationChanged;
 
-        public event EventHandlers.AsyncEventHandler SelectedStationRecordsUpdated;
-
-
-        private DateTime? _endDate;
-        private DateTime? _startDate;
+        public event EventHandler RecordsUpdatedForSelectedStation;
 
         public DateTime? StartDate
         {
@@ -45,7 +38,7 @@ namespace Weather.Core
             set
             {
                 _startDate = value;
-                
+
                 if (EndDate == null)
                 {
                     EndDate = StartDate + new TimeSpan(1, 0, 0, 0, 0);
@@ -55,7 +48,7 @@ namespace Weather.Core
                     StartDate = EndDate;
                 }
                 OnPropertyChanged(() => StartDate);
-                OnSelectedStationRecordsUpdated();
+                OnRecordsUpdatedForSelectedStation();
             }
         }
 
@@ -74,14 +67,14 @@ namespace Weather.Core
                     EndDate = StartDate;
                 }
                 OnPropertyChanged(() => EndDate);
-                OnSelectedStationRecordsUpdated();
+                OnRecordsUpdatedForSelectedStation();
             }
         }
 
 
-        public void OnSelectedStationRecordsUpdated()
+        public void OnRecordsUpdatedForSelectedStation()
         {
-            SelectedStationRecordsUpdated?.Invoke(this, null);
+            RecordsUpdatedForSelectedStation?.Invoke(this, null);
         }
 
         public void OnSelectedStationChanged()
@@ -89,9 +82,9 @@ namespace Weather.Core
             SelectedStationChanged?.Invoke(this, null);
         }
 
-        public void OnSelectedStationUpdated()
+        public void OnChangesMadeToSelectedStation()
         {
-            SelectedStationUpdated?.Invoke(this, null);
+            ChangesMadeToSelectedStation?.Invoke(this, null);
         }
 
         public void OnGetRecordsStarted()
@@ -103,18 +96,5 @@ namespace Weather.Core
         {
             GetRecordsCompleted?.Invoke(this, null);
         }
-
-
-       
-
-       
-
-
-
-
-
-
-
-
     }
 }

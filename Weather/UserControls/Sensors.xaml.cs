@@ -9,15 +9,11 @@ using Weather.ViewModels;
 namespace Weather.UserControls
 {
     /// <summary>
-    /// Interaction logic for Sensors.xaml
+    ///     Interaction logic for Sensors.xaml
     /// </summary>
-    ///
-    ///
-    ///
-    ///
     public partial class Sensors : UserControl
     {
-        private SensorsWindowViewModel _viewModel;
+        private readonly SensorsWindowViewModel _viewModel;
 
         public Sensors()
         {
@@ -38,7 +34,7 @@ namespace Weather.UserControls
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = ((ListBox)e.Source).SelectedItem;
+            var selection = ((ListBox) e.Source).SelectedItem;
             if (selection == null)
             {
                 return;
@@ -65,9 +61,9 @@ namespace Weather.UserControls
         }
 
         public
-        void SelectSiUnitInComboBox
-        (ISensorType
-        unit)
+            void SelectSiUnitInComboBox
+            (ISensorType
+                unit)
         {
             foreach (var item in SensorType.Items)
             {

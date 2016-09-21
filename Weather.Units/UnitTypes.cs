@@ -43,7 +43,6 @@ namespace Weather.Units
                     DisplayName = "Direction",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.Direction),
                     SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Degrees)
-
                 },
                 new UnitType
                 {
@@ -51,8 +50,7 @@ namespace Weather.Units
                     Type = UnitEnums.EnumUnitType.Humidity,
                     DisplayName = "Humidity",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.Humidity),
-                                        SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Percent)
-
+                    SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Percent)
                 },
                 new UnitType
                 {
@@ -60,8 +58,7 @@ namespace Weather.Units
                     Type = UnitEnums.EnumUnitType.Uv,
                     DisplayName = "UV",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.Uv),
-                                        SiUnit = Units.GetUnit(UnitEnums.EnumUnit.UvIndex)
-
+                    SiUnit = Units.GetUnit(UnitEnums.EnumUnit.UvIndex)
                 },
                 new UnitType
                 {
@@ -69,8 +66,7 @@ namespace Weather.Units
                     Type = UnitEnums.EnumUnitType.Precipitation,
                     DisplayName = "Precipitation",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.Precipitation),
-                                        SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Millimeters)
-
+                    SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Millimeters)
                 },
                 new UnitType
                 {
@@ -78,8 +74,7 @@ namespace Weather.Units
                     Type = UnitEnums.EnumUnitType.PrecipitationRate,
                     DisplayName = "Precipitation Rate",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.PrecipitationRate),
-                                        SiUnit = Units.GetUnit(UnitEnums.EnumUnit.MillimetersPerHour)
-
+                    SiUnit = Units.GetUnit(UnitEnums.EnumUnit.MillimetersPerHour)
                 },
                 new UnitType
                 {
@@ -87,8 +82,7 @@ namespace Weather.Units
                     Type = UnitEnums.EnumUnitType.Irradiance,
                     DisplayName = "Irradiance",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.Irradiance),
-                                        SiUnit = Units.GetUnit(UnitEnums.EnumUnit.WattsPerSquareMeter)
-
+                    SiUnit = Units.GetUnit(UnitEnums.EnumUnit.WattsPerSquareMeter)
                 },
                 new UnitType
                 {
@@ -96,8 +90,7 @@ namespace Weather.Units
                     Type = UnitEnums.EnumUnitType.Luminosity,
                     DisplayName = "Luminosity",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.Luminosity),
-                                        SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Flux)
-
+                    SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Flux)
                 },
                 new UnitType
                 {
@@ -105,8 +98,7 @@ namespace Weather.Units
                     Type = UnitEnums.EnumUnitType.CloudCover,
                     DisplayName = "Cloud Cover",
                     Units = Units.GetAllUnitsOfType(UnitEnums.EnumUnitType.CloudCover),
-                                        SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Okta)
-
+                    SiUnit = Units.GetUnit(UnitEnums.EnumUnit.Okta)
                 }
             };
         }

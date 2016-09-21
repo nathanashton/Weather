@@ -1,11 +1,10 @@
 ﻿using Weather.Charts.LineGraph;
 using Weather.Common;
 using Weather.Common.Interfaces;
-using Weather.Interfaces;
 
 namespace Weather.Charts
 {
-    [DisplayName("Line Graph")]
+    [DisplayName("Line Graph / 2 Sensors")]
     [Description("Graph One or Two sensors at the same time.")]
     public class LineGraphPlugin : IPlugin
     {

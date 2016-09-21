@@ -1,26 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using PropertyChanged;
+using Weather.Common;
 using Weather.Common.Interfaces;
 using Weather.Core.Interfaces;
 using Weather.UserControls;
-using Weather.Common;
-using Weather.Core;
 
 namespace Weather.ViewModels
 {
     [ImplementPropertyChanged]
-    public class TestViewModel : NotifyBase
+    public class MainViewModel : NotifyBase
     {
-        public ObservableCollection<MenuStuff> MenuStuff { get;set; }
+        private IWeatherStation _selected;
 
         private MenuStuff _selectedMenuStuff;
+
+        public Blank StaticBlank { get; set; }
+        public ObservableCollection<MenuStuff> MenuStuff { get; set; }
 
         public MenuStuff SelectedMenuStuff
         {
@@ -32,14 +29,16 @@ namespace Weather.ViewModels
                 if (_selectedMenuStuff != null)
                 {
                     Content = _selectedMenuStuff.Content;
+                    SelectedStation.OnChangesMadeToSelectedStation();
                 }
             }
         }
 
         public ISelectedStation SelectedStation { get; set; }
+
         public ContentControl Content { get; set; }
 
-        private IWeatherStation _selected;
+
         public IWeatherStation Selected
         {
             get { return _selected; }
@@ -47,37 +46,35 @@ namespace Weather.ViewModels
             {
                 _selected = value;
                 SelectedStation.WeatherStation = value;
-                SelectedStation.OnSelectedStationChanged();
-
-              //  Dispatcher.CurrentDispatcher.InvokeAsync(async () => await GetRecords());
-
                 OnPropertyChanged(() => Selected);
+                SelectedStation.OnSelectedStationChanged();
             }
-
         }
-
 
 
         public ObservableCollection<IWeatherStation> Stations { get; set; }
 
-        public TestViewModel(ISelectedStation selected, IStationCore stationCore)
+        public MainViewModel(ISelectedStation selected, IStationCore stationCore)
         {
+            StaticBlank = new Blank();
             SelectedStation = selected;
-            MenuStuff = new ObservableCollection<ViewModels.MenuStuff>
+            SelectedStation.SelectedStationChanged += SelectedStation_SelectedStationChanged;
+            MenuStuff = new ObservableCollection<MenuStuff>
             {
-                new ViewModels.MenuStuff {Name = "Main", Content=new Blank()},
-                new ViewModels.MenuStuff {Name = "Settings", Content=new Tabs()},
-
+                new MenuStuff {Name = "Main", Content = StaticBlank},
+                new MenuStuff {Name = "Settings", Content = new Tabs()},
+                new MenuStuff {Name = "Import", Content = new ImportControl()}
             };
 
 
             Stations = new ObservableCollection<IWeatherStation>();
             Stations = new ObservableCollection<IWeatherStation>(stationCore.GetAllStations());
-            if (Stations.Count == 1)
-            {
-                Selected = Stations.First();
-            }
-            Content = new Blank();
+            Content = StaticBlank;
+        }
+
+        private void SelectedStation_SelectedStationChanged(object sender, EventArgs e)
+        {
+            Selected = SelectedStation.WeatherStation;
         }
     }
 

@@ -16,8 +16,16 @@
              TextOptions.TextRenderingMode="Auto"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <converters:NullBoolConverter x:Key="NullCount" />
-        <BooleanToVisibilityConverter x:Key="boolvis" />
+        <ResourceDictionary>
+            <converters:NullBoolConverter x:Key="NullCount" />
+            <BooleanToVisibilityConverter x:Key="Boolvis" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
     </UserControl.Resources>
 
     <Grid Margin="5"
@@ -31,6 +39,25 @@
                        DockPanel.Dock="Top">
                 <Label Content="{Binding Content.ViewModel.Header}" FontWeight="Bold" />
 
+
+                <!--<Button Width="10"
+                        Height="10"
+                        Margin="3"
+                        HorizontalAlignment="Right"
+                        Command="{Binding ShowOptionsCommand}"
+                        Content="X"
+                        DockPanel.Dock="Right" />-->
+                <Button Width="15"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Stretch"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding ShowOptionsCommand}"
+                        DockPanel.Dock="Right"
+                        Padding="0">
+                    <materialDesign:PackIcon Foreground="{DynamicResource MaterialDesignBody}" Kind="DotsVertical" />
+                </Button>
+
                 <ComboBox Margin="2"
                           HorizontalAlignment="Right"
                           DisplayMemberPath="Name"
@@ -42,30 +69,26 @@
             <Grid>
 
 
-                <ProgressBar Width="100"
-                             Height="50"
+                <ProgressBar Width="40"
+                             Height="40"
                              Margin="5"
                              Panel.ZIndex="2000"
                              IsIndeterminate="True"
                              Opacity="1"
+                             Style="{StaticResource MaterialDesignCircularProgressBar}"
                              Visibility="{Binding Loading,
-                                                  Converter={StaticResource boolvis}}"
-                          />
+                                                  Converter={StaticResource Boolvis}}" />
 
                 <Grid Panel.ZIndex="1000"
                       Background="Black"
                       Opacity="0.1"
                       Visibility="{Binding Loading,
-                                           Converter={StaticResource boolvis}}" />
+                                           Converter={StaticResource Boolvis}}" />
                 <ContentControl BorderThickness="0" Content="{Binding Content}" />
             </Grid>
         </DockPanel>
 
     </Grid>
-
-
-
-
 
 
 </UserControl>

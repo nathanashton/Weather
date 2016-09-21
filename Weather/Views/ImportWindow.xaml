@@ -14,7 +14,6 @@
         WindowStyle="None"
         mc:Ignorable="d">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="Vis" />
         <converters:NullCountConverter x:Key="NullCount" />
         <Style x:Key="MyLbStyle" TargetType="ListBoxItem">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -38,15 +37,13 @@
     </Window.Resources>
     <Border BorderBrush="White" BorderThickness="1">
 
-        <Border Style="{StaticResource WindowBorder}">
+        <Border>
             <DockPanel>
-
 
 
                 <DockPanel Height="20"
                            DockPanel.Dock="Top"
-                           MouseLeftButtonDown="DockPanel_MouseLeftButtonDown"
-                           Style="{StaticResource Header}">
+                           MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                     <Image Margin="5,2,0,2"
                            HorizontalAlignment="Left"
                            DockPanel.Dock="Left"
@@ -59,13 +56,12 @@
                             BorderThickness="0"
                             Click="Button_Click_1"
                             DockPanel.Dock="Right">
-                        <Image DockPanel.Dock="Left" Style="{StaticResource CloseButton}" />
+                        <Image DockPanel.Dock="Left" />
                     </Button>
                 </DockPanel>
                 <DockPanel Height="35"
                            HorizontalAlignment="Stretch"
-                           DockPanel.Dock="Top"
-                           Style="{StaticResource Header}">
+                           DockPanel.Dock="Top">
                     <Rectangle Height="1"
                                DockPanel.Dock="Bottom"
                                Fill="White" />
@@ -78,8 +74,7 @@
                            Content="Import"
                            DockPanel.Dock="Right"
                            FontSize="14"
-                           FontWeight="Bold"
-                           Style="{StaticResource HeaderLabel}" />
+                           FontWeight="Bold" />
                 </DockPanel>
                 <DockPanel HorizontalAlignment="Stretch"
                            Background="#F0F0F0"
@@ -117,7 +112,6 @@
                         </DockPanel>
                     </Button>
                 </DockPanel>
-
 
 
                 <DockPanel DockPanel.Dock="Top">

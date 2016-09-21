@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Weather.Common.Entities;
 
 namespace Weather.Common.Interfaces
 {

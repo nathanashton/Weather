@@ -1,37 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using PropertyChanged;
-using Weather.Common.Entities;
 using Weather.ViewModels;
 
 namespace Weather.Views
 {
     /// <summary>
-    /// Interaction logic for TestWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     [ImplementPropertyChanged]
-    public partial class TestWindow : Window
+    public partial class MainWindow : Window
     {
-        private readonly TestViewModel _viewModel;
-
         public bool Opened { get; set; }
-        public TestWindow(TestViewModel viewModel)
+
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            DataContext = _viewModel;
+            DataContext = viewModel;
         }
 
         private void DemoItemsListBox_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -39,7 +26,10 @@ namespace Weather.Views
             var dependencyObject = Mouse.Captured as DependencyObject;
             while (dependencyObject != null)
             {
-                if (dependencyObject is ScrollBar) return;
+                if (dependencyObject is ScrollBar)
+                {
+                    return;
+                }
                 dependencyObject = VisualTreeHelper.GetParent(dependencyObject);
             }
 

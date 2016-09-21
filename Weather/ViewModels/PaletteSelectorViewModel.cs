@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Practices.Unity;
 using PropertyChanged;
+using Weather.Common;
+using Weather.Common.Interfaces;
+using Weather.DependencyResolver;
 using Weather.Helpers;
 
 namespace Weather.ViewModels
 {
     [ImplementPropertyChanged]
-    class PaletteSelectorViewModel
+    public class PaletteSelectorViewModel
     {
+        private static ISettings _settings;
         public IEnumerable<Swatch> Swatches { get; }
-
-
-        public PaletteSelectorViewModel()
-        {
-            Swatches = new SwatchesProvider().Swatches;
-        }
 
 
         public ICommand ToggleBaseCommand
@@ -40,13 +35,22 @@ namespace Weather.ViewModels
         }
 
 
+        public PaletteSelectorViewModel()
+        {
+            Swatches = new SwatchesProvider().Swatches;
+            var container = new Resolver().Bootstrap();
+            _settings = container.Resolve<Settings>();
+        }
+
 
         private static void ApplyBase(object obj)
         {
             var isDark = obj as bool?;
             if (isDark != null)
             {
-                new PaletteHelper().SetLightDark((bool)isDark);
+                new PaletteHelper().SetLightDark((bool) isDark);
+                _settings.IsDark = (bool) isDark;
+                _settings.Save();
             }
         }
 
@@ -57,6 +61,8 @@ namespace Weather.ViewModels
             if (swatch != null)
             {
                 new PaletteHelper().ReplacePrimaryColor(swatch);
+                _settings.PrimaryColor = swatch.Name;
+                _settings.Save();
             }
         }
 
@@ -66,6 +72,8 @@ namespace Weather.ViewModels
             if (swatch != null)
             {
                 new PaletteHelper().ReplaceAccentColor(swatch);
+                _settings.AccentColor = swatch.Name;
+                _settings.Save();
             }
         }
     }
